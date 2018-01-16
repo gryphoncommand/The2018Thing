@@ -5,8 +5,15 @@
 
 ## Install Dependencies
 
-run `pip3 install requirements.txt`
+### Linux/MacOS
+
+run `pip3 install -r requirements.txt`
 
 (this may need `sudo`)
+
+
+### Windows
+
+`pip3 install -r requirements.txt`
 
 
