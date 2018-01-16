@@ -6,8 +6,8 @@ from commandbased import CommandBasedRobot
 import oi
 import subsystems
 
-
 from commands.tankdrivejoystick import TankDriveJoystick
+from commands.pulsemotor import PulseMotor
 
 #from commands.crash import Crash
 
@@ -25,6 +25,7 @@ class The2018Thing(CommandBasedRobot):
         """
         return self
 
+
     def robotInit(self):
         """
 
@@ -34,18 +35,17 @@ class The2018Thing(CommandBasedRobot):
 
         # instansiate a getter method so you can do 'import robot; robot.get_robot()'
         global get_robot
-        get_robot = get_self
+        get_robot = self.get_self
 
         subsystems.init()
-        #self.autonomousProgram = AutonomousProgram()
+        self.autonomousProgram = PulseMotor()
         self.teleopProgram = TankDriveJoystick()
 
         oi.init()
 
 
     def autonomousInit(self):
-        pass
-       # self.autonomousProgram.start()
+        self.autonomousProgram.start()
 
     def teleopInit(self):
         self.teleopProgram.start()

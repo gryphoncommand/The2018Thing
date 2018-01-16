@@ -24,8 +24,6 @@ class TankDrive(Subsystem):
             "RB": Motor(*drive_motors.RB)
         }
 
-        self._motor = wpilib.Spark(robotmap.singlemotor.motorID)
-
     def set_power(self, Lpower=0, Rpower=None):
         if Rpower is None:
             # by default drive forward
@@ -37,6 +35,3 @@ class TankDrive(Subsystem):
         self.motors["RF"].set(Rpower)
         self.motors["RB"].set(Rpower)
 
-
-    def initDefaultCommand(self):
-        self.setDefaultCommand(TankDriveJoystick())

@@ -2,10 +2,13 @@ from wpilib.command import Command
 
 import subsystems
 import oi
+import math
+import time
+
 
 from robotmap import axes
 
-class TankDriveJoystick(Command):
+class PulseMotor(Command):
     """
 
     Joystick control the tank drive
@@ -13,15 +16,26 @@ class TankDriveJoystick(Command):
     """
 
     def __init__(self):
-        super().__init__('TankDriveJoystick')
+        super().__init__('PulseMotor')
 
         self.requires(subsystems.tankdrive)
 
+        self.stime = None
+
+
     def execute(self):
-        joy = oi.get_joystick()
-        lpow = joy.getRawAxis(axes.L_y)
-        rpow = joy.getRawAxis(axes.R_y)
+        ctime = time.time()
+
+        if self.stime is None:
+            self.stime = ctime
+
+        dtime = ctime - self.stime
+
+        lpow = math.sin(dtime * 2)
+        rpow = math.cos(dtime * 3)
         subsystems.tankdrive.set_power(lpow, rpow)
 
     def end(self):
         subsystems.tankdrive.set_power(0, 0)
+
+        self.stime = None
