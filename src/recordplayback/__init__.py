@@ -23,6 +23,7 @@ else:
 if macro_dir is not None:
     if not os.path.isdir(macro_dir):
         os.makedirs(macro_dir)
+    macro_dir += "/"
 
 
 class ControllerSamples:
@@ -44,7 +45,6 @@ class ControllerSamples:
         }
     }
 
-
     """
     def __init__(self, strval=None):
         self.readings = []
@@ -52,6 +52,16 @@ class ControllerSamples:
         if strval is not None:
             # parse the string
             self.unserialize(strval)
+
+    def clear(self):
+        """
+
+        clear all readings
+
+        """
+
+        self.readings = []
+        self.started_reading = None
 
     def serialize_reading(self, reading):
         """
@@ -97,9 +107,9 @@ class ControllerSamples:
         int_to_bool = lambda x: True if x == 1 else False
         buttons_str = list(filter(lambda x: len(x) > 0, buttons_str.split(",")))
         for button_str in buttons_str:
-            k, v = axis_str.split("=")
+            k, v = button_str.split("=")
             k = int(k)
-            v = int_to_bool(int(v))
+            v = int_to_bool(int(v)) #
             samples["buttons"][k] = v
         
         return rel_time, samples
@@ -131,7 +141,7 @@ class ControllerSamples:
         self.readings = sorted(self.readings, key=lambda x: x[0])
 
     
-    __str__ = self.serialize
+    __str__ = serialize
 
     def start_reading(self):
         self.started_reading = time.time()
@@ -146,7 +156,34 @@ class ControllerSamples:
         sample_tuple = (rel_time, reading)
         self.readings += [sample_tuple]
 
+    def force_interval(self, interval=.02):
+        """
 
+        record at maximum once every interval, deleting extras
+
+        """
+
+        result_readings = []
+
+        cur_interval = 0.0
+
+        i = 0
+
+        while i < len(self.readings):
+            result_readings += [self.readings[i]]
+            i += 1
+            while i < len(self.readings) and self.readings[i][0] < cur_interval + interval:
+                i += 1
+            cur_interval += interval
+
+        self.readings = result_readings
+
+
+    def __len__(self):
+        return len(self.readings)
+    
+    def __getitem__(self, key):
+        return self.readings[key]
 
 
 
@@ -158,58 +195,48 @@ class MockController:
     """
     
     def __init__(self, _samples):
-
         self._samples = _samples
     
         self.stime = None
 
+        self.current_reading = None
+        self.reading_idx = 0
+
+        self.max_time = max([i[0] for i in self._samples])
+
+
     def reset_timer(self):
         self.stime = None
+        self.reading_idx = 0
+        
     
     def start_reading(self):
         self.stime = time.time()
+        self.reading_idx = 0
+    
+    def isTimedOut(self):
+        if self.stime is None:
+            return True
+        else:
+            return (time.time() - self.stime) > self.max_time
 
-    def getRawAxis(self, axis):
+    def __update(self):
         if self.stime is None:
             self.start_reading()
-        
-        rel_time = time.time() - self.stime
 
-        avail_axis_readings = list(filter(lambda x: axis in t[1]["axes"].keys(), self._samples.readings))
+        ctime = time.time() - self.stime
 
-        reading_before, reading_after = None, None
-
-        for this_rel_time, samples in avail_axis_readings:
-            if this_rel_time <= rel_time:
-                reading_before = this_rel_time, samples
-            if this_rel_time >= rel_time and reading_after is None:
-                reading_after = this_rel_time, samples
-        
-        if reading_after is None:
-            if reading_before is None:
-                return 0.0
-            reading_after = reading_before
-        
-        if reading_before[0] == reading_after[0]:
-            # they are right on par, so average them (they may be the same value)
-            return (reading_before["axes"][axis] + reading_after["axes"][axis]) / 2.0
-        else:
-            # simply interpolate a line
-            # x (in time), y (in reading) points
-            pt_b = reading_before[0], reading_before[1]["axes"][axis]
-            pt_a = reading_after[0], reading_after[1]["axes"][axis]
-            slope = (pt_a[1] - pt_b[1]) / (pt_a[0] - pt_a[0])
-            """
-            pt_b[1] = slope * pt_b[0] + y_offset
-
-            so
-
-            y_offset = pt_b[1] - slope * pt_b[0]
+        while self.reading_idx < len(self._samples):
+            rel_time, samples = self._samples[self.reading_idx]
+            if rel_time <= ctime:
+                self.current_reading = rel_time, samples
+                self.reading_idx += 1
+            else:
+                break
 
 
-            """
-            y_offset = pt_b[1] - slope * pt_b[0]
-
-            # interpolate our value
-            return rel_time * slope + y_offset
+    def getRawAxis(self, axis):
+        self.__update()
+        #next_reading = self._samples[self.reading_idx + 1]
+        return self.current_reading[1]["axes"][axis]
 

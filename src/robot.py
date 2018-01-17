@@ -6,6 +6,9 @@ from commandbased import CommandBasedRobot
 import oi
 import subsystems
 
+from commands.record import Record
+from commands.playback import Playback
+
 from commands.tankdrivejoystick import TankDriveJoystick
 from commands.pulsemotor import PulseMotor
 
@@ -38,8 +41,10 @@ class The2018Thing(CommandBasedRobot):
         get_robot = self.get_self
 
         subsystems.init()
-        self.autonomousProgram = PulseMotor()
-        self.teleopProgram = TankDriveJoystick()
+#        self.autonomousProgram = PulseMotor()
+        #self.teleopProgram = TankDriveJoystick()
+        self.teleopProgram = Record(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
+        self.autonomousProgram = Playback(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
 
         oi.init()
 
