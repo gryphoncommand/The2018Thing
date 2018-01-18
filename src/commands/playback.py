@@ -51,10 +51,10 @@ class Playback(Command):
         if oi.get_joystick(key=self.filename).isTimedOut():
             return True
         
-        if self.concurrent_command is not None and self.concurrent_command.isTimedOut():
+        if self.concurrent_command is not None and self.concurrent_command.isFinished():
             return True
         
-        if self.timeout != None:
+        if self.timeout != None and self.isTimedOut():
             return True
 
         return False

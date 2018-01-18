@@ -70,7 +70,7 @@ class Record(Command):
         if self.timeout is not None and self.isTimedOut():
             return True
 
-        if self.concurrent_command is not None and self.concurrent_command.isTimedOut():
+        if self.concurrent_command is not None and self.concurrent_command.isFinished():
             return True
 
         return False
