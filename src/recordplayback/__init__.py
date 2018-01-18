@@ -6,6 +6,7 @@ Module for recording and playing back auto/macro programs
 
 import os
 import time
+import wpilib
 
 macro_dir = None
 
@@ -187,7 +188,7 @@ class ControllerSamples:
 
 
 
-class MockController:
+class MockController(wpilib.Joystick):
     """
 
     Class to playback acting as a controller, giving it a ControllerSamples object
