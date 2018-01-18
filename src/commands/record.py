@@ -67,10 +67,13 @@ class Record(Command):
             self.concurrent_command.execute()
 
     def isFinished(self):
-        if self.concurrent_command is not None:
-            return self.isTimedOut() or self.concurrent_command.isTimedOut()
-        else:
-            return self.isTimedOut()
+        if self.timeout is not None and self.isTimedOut():
+            return True
+
+        if self.concurrent_command is not None and self.concurrent_command.isTimedOut():
+            return True
+
+        return False
 
     def end(self):
         if self.concurrent_command is not None:
