@@ -24,7 +24,7 @@ class TankDrive(Subsystem):
             "RF": Motor(*drive_motors.RF),
             "RB": Motor(*drive_motors.RB)
         }
-        self.gearshift = SolenoidHandler(0, 1, True, False)
+        self.gearshift = SolenoidHandler(2, 3, True, False)
 
     def set_power(self, Lpower=0, Rpower=None):
         if Rpower is None:
