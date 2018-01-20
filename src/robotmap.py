@@ -22,6 +22,11 @@ drive_motors.LB = 1, False
 drive_motors.RF = 2, False
 drive_motors.RB = 3, False
 
+#L = left, R = right, E = Encoder
+# Each encoder has two ports on the RoboRIO DIO 
+encoders = InfoPasser()
+encoders.L_E = 2, 3
+encoders.R_E = 0, 1
 
 axes = InfoPasser()
 
