@@ -19,8 +19,8 @@ drive_motors = InfoPasser()
 # each object has (port, reverse)
 drive_motors.LF = 0, False
 drive_motors.LB = 1, False
-drive_motors.RF = 2, False
-drive_motors.RB = 3, False
+drive_motors.RF = 2, True
+drive_motors.RB = 3, True
 
 
 axes = InfoPasser()
