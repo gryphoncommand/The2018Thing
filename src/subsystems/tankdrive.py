@@ -2,15 +2,18 @@ import wpilib
 from wpilib.command.subsystem import Subsystem
 from hardware.motor import Motor
 from hardware.solenoid import SolenoidHandler
+from hardware.encoder import EncoderHandler
 
 from commands.tankdrivejoystick import TankDriveJoystick
 
-from robotmap import drive_motors
+from robotmap import drive_motors, encoders
 
 class TankDrive(Subsystem):
     """
 
     This example subsystem controls a single CAN Talon SRX in PercentVBus mode.
+    
+    Edit on 1-20-2018: Future Encoder code is commented out. Added Solenoid objects for gearshifting
     
     """
 
@@ -25,6 +28,8 @@ class TankDrive(Subsystem):
             "RB": Motor(*drive_motors.RB)
         }
         self.gearshift = SolenoidHandler(2, 3, True, False)
+        #self.l_enc = EncoderHandler([*encoders.L1, *encoders.L2])
+        #self.r_enc = EncoderHandler([*encoders.R1, *encoders.R2])
 
     def set_power(self, Lpower=0, Rpower=None):
         if Rpower is None:

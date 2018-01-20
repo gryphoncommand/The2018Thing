@@ -9,6 +9,7 @@ for it in the global scope.
 from wpilib.robotbase import RobotBase
 
 from .tankdrive import TankDrive
+from .subsystems import Subsystems
 
 tankdrive = None
 

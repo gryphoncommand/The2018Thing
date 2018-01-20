@@ -1,5 +1,12 @@
 import wpilib
 
+'''
+A class that creates solenoids.
+Used to create gearshifting in the oi.py 
+
+Created on 1-20-2018 by Tyler Duckworth
+'''
+
 class SolenoidHandler():
 
     def __init__(self, port1, port2, _toget, _invert):
