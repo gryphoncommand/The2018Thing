@@ -1,6 +1,7 @@
 import wpilib
 from wpilib.command.subsystem import Subsystem
 from hardware.motor import Motor
+from hardware.solenoid import SolenoidHandler
 
 from commands.tankdrivejoystick import TankDriveJoystick
 
@@ -23,6 +24,7 @@ class TankDrive(Subsystem):
             "RF": Motor(*drive_motors.RF),
             "RB": Motor(*drive_motors.RB)
         }
+        self.gearshift = SolenoidHandler(0, 1, True, False)
 
     def set_power(self, Lpower=0, Rpower=None):
         if Rpower is None:

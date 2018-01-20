@@ -10,11 +10,14 @@ import recordplayback
 
 from wpilib.joystick import Joystick
 from wpilib.buttons.joystickbutton import JoystickButton
+from commands.gearshift import GearShiftDown, GearShiftUp
 
 
 joystick_dictionary = { }
 
 joystick_source_hash = { }
+
+
 
 
 # set_default_joystick(get_joystick("tankdrive.csv"))
@@ -60,7 +63,10 @@ def set_default_joystick_key(key):
     joystick_dictionary["default"] = key
 
 
-
 def init():
-    set_default_joystick_key(key=0)    
+    set_default_joystick_key(key=0)
+    gearup = JoystickButton(get_joystick(),5)
+    geardown = JoystickButton(get_joystick(), 6)
+    gearup.whenPressed(GearShiftUp())
+    geardown.whenPressed(GearShiftDown())
 
