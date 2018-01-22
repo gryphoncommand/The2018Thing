@@ -58,6 +58,6 @@ def init():
 
 def dump_info():
     smartdashboard.putNumber("Battery Voltage", DriverStation.getInstance().getBatteryVoltage())
-    smartdashboard.putNumberArray("NavX Displacement [X, Y, Z]", sensors.navx.getDisplacement())
+    smartdashboard.putString("NavX Displacement [X, Y, Z]", str(sensors.navx.getDisplacement()))
     
 
