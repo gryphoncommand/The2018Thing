@@ -67,6 +67,9 @@ solenoids = InfoPasser()
 # port 0, port 1, isInverted
 solenoids.gearshift = (2, 3, False)
 
+# TODO, ports
+solenoids.arm = (0, 1, False)
+
 #solenoids.gearshift1 
 
 

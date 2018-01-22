@@ -13,12 +13,14 @@ from wpilib.driverstation import DriverStation
 
 from .tankdrive import TankDrive
 from .sensors import Sensors
+from .arm import Arm
 
 
 import robotmap
 
 tankdrive = None
 sensors = None
+arm = None
 
 smartdashboard = None
 infotable = None
@@ -32,7 +34,7 @@ def init():
     instansiates all subsystems. Needs to be a method so it isn't ran on import
 
     """
-    global tankdrive; global sensors; global smartdashboard; global infotable; global is_init
+    global tankdrive; global sensors; global arm; global smartdashboard; global infotable; global is_init
 
     """
 
@@ -51,6 +53,7 @@ def init():
 
     tankdrive = TankDrive()
     sensors = Sensors()
+    arm = Arm()
 
     smartdashboard = NetworkTables.getTable('SmartDashboard')
     infotable = NetworkTables.getTable('info')
