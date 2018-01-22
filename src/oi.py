@@ -10,7 +10,7 @@ import recordplayback
 
 from wpilib.joystick import Joystick
 from wpilib.buttons.joystickbutton import JoystickButton
-from commands.gearshift import GearShiftDown, GearShiftUp
+from commands.gearshift import GearShift
 
 
 joystick_dictionary = { }
@@ -65,8 +65,10 @@ def set_default_joystick_key(key):
 
 def init():
     set_default_joystick_key(key=0)
-    gearup = JoystickButton(get_joystick(),5)
+    
+    gearup = JoystickButton(get_joystick(), 5)
     geardown = JoystickButton(get_joystick(), 6)
-    gearup.whenPressed(GearShiftUp())
-    geardown.whenPressed(GearShiftDown())
+    
+    gearup.whenPressed(GearShift(True))
+    geardown.whenPressed(GearShift(False))
 

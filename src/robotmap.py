@@ -30,11 +30,10 @@ encoders = InfoPasser()
 #E = Encoder
 #Each encoder has two ports on the RoboRIO DIO
 
-encoders.L1 = 0
-encoders.L2 = 1
-encoders.R1 = 2
-encoders.R2 = 3
-
+encoders.LF = 0
+encoders.LB = 1
+encoders.RF = 2
+encoders.RB = 3
 
 
 
@@ -46,4 +45,14 @@ axes.L_y = 1
 axes.R_x = 2
 axes.R_y = 5
 
+
+
+solenoids = InfoPasser()
+
+# solenoid ports
+# main and complimentary ports and inverted
+# port 0, port 1, isInverted
+solenoids.gearshift = (2, 3, False)
+
+#solenoids.gearshift1 
 

@@ -10,47 +10,22 @@ Created on 1-20-2018
 Author: Tyler Duckworth
 '''
 
-class GearShiftUp(Command):
-    def __init__(self):
-        super().__init__("GearShiftUp")
+class GearShift(Command):
+    def __init__(self, solenoid_setting):
+        super().__init__("GearShift")
+
+        self.solenoid_setting = solenoid_setting
 
     def initialize(self):
         self.isDone = False
 
     def execute(self):
         if subsystems.tankdrive.gearshift is not None:
-            subsystems.tankdrive.gearshift.enable()
-            self.isDone = True
+            subsystems.tankdrive.gearshift.set(self.solenoid_setting)
         else:
-            print("You are an idiot.")
+            print ("warning: subsystems.tankdrive.gearshift is None!")
+        self.isDone = True
 
     def isFinished(self):
-        if self.isDone:
-            return self.isDone
-        else:
-            print("You're not done!")
-    def end(self):
-        print("Fin")
+        return self.isDone
 
-
-class GearShiftDown(Command):
-    def __init__(self):
-        super().__init__("GearShiftDown")
-
-    def initialize(self):
-        self.isDone = False
-
-    def execute(self):
-        if subsystems.tankdrive.gearshift is not None:
-            subsystems.tankdrive.gearshift.disable()
-            self.isDone = True
-        else:
-            print("You are still a freaking idiot.")
-
-    def isFinished(self):
-        if self.isDone:
-            return self.isDone
-        else:
-            print("You're not freaking done!")
-    def end(self):
-        print("Fin")

@@ -9,35 +9,32 @@ Created on 1-20-2018 by Tyler Duckworth
 
 class SolenoidHandler():
 
-    def __init__(self, port1, port2, _toget, _invert):
+    def __init__(self, port0, port1, inverted=False):
+        self.port0, self.port1 = port0, port1
+        self.inverted = inverted
+        self.sol0 = wpilib.Solenoid(port0)
         self.sol1 = wpilib.Solenoid(port1)
-        self.sol2 = wpilib.Solenoid(port2)
-        self.toget = _toget
-        self.invert = _invert
-        self.deff = not _invert
-        self.last = False
-        self.sets(not self.deff)
-    
-    #No nessecary logic for the enable() and disable methods. WPIlib automatically does this.abs
 
+        self.last = False
     
     def enable(self):
+        self.last = True
+        self.sol0.set(True)
         self.sol1.set(True)
-        self.sol2.set(True)
-
 
     def disable(self):
+        self.last = False
+        self.sol0.set(False)
         self.sol1.set(False)
-        self.sol2.set(False)
 
     def get(self):
         return last
     
-    def sets(self, on):
-        if on is True:
+    def set(self, on):
+        if on:
             self.enable()
         else:
             self.disable()
             
     def toggle(self):
-        sets(last)
+        self.set(not self.last)
