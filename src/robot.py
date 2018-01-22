@@ -54,6 +54,7 @@ class The2018Thing(CommandBasedRobot):
 
     def teleopInit(self):
         self.teleopProgram.start()
+        subsystems.dump_info()
 
 
 if __name__ == '__main__':

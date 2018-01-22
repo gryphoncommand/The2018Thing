@@ -6,6 +6,12 @@ Edit 1-20-2018: Encoder class created
 
 """
 
+from enum import Enum
+
+
+roborio = "roborio-3966-frc.local"
+
+
 class InfoPasser:
     """
     
@@ -13,6 +19,13 @@ class InfoPasser:
     
     """
     pass
+
+
+class NavXType(Enum):
+
+    I2C = 1
+    SPI = 2
+
 
 
 drive_motors = InfoPasser()
@@ -55,4 +68,8 @@ solenoids = InfoPasser()
 solenoids.gearshift = (2, 3, False)
 
 #solenoids.gearshift1 
+
+
+navx_type = NavXType.SPI
+
 
