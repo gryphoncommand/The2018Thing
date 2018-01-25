@@ -40,14 +40,17 @@ class The2018Thing(CommandBasedRobot):
         global get_robot
         get_robot = self.get_self
 
+
         subsystems.init()
-#        self.autonomousProgram = PulseMotor()
+
+        #self.autonomousProgram = PulseMotor()
         self.teleopProgram = TankDriveJoystick()
+
         #self.teleopProgram = Record(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
         self.autonomousProgram = Playback(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
 
         oi.init()
-
+ 
 
     def autonomousInit(self):
         self.autonomousProgram.start()
