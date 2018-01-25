@@ -11,6 +11,7 @@ import recordplayback
 from wpilib.joystick import Joystick
 from wpilib.buttons.joystickbutton import JoystickButton
 from commands.gearshift import GearShift
+from commands.grabber import Grabber
 
 
 joystick_dictionary = { }
@@ -68,7 +69,11 @@ def init():
     
     gearup = JoystickButton(get_joystick(), 5)
     geardown = JoystickButton(get_joystick(), 6)
+    grabberclose = JoystickButton(get_joystick(), 4)
+    grabberopen = JoystickButton(get_joystick(), 3)
     
     gearup.whenPressed(GearShift(True))
     geardown.whenPressed(GearShift(False))
+    grabberclose.whenPressed(Grabber(True))
+    grabberopen.whenPressed(Grabber(False))
 

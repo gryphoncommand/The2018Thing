@@ -18,6 +18,7 @@ class Arm(Subsystem):
         super().__init__("Arm")
         
         self.actuator = SolenoidHandler(*solenoids.arm)
+        self.grabber = SolenoidHandler(*solenoids.grabber)
 
 
     def set_grabber(self, actuator_status):
