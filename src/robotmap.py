@@ -69,7 +69,7 @@ solenoids.gearshift = (2, 3, False)
 solenoids.grabber = (0, 1, False)
 
 # TODO, ports
-solenoids.arm = (3, 4, False)
+solenoids.arm = (4, 5, False)
 
 #solenoids.gearshift1 
 
