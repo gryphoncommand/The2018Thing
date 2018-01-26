@@ -9,6 +9,7 @@ Edit 1-20-2018: Encoder class created
 from enum import Enum
 
 
+# roboRIO IP address
 roborio = "roborio-3966-frc.local"
 
 
@@ -65,11 +66,11 @@ solenoids = InfoPasser()
 # solenoid ports
 # main and complimentary ports and inverted
 # port 0, port 1, isInverted
-solenoids.gearshift = (2, 3, False)
-solenoids.grabber = (0, 1, False)
+solenoids.gearshift = [(2, False), (3, False)]
+solenoids.grabber = [(0, False), (1, False)]
 
 # TODO, ports
-solenoids.arm = (4, 5, False)
+solenoids.arm = [(4, False), (5, False), (6, False)]
 
 #solenoids.gearshift1 
 

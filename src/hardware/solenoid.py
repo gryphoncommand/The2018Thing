@@ -9,23 +9,28 @@ Created on 1-20-2018 by Tyler Duckworth
 
 class SolenoidHandler():
 
-    def __init__(self, port0, port1, inverted=False):
-        self.port0, self.port1 = port0, port1
-        self.inverted = inverted
-        self.sol0 = wpilib.Solenoid(port0)
-        self.sol1 = wpilib.Solenoid(port1)
+    def __init__(self, *ports):
+        """
+
+        Call like: SolenoidHandler((0, False), (1, True), ... (port, isInverted))
+
+        """
+        self.ports = ports
+        self.sols = []
+        for port, invert in self.ports:
+            self.sols += [(wpilib.Solenoid(port), invert)]
 
         self.last = False
     
     def enable(self):
         self.last = True
-        self.sol0.set(True)
-        self.sol1.set(True)
+        for sol, invert in self.sols:
+            sol.set(not invert)
 
     def disable(self):
         self.last = False
-        self.sol0.set(False)
-        self.sol1.set(False)
+        for sol, invert in self.sols:
+            sol.set(invert)
 
     def get(self):
         return last
