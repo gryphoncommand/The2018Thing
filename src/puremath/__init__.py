@@ -49,12 +49,27 @@ class Vector2D:
         else:
             raise Exception("can only add Vector2D s")
 
+    def __radd__(self, _v):
+        v = self.__op(_v)
+        if isinstance(v, Vector2D):
+            return Vector2D(self.p[0] + v.p[0], self.p[1] + v.p[1])
+        else:
+            raise Exception("can only add Vector2D s")
+
     def __sub__(self, _v):
         v = self.__op(_v)
         if isinstance(v, Vector2D):
             return Vector2D(self.p[0] - v.p[0], self.p[1] - v.p[1])
         else:
             raise Exception("can only sub Vector2D s")
+
+    def __rsub__(self, _v):
+        v = self.__op(_v)
+        if isinstance(v, Vector2D):
+            return Vector2D(v.p[0] - self.p[0], v.p[1] - self.p[1])
+        else:
+            raise Exception("can only sub Vector2D s")
+
 
     def __mul__(self, _v):
         # scalar multiplication
@@ -71,7 +86,7 @@ class Vector2D:
             return Vector2D(self.p[0] / v.p[0], self.p[1] / v.p[1])
         else:
             return Vector2D(self.p[0] / v, self.p[1] / v)
-        
+
     def rot(self, amount, degrees=False):
         """
 
