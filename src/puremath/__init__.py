@@ -19,6 +19,14 @@ class Vector2D:
 
     """
 
+    def from_polar(angle, radius=1.0, degrees=False):
+        if degrees:
+            angle = angle * math.pi / 180.0
+        return Vector2D(math.cos(angle) * radius, math.sin(angle) * radius)
+
+    def from_rectangular(x, y):
+        return Vector2D(x, y)
+
     def __init__(self, x, y=None):
         if isinstance(x, tuple) or isinstance(x, list):
             self.p = tuple(x)
@@ -41,6 +49,32 @@ class Vector2D:
             return Vector2D(v[0], v[1])
         else:
             return v
+
+    def __getitem__(self, key):
+        if key in ("x", 0):
+            return self.p[0]
+        elif key in ("y", 1):
+            return self.p[1]
+        else:
+            raise KeyError("Don't know vector key: %s" % key)
+
+
+    def set_x(self, v):
+        self.p[0] = v
+
+    def get_x(self):
+        return self.p[0]
+
+    x = property(get_x, set_x)
+
+    def set_y(self, v):
+        self.p[1] = v
+
+    def get_y(self):
+        return self.p[1]
+
+    y = property(get_y, set_y)
+
 
     def __add__(self, _v):
         v = self.__op(_v)

@@ -10,6 +10,11 @@ from commands.record import Record
 from commands.playback import Playback
 
 from commands.tankdrivejoystick import TankDriveJoystick
+from commands.armextender import ArmExtender
+from commands.armrotate import ArmRotate
+
+
+
 from commands.pulsemotor import PulseMotor
 
 #from commands.crash import Crash
@@ -43,11 +48,16 @@ class The2018Thing(CommandBasedRobot):
 
         subsystems.init()
 
-        #self.autonomousProgram = PulseMotor()
-        self.teleopProgram = TankDriveJoystick()
+        self.autonomousProgram = PulseMotor()
+        self.teleopProgram = wpilib.command.CommandGroup()
+        
+        self.teleopProgram.addParallel(TankDriveJoystick())
+        self.teleopProgram.addParallel(ArmExtender())
+        self.teleopProgram.addParallel(ArmRotate())
+        
 
         #self.teleopProgram = Record(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
-        self.autonomousProgram = Playback(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
+        #self.autonomousProgram = Playback(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
 
         oi.init()
  

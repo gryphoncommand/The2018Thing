@@ -8,19 +8,19 @@ from wpilib.encoder import Encoder
         Test the distance per tick by going a set amount of distance and finding the amount of ticks it returns.
 '''
 
-class EncoderHandler():
+class Encoder():
 
     def __init__(self, channels):
-        self.enc = Encoder(channels[0], channels[1], False, Encoder.EncodingType.k4X)
-
         if len(channels) != 2:
-            print("Bruh, you incorrectly input the parameters for the encoder. ")
+            raise Exception("For encoder, you gave the wrong number of channels")
+
+        self.enc = Encoder(channels[0], channels[1], False, Encoder.EncodingType.k4X)
 
     #returns the number of ticks.
     def get(self):
         return self.enc.get()
     
-    def clear(self):
+    def reset(self):
         self.enc.reset()
 
     '''

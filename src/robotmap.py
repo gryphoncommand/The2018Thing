@@ -39,6 +39,11 @@ drive_motors.RF = 2, True
 drive_motors.RB = 3, True
 
 
+extra_motors = InfoPasser()
+
+extra_motors.arm_rotator = 4, False
+
+
 encoders = InfoPasser()
 
 #E = Encoder
@@ -60,17 +65,22 @@ axes.R_x = 2
 axes.R_y = 5
 
 
+# triggers
+axes.L_t = 3
+axes.R_t = 4
+
+
 
 solenoids = InfoPasser()
 
 # solenoid ports
 # main and complimentary ports and inverted
 # port 0, port 1, isInverted
-solenoids.gearshift = [(2, False), (3, False)]
-solenoids.grabber = [(0, False), (1, False)]
+solenoids.gearshift = [(0, False), (1, True)]
+solenoids.grabber = [(4, True), (5, False)]
 
-# TODO, ports
-solenoids.arm = [(4, False), (5, False), (6, False)]
+# arm extender
+solenoids.armextender = [(2, False), (3, True)]
 
 #solenoids.gearshift1 
 

@@ -32,5 +32,7 @@ class TankDriveJoystick(Command):
 
         subsystems.tankdrive.set_power(lpow, rpow)
 
+        subsystems.smartdashboard.putString("tankdrive", str((lpow, rpow)))
+
     def end(self):
         subsystems.tankdrive.set_power(0, 0)

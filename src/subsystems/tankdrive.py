@@ -2,7 +2,7 @@ import wpilib
 from wpilib.command.subsystem import Subsystem
 from hardware.motor import Motor
 from hardware.solenoid import SolenoidHandler
-from hardware.encoder import EncoderHandler
+from hardware.encoder import Encoder
 
 from commands.tankdrivejoystick import TankDriveJoystick
 
