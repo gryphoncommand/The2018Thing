@@ -10,6 +10,13 @@ class Motor:
     """
 
     def __init__(self, index, inverted=False):
+        """
+
+        index : port/channel the motor is connected on
+
+        inverted : whether or not the power is inverted
+
+        """
         self._motor = Spark(index)
         self.inverted = inverted
 

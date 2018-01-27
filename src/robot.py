@@ -9,13 +9,17 @@ import subsystems
 from commands.record import Record
 from commands.playback import Playback
 
+
+from commands.dumpinfo import DumpInfo
+
+from commands.pulsemotor import PulseMotor
+
 from commands.tankdrivejoystick import TankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
 
 
 
-from commands.pulsemotor import PulseMotor
 
 #from commands.crash import Crash
 
@@ -54,6 +58,7 @@ class The2018Thing(CommandBasedRobot):
         self.teleopProgram.addParallel(TankDriveJoystick())
         self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
+        self.teleopProgram.addParallel(DumpInfo())
         
 
         #self.teleopProgram = Record(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
@@ -67,7 +72,6 @@ class The2018Thing(CommandBasedRobot):
 
     def teleopInit(self):
         self.teleopProgram.start()
-        subsystems.dump_info()
 
 
 if __name__ == '__main__':

@@ -1,11 +1,11 @@
 import wpilib
 from wpilib.command.subsystem import Subsystem
-from hardware.motor import Motor
+
 from hardware.solenoid import SolenoidHandler
 from hardware.motor import Motor
 from hardware.encoder import Encoder
 
-from robotmap import drive_motors, extra_motors, encoders, solenoids
+from robotmap import extra_motors, solenoids
 
 class Arm(Subsystem):
     """

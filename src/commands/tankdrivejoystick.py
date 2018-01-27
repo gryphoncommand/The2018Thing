@@ -7,9 +7,6 @@ import oi
 
 from robotmap import axes
 
-from recordplayback import ControllerSamples
-
-
 class TankDriveJoystick(Command):
     """
 

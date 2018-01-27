@@ -1,4 +1,4 @@
-from wpilib.encoder import Encoder
+import wpilib
 
 '''
     A class that serves as a hub for our encoders
@@ -10,11 +10,8 @@ from wpilib.encoder import Encoder
 
 class Encoder():
 
-    def __init__(self, channels):
-        if len(channels) != 2:
-            raise Exception("For encoder, you gave the wrong number of channels")
-
-        self.enc = Encoder(channels[0], channels[1], False, Encoder.EncodingType.k4X)
+    def __init__(self, dio_in, dio_out, inverted=False):
+        self.enc = wpilib.encoder.Encoder(dio_in, dio_out, False, wpilib.encoder.Encoder.EncodingType.k4X)
 
     #returns the number of ticks.
     def get(self):

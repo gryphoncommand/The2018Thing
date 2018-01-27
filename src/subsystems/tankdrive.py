@@ -6,7 +6,7 @@ from hardware.encoder import Encoder
 
 from commands.tankdrivejoystick import TankDriveJoystick
 
-from robotmap import drive_motors, encoders, solenoids
+from robotmap import drive_motors, drive_encoders, solenoids
 
 class TankDrive(Subsystem):
     """
@@ -29,6 +29,11 @@ class TankDrive(Subsystem):
         }
         
         self.gearshift = SolenoidHandler(*solenoids.gearshift)
+
+        self.encoders = {
+            "L": Encoder(*drive_encoders.L),
+            "R": Encoder(*drive_encoders.R)
+        }
 
         #self.l_enc = EncoderHandler([*encoders.LF, *encoders.LB])
         #self.r_enc = EncoderHandler([*encoders.RF, *encoders.RB])

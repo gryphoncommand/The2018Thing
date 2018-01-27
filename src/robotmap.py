@@ -44,15 +44,12 @@ extra_motors = InfoPasser()
 extra_motors.arm_rotator = 4, False
 
 
-encoders = InfoPasser()
+drive_encoders = InfoPasser()
 
-#E = Encoder
-#Each encoder has two ports on the RoboRIO DIO
-
-encoders.LF = 0
-encoders.LB = 1
-encoders.RF = 2
-encoders.RB = 3
+# Each encoder has two ports on the RoboRIO DIO
+# Then, "inverted"
+drive_encoders.L = 0, 1
+drive_encoders.R = 2, 3
 
 
 
