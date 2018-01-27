@@ -31,7 +31,7 @@ class ArmExtender(Command):
         pov = joy.getPOV()
 
         if pov != -1:
-            vec = Vector2D.from_polar(angle=pov + 90, degrees=True)
+            vec = Vector2D.from_polar(radius=1, angle=pov + 90, degrees=True)
             if vec.y > 0.01:
                 subsystems.arm.set_extender(True)
             elif vec.y < 0.01:

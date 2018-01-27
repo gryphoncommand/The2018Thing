@@ -76,8 +76,9 @@ class TankDrive(Subsystem):
         apply to both pids (to avoid duplicated code)
 
         """
-        func(self.pid["L"])
-        func(self.pid["R"])
+        if self.use_encoders:
+            func(self.pid["L"])
+            func(self.pid["R"])
 
     def set_left(self, power):
         self.motors["LF"].set(power)
@@ -125,12 +126,14 @@ class TankDrive(Subsystem):
         if gear == Gearing.LOW:
             self.gearshift.set(False)
             self.apply_to_pid(lambda pid: pid.setInputRange(*drive_encoders.lowgear_range))
-            self.pid["range"] = drive_encoders.lowgear_range
+            if self.use_encoders:
+                self.pid["range"] = drive_encoders.lowgear_range
 
         elif gear == Gearing.HIGH:
             self.gearshift.set(True)
             self.apply_to_pid(lambda pid: pid.setInputRange(*drive_encoders.highgear_range))
-            self.pid["range"] = drive_encoders.highgear_range
+            if self.use_encoders:
+                self.pid["range"] = drive_encoders.highgear_range
 
         else:
             raise Exception("setting gearing to unknown gear")

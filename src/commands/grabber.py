@@ -20,8 +20,8 @@ class Grabber(Command):
         self.isDone = False
 
     def execute(self):
-        if subsystems.arm.grabber is not None:
-            subsystems.arm.grabber.set(self.solenoid_setting)
+        if subsystems.arm.grabber_solenoid is not None:
+            subsystems.arm.set_grabber(self.solenoid_setting)
         else:
             print ("warning: subsystems.tankdrive.grabber is None!")
         self.isDone = True
