@@ -29,8 +29,8 @@ class ArmRotate(Command):
 
         subsystems.smartdashboard.putNumber("rot_power", rot_power)
 
-        subsystems.arm.rotator.set(rot_power)
+        subsystems.arm.set_rotator(rot_power)
 
 
     def end(self):
-        subsystems.arm.rotator.set(0)
+        subsystems.arm.set_rotator(0)

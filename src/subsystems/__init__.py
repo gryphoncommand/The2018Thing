@@ -60,10 +60,11 @@ def init():
 
 
 def dump_info():
-    smartdashboard.putNumber("L encoder", tankdrive.encoders["L"].get())
-    smartdashboard.putNumber("R encoder", tankdrive.encoders["R"].get())
+    if hasattr(tankdrive, "encoders"):
+        smartdashboard.putNumber("L encoder", tankdrive.encoders["L"].get())
+        smartdashboard.putNumber("R encoder", tankdrive.encoders["R"].get())
 
     smartdashboard.putNumber("Battery Voltage", DriverStation.getInstance().getBatteryVoltage())
-    smartdashboard.putString("NavX Displacement (X, Y, Z)", str(sensors.navx.getDisplacement()))
+    #smartdashboard.putString("NavX Displacement (X, Y, Z)", str(sensors.navx.getDisplacement()))
     
 

@@ -28,6 +28,18 @@ class NavXType(Enum):
     SPI = 2
 
 
+class Gearing(Enum):
+    """
+
+    Enum gearing
+
+    """
+
+    LOW = 0
+    HIGH = 1
+
+
+
 
 drive_motors = InfoPasser()
 
@@ -50,6 +62,19 @@ drive_encoders = InfoPasser()
 # Then, "inverted"
 drive_encoders.L = 0, 1
 drive_encoders.R = 2, 3
+
+# range is a min, max of what speed (in ticks/time) are the encoders reading
+# lowgear is for low gear readings and highgear is for high gear readings
+drive_encoders.lowgear_range = (0, 1)
+drive_encoders.highgear_range = (0, 1)
+
+drive_encoders.lowgear_tolerance = 0.01
+
+
+# PID controller
+pid_controllers = InfoPasser()
+
+pid_controllers.drive = 0.12, 0.01, 0.0
 
 
 

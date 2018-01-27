@@ -27,9 +27,9 @@ class TankDriveJoystick(Command):
         lpow = joy.getRawAxis(axes.L_y)
         rpow = joy.getRawAxis(axes.R_y)
 
-        subsystems.tankdrive.set_power(lpow, rpow)
+        subsystems.tankdrive.set(lpow, rpow)
 
         subsystems.smartdashboard.putString("tankdrive", str((lpow, rpow)))
 
     def end(self):
-        subsystems.tankdrive.set_power(0, 0)
+        subsystems.tankdrive.set(0, 0)

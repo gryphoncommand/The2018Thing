@@ -21,6 +21,9 @@ class SolenoidHandler():
             self.sols += [(wpilib.Solenoid(port), invert)]
 
         self.last = False
+
+    def get(self):
+        return self.last
     
     def enable(self):
         self.last = True

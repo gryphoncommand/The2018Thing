@@ -15,11 +15,11 @@ import math
 class Vector2D:
     """
 
-    Vector 2D
+    Vector 2D class
 
     """
 
-    def from_polar(angle, radius=1.0, degrees=False):
+    def from_polar(radius, angle, degrees=False):
         if degrees:
             angle = angle * math.pi / 180.0
         return Vector2D(math.cos(angle) * radius, math.sin(angle) * radius)
@@ -55,6 +55,8 @@ class Vector2D:
             return self.p[0]
         elif key in ("y", 1):
             return self.p[1]
+        elif isinstance(key, slice):
+            return self.p.__getitem__(key)
         else:
             raise KeyError("Don't know vector key: %s" % key)
 
@@ -112,7 +114,16 @@ class Vector2D:
             return Vector2D(self.p[0] * v.p[0], self.p[1] * v.p[1])
         else:
             return Vector2D(self.p[0] * v, self.p[1] * v)
+
+    def __rmul__(self, _v):
+        # scalar multiplication
+        v = self.__op(_v)
+        if isinstance(v, Vector2D):
+            return Vector2D(self.p[0] * v.p[0], self.p[1] * v.p[1])
+        else:
+            return Vector2D(self.p[0] * v, self.p[1] * v)
         
+
     def __div__(self, _v):
         # scalar division
         v = self.__op(_v)
@@ -138,10 +149,28 @@ class Vector2D:
 
         return Vector2D(cos_a * x - sin_a * y, sin_a * x + cos_a * y)
 
-    def angle(self, degrees=False):
+
+    def get_angle(self, degrees=False):
         v = math.atan2(self.p[1], self.p[0])
         if degrees:
             v = v * 180 / math.pi
         return v
 
+    def set_angle(self, v, degrees=False):
+        if degrees:
+            v = v * math.pi / 180
+        
+        self.p = Vector2D.from_polar(abs(self), v).p
+
+    angle = property(get_angle, set_angle)
+
+    def get_radius(self):
+        return abs(self)
+
+    def set_radius(self, v):
+        cur_rad = self.get_radius()
+        if cur_rad != 0:
+            self.p = (self.p[0] * v / cur_rad, self.p[1] * v / cur_rad)
+
+    radius = property(get_radius, set_radius)
 

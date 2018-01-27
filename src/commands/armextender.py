@@ -33,9 +33,9 @@ class ArmExtender(Command):
         if pov != -1:
             vec = Vector2D.from_polar(angle=pov + 90, degrees=True)
             if vec.y > 0.01:
-                subsystems.arm.extender.set(True)
+                subsystems.arm.set_extender(True)
             elif vec.y < 0.01:
-                subsystems.arm.extender.set(False)
+                subsystems.arm.set_extender(False)
 
     def end(self):
-        subsystems.arm.extender.set(False)
+        subsystems.arm.set_extender(False)

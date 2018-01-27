@@ -15,5 +15,6 @@ Created on 1-20-2018 by Tyler Duckworth
 class Sensors(Subsystem):
     
     def __init__(self):
-        self.navx = NavX(navx_type)
+        #self.navx = NavX(navx_type)
+        self.navx = None
 

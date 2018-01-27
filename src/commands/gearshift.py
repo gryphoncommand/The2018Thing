@@ -21,7 +21,7 @@ class GearShift(Command):
 
     def execute(self):
         if subsystems.tankdrive.gearshift is not None:
-            subsystems.tankdrive.gearshift.set(self.solenoid_setting)
+            subsystems.tankdrive.set_gearing(self.solenoid_setting)
         else:
             print ("warning: subsystems.tankdrive.gearshift is None!")
         self.isDone = True

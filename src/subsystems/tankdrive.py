@@ -1,12 +1,21 @@
 import wpilib
+
 from wpilib.command.subsystem import Subsystem
+from wpilib import PIDController
+
 from hardware.motor import Motor
 from hardware.solenoid import SolenoidHandler
 from hardware.encoder import Encoder
 
 from commands.tankdrivejoystick import TankDriveJoystick
 
-from robotmap import drive_motors, drive_encoders, solenoids
+from robotmap import drive_motors, drive_encoders, solenoids, pid_controllers
+from robotmap import Gearing
+
+from puremath.scaling import transform
+
+from enum import Enum
+
 
 class TankDrive(Subsystem):
     """
@@ -17,9 +26,11 @@ class TankDrive(Subsystem):
     
     """
 
-    def __init__(self):
+    def __init__(self, use_encoders=False):
 
         super().__init__("TankDrive")
+
+        self.use_encoders = use_encoders
 
         self.motors = {
             "LF": Motor(*drive_motors.LF),
@@ -30,22 +41,97 @@ class TankDrive(Subsystem):
         
         self.gearshift = SolenoidHandler(*solenoids.gearshift)
 
-        self.encoders = {
-            "L": Encoder(*drive_encoders.L),
-            "R": Encoder(*drive_encoders.R)
-        }
+        if self.use_encoders:
+            self.encoders = {
+                "L": Encoder(*drive_encoders.L),
+                "R": Encoder(*drive_encoders.R),
+                "range": drive_encoders.lowgear_range
+            }
 
-        #self.l_enc = EncoderHandler([*encoders.LF, *encoders.LB])
-        #self.r_enc = EncoderHandler([*encoders.RF, *encoders.RB])
+            def get_drive_pid(t):
+                pid = pid_controllers.drive
+                ret = None
+                if t == "L":
+                    ret = PIDController(pid[0], pid[1], pid[2], self.encoders["L"].get, self.set_left)
+                elif t == "R":
+                    ret = PIDController(pid[0], pid[1], pid[2], self.encoders["R"].get, self.set_right)
+                else:
+                    raise Exception()
+                # input from controllers should be from -1.0 to +1.0
+                return ret
+
+            self.pid = {
+                "L": get_drive_pid("L"),
+                "R": get_drive_pid("R"),
+            }
+
+            self.apply_to_pid(lambda pid: pid.setInputRange(*drive_encoders.lowgear_range))
+            self.apply_to_pid(lambda pid: pid.setOutputRange(-1.0, 1.0))
+            self.apply_to_pid(lambda pid: pid.setPIDSourceType(PIDController.PIDSourceType.kRate))
+
+
+    def apply_to_pid(self, func):
+        """
+
+        apply to both pids (to avoid duplicated code)
+
+        """
+        func(self.pid["L"])
+        func(self.pid["R"])
+
+    def set_left(self, power):
+        self.motors["LF"].set(power)
+        self.motors["LB"].set(power)
+    
+    def set_right(self, power):
+        self.motors["RF"].set(power)
+        self.motors["RB"].set(power)
 
     def set_power(self, Lpower=0, Rpower=None):
         if Rpower is None:
             # by default drive forward
             Rpower = Lpower
-        
-        self.motors["LF"].set(Lpower)
-        self.motors["LB"].set(Lpower)
 
-        self.motors["RF"].set(Rpower)
-        self.motors["RB"].set(Rpower)
+        self.set_left(Lpower)
+        self.set_right(Rpower)
+
+
+    def set(self, left, right):
+        """
+
+
+
+        """
+
+        if self.use_encoders:
+            left_t = transform(left, (-1, 1), self.pid["range"])
+            right_t = transform(right, (-1, 1), self.pid["range"])
+            self.pid["L"].setSetpoint(left_t)
+            self.pid["R"].setSetpoint(right_t)
+        else:
+            self.set_power(left, right)
+
+
+    def get_gearing(self):
+        get = self.gearshift.get()
+        if get == False:
+            return Gearing.LOW
+        elif get == True:
+            return Gearing.HIGH
+        else:
+            raise Exception("internal problem calculating gearing")
+
+    def set_gearing(self, gear):
+        if gear == Gearing.LOW:
+            self.gearshift.set(False)
+            self.apply_to_pid(lambda pid: pid.setInputRange(*drive_encoders.lowgear_range))
+            self.pid["range"] = drive_encoders.lowgear_range
+
+        elif gear == Gearing.HIGH:
+            self.gearshift.set(True)
+            self.apply_to_pid(lambda pid: pid.setInputRange(*drive_encoders.highgear_range))
+            self.pid["range"] = drive_encoders.highgear_range
+
+        else:
+            raise Exception("setting gearing to unknown gear")
 
