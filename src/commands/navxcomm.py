@@ -55,7 +55,7 @@ class NavXCommand(Command):
             mechanism(False)
         else: 
             self.tipDir = 0
-        
+            self.subsystems.tankdrive.set_power(0, 0)
 
     def mechanism(self, direction):
         if direction:
@@ -66,5 +66,5 @@ class NavXCommand(Command):
             print("Whatcho talkin' bout Willis?")
 
     def end(self):
-        self.subsystems.tankdrive.set_power(0, 0)
+        pass
 
