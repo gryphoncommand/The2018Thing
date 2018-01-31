@@ -38,6 +38,16 @@ class NavX:
         '''
         return self.navx.getYaw()
 
+    def getRoll(self):
+        '''
+        Gets the roll (x-axis of the robot)
+
+        '''
+        return self.navx.getRoll()
+
+
+
+
     """
     This is ported code from https://www.pdocs.kauailabs.com/navx-mxp/examples/collision-detection/ to see if RobotPy could implement something like this. 
 

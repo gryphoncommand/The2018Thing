@@ -17,7 +17,7 @@ from commands.pulsemotor import PulseMotor
 from commands.tankdrivejoystick import TankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
-
+#from commands.navxcomm import NavXCommand
 
 
 
@@ -59,6 +59,7 @@ class The2018Thing(CommandBasedRobot):
         self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
         self.teleopProgram.addParallel(DumpInfo())
+        #self.teleopProgram.addParallel(NavXCommand())
         
 
         #self.teleopProgram = Record(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
