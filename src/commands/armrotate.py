@@ -18,7 +18,7 @@ class ArmRotate(Command):
     def __init__(self):
         super().__init__('TankDriveJoystick')
 
-        #self.requires(subsystems.arm)
+        # self.requires(subsystems.arm)
 
     def initialize(self):
         pass
@@ -30,7 +30,6 @@ class ArmRotate(Command):
         subsystems.smartdashboard.putNumber("rot_power", rot_power)
 
         subsystems.arm.set_rotator(rot_power)
-
 
     def end(self):
         subsystems.arm.set_rotator(0)

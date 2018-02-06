@@ -109,4 +109,15 @@ solenoids.armextender = [(2, False), (3, True)]
 
 navx_type = NavXType.SPI
 
+# PID Constant values for the encoders. CHECK OVER!!!!!
+pid = InfoPasser()
+pid.L_P = 0.18
+pid.L_I = 0.0
+pid.L_D = 0.0
+pid.L_F = 0.0
+
+pid.R_P = 0.18
+pid.R_I = 0.0
+pid.R_D = 0.0
+pid.R_F = 0.0
 

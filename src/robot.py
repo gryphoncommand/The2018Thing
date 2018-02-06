@@ -20,7 +20,6 @@ from commands.armrotate import ArmRotate
 #from commands.navxcomm import NavXCommand
 
 
-
 #from commands.crash import Crash
 
 
@@ -32,11 +31,10 @@ class The2018Thing(CommandBasedRobot):
     def get_self(self):
         """
 
-        simple helper to get itself 
+        simple helper to get itself
 
         """
         return self
-
 
     def robotInit(self):
         """
@@ -45,28 +43,26 @@ class The2018Thing(CommandBasedRobot):
 
         """
 
-        # instansiate a getter method so you can do 'import robot; robot.get_robot()'
+        # instansiate a getter method so you can do 'import robot;
+        # robot.get_robot()'
         global get_robot
         get_robot = self.get_self
-
 
         subsystems.init()
 
         self.autonomousProgram = PulseMotor()
         self.teleopProgram = wpilib.command.CommandGroup()
-        
+
         self.teleopProgram.addParallel(TankDriveJoystick())
         self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
         self.teleopProgram.addParallel(DumpInfo())
-        #self.teleopProgram.addParallel(NavXCommand())
-        
+        # self.teleopProgram.addParallel(NavXCommand())
 
         #self.teleopProgram = Record(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
         #self.autonomousProgram = Playback(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
 
         oi.init()
- 
 
     def autonomousInit(self):
         self.autonomousProgram.start()

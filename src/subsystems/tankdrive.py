@@ -38,7 +38,7 @@ class TankDrive(Subsystem):
             "RF": Motor(*drive_motors.RF),
             "RB": Motor(*drive_motors.RB)
         }
-        
+
         self.gearshift = SolenoidHandler(*solenoids.gearshift)
 
         if self.use_encoders:
