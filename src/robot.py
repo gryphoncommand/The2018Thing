@@ -17,7 +17,7 @@ from commands.pulsemotor import PulseMotor
 from commands.tankdrivejoystick import TankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
-#from commands.navxcomm import NavXCommand
+#from commands.correcttip import CorrectTip
 
 
 #from commands.crash import Crash
@@ -57,7 +57,12 @@ class The2018Thing(CommandBasedRobot):
         self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
         self.teleopProgram.addParallel(DumpInfo())
+<<<<<<< HEAD
         # self.teleopProgram.addParallel(NavXCommand())
+=======
+        #self.teleopProgram.addParallel(CorrectTip())
+        
+>>>>>>> 6ac5aa5e567c10bb8fa2afc6c6acf4df4deed43a
 
         #self.teleopProgram = Record(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
         #self.autonomousProgram = Playback(filename="macro_0.csv", concurrent_command=TankDriveJoystick())

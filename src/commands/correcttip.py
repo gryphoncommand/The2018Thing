@@ -3,6 +3,7 @@ from wpilib.command import Command
 
 import subsystems
 import oi
+import enum
 
 '''
             Front
@@ -22,24 +23,28 @@ import oi
     It can be considered tippedForward if the angle is -45 degrees
     Vice versa for tippedBackward 
     
-    VARIABLES:
-        isTipped = A boolean that tells whether or not the robot is tipped over.
-        tipDir = An int that holds the value that classifies the tip.
-            0 : Default; Stable
-            1 : It is Tipped Forward
-            2 : It is Tipped Backwards
+
 '''
 
-class NavXCommand(Command):
+
+class Direction(enum.Enum):
+
+    NONE = 0
+    FORWARD = 1
+    BACKWARD = 2
+
+
+class CorrectTip(Command):
 
     def __init__(self):
 
-        super().__init__("Tip Over")
+        super().__init__("CorrectTip")
 
     def initalize(self):
 
         self.isTipped = False
-        self.tipDir = 0
+        self.tipDir = Direction.NONE
+        self.last_tipDir = self.tipDir
 
     def execute(self):
 
@@ -47,23 +52,25 @@ class NavXCommand(Command):
 
         if self.angle > 45:
             print("WARNING: THE ROBOT IS TIPPING BACKWARDS \n MECHANISM FIRING NOW")
-            self.tipDir = 2
-            mechanism(True)
+            self.tipDir = Direction.BACKWARD
         elif self.angle < -45:
             print("WARNING: THE ROBOT IS TIPPING FORWARDS \n MECHANISM FIRING NOW")
-            self.tipDir = 1
-            mechanism(False)
+            self.tipDir = Direction.FORWARD
         else: 
-            self.tipDir = 0
-            self.subsystems.tankdrive.set_power(0, 0)
+            self.tipDir = Direction.NONE
 
-    def mechanism(self, direction):
-        if direction:
+        self.run_mechanism()
+        self.last_tipDir = self.tipDir
+
+
+    def run_mechanism(self):
+        if self.tipDir == Direction.FORWARD:
             self.subsystems.tankdrive.set_power(-1, -1)
-        elif direction == False:
+        elif self.tipDir == Direction.BACKWARD:
             self.subsystems.tankdrive.set_power(1, 1)
-        else: 
-            print("Whatcho talkin' bout Willis?")
+        elif self.last_tipDir != self.tipDir: 
+            # only set it once so it doesn't control it over and over
+            self.subsystems.tankdrive.set_power(0, 0)
 
     def end(self):
         pass
