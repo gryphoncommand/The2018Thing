@@ -1,30 +1,31 @@
 from wpilib.interfaces.pidsource import PIDSource
 from wpilib.interfaces.pidoutput import PIDOutput
+from wpilib.encoder import Encoder
 
 
 class PIDMotorSource(PIDSource):
     def __init__(self, _encoder):
 
-        self.sourceType = PIDSource.PIDSourceType.kRate
+        self.sourceType = Encoder.PIDSourceType.kRate
         self.encoder = _encoder
         self.scale = 1.0
-        self.setPIDSourceType(sourceType)
+        self.encoder.setPIDSourceType(Encoder.PIDSourceType.kRate)
 
     def setScale(self, _scale):
         self.scale = _scale
 
     def useDistance(self):
-        self.setPIDSourceType(PIDSource.PIDSourceType.kDisplacement)
-        self.sourceType = PIDSource.PIDSourceType.kDisplacement
+        self.encoder.setPIDSourceType(Encoder.PIDSourceType.kDisplacement)
+        self.sourceType = Encoder.PIDSourceType.kDisplacement
 
     def useSpeed(self):
-        self.setPIDSourceType(PIDSource.PIDSourceType.kRate)
-        self.sourceType = PIDSource.PIDSourceType.kRate
+        self.encoder.setPIDSourceType(Encoder.PIDSourceType.kRate)
+        self.sourceType = Encoder.PIDSourceType.kRate
 
     def pidGet(self):
-        if self.sourceType == PIDSource.PIDSourceType.kDisplacement:
+        if self.sourceType == Encoder.PIDSourceType.kDisplacement:
             return self.encoder.getDistance()
-        elif self.sourceType == PIDSource.PIDSourceType.kRate:
+        elif self.sourceType == Encoder.PIDSourceType.kRate:
             return self.encoder.getRate()
         else:
             print("What the heck are you doing? [Encoder Type Error]" +
@@ -45,4 +46,5 @@ class PIDMotorOutput(PIDOutput):
     
     def pidWrite(self, speed):
         for motor in self.motors:
-            motor.pidWrite(self.speed * self.scale)
+            speed = speed * self.scale
+            motor.pidWrite(speed)

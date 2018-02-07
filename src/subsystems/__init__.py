@@ -8,8 +8,9 @@ for it in the global scope.
 
 from wpilib.robotbase import RobotBase
 
-from networktables import NetworkTables 
+from networktables import NetworkTables
 from wpilib.driverstation import DriverStation
+import wpilib
 
 from .tankdrive import TankDrive
 from .sensors import Sensors

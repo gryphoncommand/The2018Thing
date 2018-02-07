@@ -10,7 +10,7 @@ from wpilib.encoder import Encoder
 '''
 
 
-class Encoder():
+class Encoders():
 
     def __init__(self, dio_in, dio_out, inverted=False):
         self.enc = Encoder(dio_in, dio_out, False,
@@ -29,3 +29,11 @@ class Encoder():
     def findRate(self):
         self.enc.getRate()
     '''
+    def setPIDSourceType(self, sourceType):
+        if sourceType == Encoder.PIDSourceType.kDisplacement:
+            self.enc.setPIDSourceType(sourceType)
+        elif sourceType == Encoder.PIDSourceType.kRate:
+            self.enc.setPIDSourceType(sourceType)
+        else:
+            print("[Invalid Encoder PID Type given]")
+            return 0

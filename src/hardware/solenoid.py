@@ -36,7 +36,7 @@ class SolenoidHandler():
             sol.set(invert)
 
     def get(self):
-        return last
+        return self.last
     
     def set(self, on):
         if on:

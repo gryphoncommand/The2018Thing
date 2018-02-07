@@ -15,6 +15,7 @@ from commands.dumpinfo import DumpInfo
 from commands.pulsemotor import PulseMotor
 
 from commands.tankdrivejoystick import TankDriveJoystick
+from commands.pidtankdrive import PIDTankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
 #from commands.correcttip import CorrectTip

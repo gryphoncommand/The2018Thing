@@ -5,7 +5,7 @@ from wpilib import PIDController
 
 from hardware.motor import Motor
 from hardware.solenoid import SolenoidHandler
-from hardware.encoder import Encoder
+from hardware.encoder import Encoders
 
 from commands.tankdrivejoystick import TankDriveJoystick
 
@@ -30,7 +30,7 @@ class TankDrive(Subsystem):
 
         super().__init__("TankDrive")
 
-        self.use_encoders = use_encoders
+        self.use_encoders = True
 
         self.motors = {
             "LF": Motor(*drive_motors.LF),
@@ -43,8 +43,8 @@ class TankDrive(Subsystem):
 
         if self.use_encoders:
             self.encoders = {
-                "L": Encoder(*drive_encoders.L),
-                "R": Encoder(*drive_encoders.R),
+                "L": Encoders(*drive_encoders.L),
+                "R": Encoders(*drive_encoders.R),
                 "range": drive_encoders.lowgear_range
             }
 
@@ -65,10 +65,11 @@ class TankDrive(Subsystem):
                 "R": get_drive_pid("R"),
             }
 
+            '''
             self.apply_to_pid(lambda pid: pid.setInputRange(*drive_encoders.lowgear_range))
             self.apply_to_pid(lambda pid: pid.setOutputRange(-1.0, 1.0))
             self.apply_to_pid(lambda pid: pid.setPIDSourceType(PIDController.PIDSourceType.kRate))
-
+            '''
 
     def apply_to_pid(self, func):
         """
@@ -96,19 +97,13 @@ class TankDrive(Subsystem):
         self.set_left(Lpower)
         self.set_right(Rpower)
 
-
     def set(self, left, right):
-        """
-
-
-
-        """
-
         if self.use_encoders:
-            left_t = transform(left, (-1, 1), self.pid["range"])
-            right_t = transform(right, (-1, 1), self.pid["range"])
-            self.pid["L"].setSetpoint(left_t)
-            self.pid["R"].setSetpoint(right_t)
+            # left_t = transform(left, (-1, 1), self.pid["range"])
+            # right_t = transform(right, (-1, 1), self.pid["range"])
+            # self.pid["L"].setSetpoint(left_t)
+            # self.pid["R"].setSetpoint(right_t)
+            self.set_power(left, right)
         else:
             self.set_power(left, right)
 

@@ -8,6 +8,7 @@ import time
 
 from robotmap import axes
 
+
 class PulseMotor(Command):
     """
 
@@ -21,7 +22,6 @@ class PulseMotor(Command):
         self.requires(subsystems.tankdrive)
 
         self.stime = None
-
 
     def execute(self):
         ctime = time.time()

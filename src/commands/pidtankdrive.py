@@ -8,6 +8,7 @@ import oi
 from pid.pidmotor import PIDMotorSource, PIDMotorOutput
 
 from robotmap import axes, pid
+import wpilib
 
 
 class PIDTankDriveJoystick(Command):
@@ -51,12 +52,12 @@ class PIDTankDriveJoystick(Command):
 
     def execute(self):
         if True:
-            normalOperation()
+            self.normalOperation()
 
     def normalOperation(self):
         if True:
-            subsystems.smartdashboard.putData("L PID", self.LPID)
-            subsystems.smartdashboard.putData("R PID", self.RPID)
+            wpilib.SmartDashboard.putData("L PID", self.LPID)
+            wpilib.SmartDashboard.putData("R PID", self.RPID)
 
         joy = oi.get_joystick()
         self.lpow = joy.getRawAxis(axes.L_y)
@@ -68,10 +69,7 @@ class PIDTankDriveJoystick(Command):
         else:
             self.LPID.setSetpoint(-self.lpow * 1.4)
             self.RPID.setSetpoint(-self.rpow * 1.4)
-        
-        subsystems.smartdashboard.putString("tankdrive", str((lpow, rpow)))
+        subsystems.smartdashboard.putString("tankdrive", str((self.lpow, self.rpow)))
 
-
-        
     def end(self):
         subsystems.tankdrive.set(0, 0)
