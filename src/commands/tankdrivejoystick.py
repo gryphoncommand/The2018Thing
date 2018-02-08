@@ -7,6 +7,7 @@ import oi
 
 from robotmap import axes
 
+
 class TankDriveJoystick(Command):
     """
 
@@ -30,6 +31,7 @@ class TankDriveJoystick(Command):
         subsystems.tankdrive.set(lpow, rpow)
 
         subsystems.smartdashboard.putString("tankdrive", str((lpow, rpow)))
+        # subsystems.smartdashboard.putNumber("Ticks", subsystems.tankdrive.encoders["L"].get())
 
     def end(self):
         subsystems.tankdrive.set(0, 0)

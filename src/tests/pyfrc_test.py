@@ -5,5 +5,6 @@
 
 from pyfrc.tests import *
 
+
 def test_nothing():
     pass
