@@ -48,7 +48,8 @@ class PIDTankDriveJoystick(Command):
         self.RPID.setOutputRange(-1, 1)
 
     def initialize(self):
-        pass
+        self.RPID.enable()
+        self.LPID.enable()
 
     def execute(self):
         if True:
@@ -72,4 +73,5 @@ class PIDTankDriveJoystick(Command):
         subsystems.smartdashboard.putString("tankdrive", str((self.lpow, self.rpow)))
 
     def end(self):
-        subsystems.tankdrive.set(0, 0)
+        self.LPID.disable()
+        self.RPID.disable()

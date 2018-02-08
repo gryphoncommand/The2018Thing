@@ -45,6 +45,6 @@ class PIDMotorOutput(PIDOutput):
         self.scale = _scale
     
     def pidWrite(self, speed):
-        for motor in self.motors:
-            speed = speed * self.scale
-            motor.pidWrite(speed)
+        self.motors[0].pidWrite(speed)
+        self.motors[1].pidWrite(speed)
+

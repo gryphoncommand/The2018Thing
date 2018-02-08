@@ -37,3 +37,15 @@ class Encoders():
         else:
             print("[Invalid Encoder PID Type given]")
             return 0
+    
+    def getRate(self):
+        if self.enc.getPIDSourceType() == Encoder.PIDSourceType.kRate:
+            return self.enc.getRate()
+        else:
+            raise TypeError("Invalid or Incorrect PID Type")
+
+    def getDisplacement(self):
+        if self.enc.getPIDSourceType() == Encoder.PIDSourceType.kDisplacement:
+            return self.enc.getDistance()
+        else:
+            raise TypeError("Invalid or Incorrect PID Type")
