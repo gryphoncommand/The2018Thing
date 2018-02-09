@@ -49,13 +49,14 @@ class The2018Thing(CommandBasedRobot):
         subsystems.init()
 
         self.autonomousProgram = PulseMotor()
+        #self.teleopProgram = TankDriveJoystick()
         self.teleopProgram = wpilib.command.CommandGroup()
 
         self.teleopProgram.addParallel(TankDriveJoystick())
         self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
         self.teleopProgram.addParallel(DumpInfo())
-        # self.teleopProgram.addParallel(NavXCommand())
+        #self.teleopProgram.addParallel(NavXCommand())
         #self.teleopProgram.addParallel(CorrectTip())
 
         oi.init()
@@ -65,7 +66,6 @@ class The2018Thing(CommandBasedRobot):
 
     def teleopInit(self):
         self.teleopProgram.start()
-
 
 if __name__ == '__main__':
     wpilib.run(The2018Thing)

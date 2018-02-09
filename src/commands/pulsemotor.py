@@ -33,9 +33,9 @@ class PulseMotor(Command):
 
         lpow = math.sin(dtime * 2)
         rpow = math.cos(dtime * 3)
-        subsystems.tankdrive.set_power(lpow, rpow)
+        subsystems.tankdrive.set(lpow, rpow)
 
     def end(self):
-        subsystems.tankdrive.set_power(0, 0)
+        subsystems.tankdrive.set(0, 0)
 
         self.stime = None

@@ -65,12 +65,12 @@ class CorrectTip(Command):
 
     def run_mechanism(self):
         if self.tipDir == Direction.FORWARD:
-            self.subsystems.tankdrive.set_power(-1, -1)
+            self.subsystems.tankdrive.set(-1, -1)
         elif self.tipDir == Direction.BACKWARD:
-            self.subsystems.tankdrive.set_power(1, 1)
+            self.subsystems.tankdrive.set(1, 1)
         elif self.last_tipDir != self.tipDir: 
             # only set it once so it doesn't control it over and over
-            self.subsystems.tankdrive.set_power(0, 0)
+            self.subsystems.tankdrive.set(0, 0)
 
     def end(self):
         pass
