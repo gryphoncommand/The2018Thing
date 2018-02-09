@@ -26,9 +26,8 @@ class ArmExtender(Command):
         pass
 
     def execute(self):
-        joy = oi.get_joystick()
 
-        pov = joy.getPOV()
+        pov = oi.joystick.getPOV()
 
         if pov != -1:
             vec = Vector2D.from_polar(radius=1, angle=pov + 90, degrees=True)

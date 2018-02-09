@@ -59,9 +59,8 @@ class PIDTankDriveJoystick(Command):
             wpilib.SmartDashboard.putData("L PID", self.LPID)
             wpilib.SmartDashboard.putData("R PID", self.RPID)
 
-        joy = oi.get_joystick()
-        self.lpow = joy.getRawAxis(axes.L_y)
-        self.rpow = joy.getRawAxis(axes.R_y)
+        self.lpow = oi.joystick.getRawAxis(axes.L_y)
+        self.rpow = oi.joystick.getRawAxis(axes.R_y)
         # subsystems.tankdrive.set(lpow, rpow)
         if subsystems.tankdrive.gearshift.get():
             self.LPID.setSetpoint(-self.lpow * 3.5)

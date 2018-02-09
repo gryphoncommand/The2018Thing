@@ -24,8 +24,7 @@ class ArmRotate(Command):
         pass
 
     def execute(self):
-        joy = oi.get_joystick()
-        rot_power = (joy.getRawAxis(axes.R_t) - joy.getRawAxis(axes.L_t)) / 2.0
+        rot_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
 
         subsystems.smartdashboard.putNumber("rot_power", rot_power)
 

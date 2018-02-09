@@ -6,9 +6,6 @@ from commandbased import CommandBasedRobot
 import oi
 import subsystems
 
-from commands.record import Record
-from commands.playback import Playback
-
 
 from commands.dumpinfo import DumpInfo
 
@@ -60,9 +57,6 @@ class The2018Thing(CommandBasedRobot):
         self.teleopProgram.addParallel(DumpInfo())
         # self.teleopProgram.addParallel(NavXCommand())
         #self.teleopProgram.addParallel(CorrectTip())
-
-        #self.teleopProgram = Record(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
-        #self.autonomousProgram = Playback(filename="macro_0.csv", concurrent_command=TankDriveJoystick())
 
         oi.init()
 

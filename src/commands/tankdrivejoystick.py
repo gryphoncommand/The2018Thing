@@ -23,9 +23,8 @@ class TankDriveJoystick(Command):
         pass
 
     def execute(self):
-        joy = oi.get_joystick()
-        lpow = joy.getRawAxis(axes.L_y)
-        rpow = joy.getRawAxis(axes.R_y)
+        lpow = oi.joystick.getRawAxis(axes.L_y)
+        rpow = oi.joystick.getRawAxis(axes.R_y)
 
         subsystems.tankdrive.set(lpow, rpow)
 
