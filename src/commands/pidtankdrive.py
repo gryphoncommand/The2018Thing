@@ -60,6 +60,7 @@ class PIDTankDriveJoystick(Command):
         if True:
             wpilib.SmartDashboard.putData("L PID", self.LPID)
             wpilib.SmartDashboard.putData("R PID", self.RPID)
+            wpilib.LiveWindow.addSensor("Ticks", "Right Encoder", subsystems.tankdrive.encoders["R"])
 
         joy = oi.get_joystick()
         self.lpow = joy.getRawAxis(axes.L_y)
