@@ -1,6 +1,5 @@
 from wpilib.analogpotentiometer import AnalogPotentiometer
 from wpilib.interfaces.pidsource import PIDSource
-from wpilib.interfaces.pidoutput import PIDOutput
 
 
 class PIDPotSource(PIDSource):

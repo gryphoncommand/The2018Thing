@@ -18,7 +18,6 @@ class Encoders(Encoder):
 
     # returns the number of ticks.
 
-    
     def restart(self):
         self.reset()
 
@@ -28,5 +27,3 @@ class Encoders(Encoder):
     def findRate(self):
         self.enc.getRate()
     '''
-    
-

@@ -60,8 +60,8 @@ drive_encoders = InfoPasser()
 
 # Each encoder has two ports on the RoboRIO DIO
 # Then, "inverted"
-drive_encoders.L = 0, 1
-drive_encoders.R = 2, 3
+drive_encoders.L = 0, 1, False
+drive_encoders.R = 2, 3, True
 
 # range is a min, max of what speed (in ticks/time) are the encoders reading
 # lowgear is for low gear readings and highgear is for high gear readings

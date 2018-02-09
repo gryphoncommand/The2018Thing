@@ -25,42 +25,49 @@ class PIDTankDriveJoystick(Command):
 
         self.L_sour = PIDMotorSource(subsystems.tankdrive.encoders["L"])
         self.R_sour = PIDMotorSource(subsystems.tankdrive.encoders["R"])
-        self.L_sour.useSpeed()
-        self.R_sour.useSpeed()
-        self.L_sour.setScale(-1)
-        self.R_sour.setScale(-1)
+
+        self.addToPID(self.L_sour, self.R_sour,
+                      lambda source: source.useSpeed())
+        self.addToPID(self.L_sour, self.R_sour,
+                      lambda source: source.setScale(-1))
 
         self.Lout = PIDMotorOutput([subsystems.tankdrive.motors["LF"],
                                     subsystems.tankdrive.motors["LB"]])
         self.Rout = PIDMotorOutput([subsystems.tankdrive.motors["RF"],
                                     subsystems.tankdrive.motors["RB"]])
-        self.Lout.setScale(-1)
-        self.Rout.setScale(-1)
+
+        self.addToPID(self.Lout, self.Rout, lambda output: output.setScale(-1))
 
         self.LPID = PIDController(pid.L_P, pid.L_I, pid.L_D, pid.L_F,
                                   self.L_sour, self.Lout)
-        self.LPID.setInputRange(-(3.5), 3.5)
-        self.LPID.setOutputRange(-1, 1)
-
         self.RPID = PIDController(pid.R_P, pid.R_I, pid.R_D, pid.R_F,
                                   self.R_sour, self.Rout)
-        self.RPID.setInputRange(-(3.5), 3.5)
-        self.RPID.setOutputRange(-1, 1)
+
+        self.addToPID(self.LPID, self.RPID,
+                      lambda pid: pid.setInputRange(-3.5, 3.5))
+        self.addToPID(self.LPID, self.RPID,
+                      lambda pid: pid.setOutputRange(-1, 1))
 
     def initialize(self):
         pass
 
+    def addToPID(self, pid1, pid2, func):
+        func(pid1)
+        func(pid2)
+
     def execute(self):
         if True:
-            self.RPID.enable()
-            self.LPID.enable()
+            self.addToPID(self.LPID, self.RPID, lambda pid: pid.enable())
             self.normalOperation()
 
     def normalOperation(self):
         if True:
             wpilib.SmartDashboard.putData("L PID", self.LPID)
             wpilib.SmartDashboard.putData("R PID", self.RPID)
-            wpilib.LiveWindow.addSensor("Ticks", "Right Encoder", subsystems.tankdrive.encoders["R"])
+            # wpilib.LiveWindow.addSensor("Ticks", "Left Encoder",
+            #                             subsystems.tankdrive.encoders["L"])
+            # wpilib.LiveWindow.addSensor("Ticks", "Right Encoder",
+            #                            subsystems.tankdrive.encoders["R"])
 
         joy = oi.get_joystick()
         self.lpow = joy.getRawAxis(axes.L_y)
@@ -76,5 +83,4 @@ class PIDTankDriveJoystick(Command):
                                         str((self.lpow, self.rpow)))
 
     def end(self):
-        self.LPID.disable()
-        self.RPID.disable()
+        self.addToPID(self.LPID, self.RPID, lambda pid: pid.disable())
