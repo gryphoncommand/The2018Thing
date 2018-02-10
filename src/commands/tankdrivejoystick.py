@@ -6,6 +6,7 @@ import subsystems
 import oi
 
 from robotmap import axes
+import wpilib
 
 class TankDriveJoystick(Command):
     """
@@ -20,11 +21,20 @@ class TankDriveJoystick(Command):
         self.requires(subsystems.tankdrive)
 
     def initialize(self):
-        pass
+        self.lmax = 0
+        self.rmax = 0
 
     def execute(self):
         lpow = oi.joystick.getRawAxis(axes.L_y)
         rpow = oi.joystick.getRawAxis(axes.R_y)
+
+        if self.lmax > subsystems.tankdrive.encoders["L"].getRate():
+            self.lmax = subsystems.tankdrive.encoders["L"].getRate()
+        if self.rmax > subsystems.tankdrive.encoders["R"].getRate():
+            self.rmax = subsystems.tankdrive.encoders["R"].getRate()
+
+        wpilib.SmartDashboard.putNumber("Left Encoder Low", self.lmax)
+        wpilib.SmartDashboard.putNumber("Right Encoder Low", self.rmax)
 
         subsystems.tankdrive.set(lpow, rpow)
 
