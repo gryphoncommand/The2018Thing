@@ -5,6 +5,7 @@ import subsystems
 import oi
 
 from robotmap import axes, pid
+from puremath import transform
 import wpilib
 
 '''
@@ -21,9 +22,8 @@ class LiftToAngle(Command):
         self.dist = _dist
         self.out = PIDMotorOutput(subsystems.arm.rotator_motor)
 
-        # Probably replace the pot.pidGet() with a function, from puremath, 
-        # that converts the pidGet() into a distance.
-        self.PID = PIDController(0.03, 0.0, 0.0, subsystems.tankdrive.pot.pidGet, subsystems.arm.set_rotator
+        # TODO: Substitute in the min and max value in the transform() function
+        self.PID = PIDController(0.03, 0.0, 0.0, transform(subsystems.tankdrive.pot.pidGet, (-1, 1), (-1, 1)), subsystems.arm.set_rotator)
 
         # TODO: Refine InputRange and AbsoluteTolerance
         self.PID.setInputRange(0, 10)
