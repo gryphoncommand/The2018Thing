@@ -2,10 +2,12 @@ import wpilib
 
 from wpilib.command.subsystem import Subsystem
 from wpilib import PIDController
+from wpilib.analogpotentiometer import AnalogPotentiometer
+from wpilib.pidcontroller import PIDController
 
 from hardware.motor import Motor
 from hardware.solenoid import SolenoidHandler
-from hardware.encoder import Encoders
+from hardware.encoder import Encoder
 
 from commands.tankdrivejoystick import TankDriveJoystick
 
@@ -37,7 +39,16 @@ class TankDrive(Subsystem):
             "RB": Motor(*drive_motors.RB)
         }
 
+        self.encoders = {
+            "L": Encoder(*drive_encoders.L),
+            "R": Encoder(*drive_encoders.R)
+        }
+        self.encoders["L"].setPIDSourceType(PIDController.PIDSourceType.kRate)
+        self.encoders["R"].setPIDSourceType(PIDController.PIDSourceType.kRate)
+
         self.gearshift = SolenoidHandler(*solenoids.gearshift)
+        self.pot = AnalogPotentiometer(2, 100, -20)
+
 
     def set_left(self, power):
         self.motors["LF"].set(power)

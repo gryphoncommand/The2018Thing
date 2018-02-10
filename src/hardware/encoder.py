@@ -10,18 +10,12 @@ from wpilib.encoder import Encoder
 '''
 
 
-class Encoders():
+class Encoder(Encoder):
 
     def __init__(self, dio_in, dio_out, inverted=False):
-        self.enc = Encoder(dio_in, dio_out, False,
+        super().__init__(dio_in, dio_out, inverted,
                            Encoder.EncodingType.k4X)
 
-    # returns the number of ticks.
-    def get(self):
-        return self.enc.get()
-    
-    def reset(self):
-        self.enc.reset()
 
     '''
     # Class for the rate of the Encoder
@@ -29,11 +23,4 @@ class Encoders():
     def findRate(self):
         self.enc.getRate()
     '''
-    def setPIDSourceType(self, sourceType):
-        if sourceType == Encoder.PIDSourceType.kDisplacement:
-            self.enc.setPIDSourceType(sourceType)
-        elif sourceType == Encoder.PIDSourceType.kRate:
-            self.enc.setPIDSourceType(sourceType)
-        else:
-            print("[Invalid Encoder PID Type given]")
-            return 0
+

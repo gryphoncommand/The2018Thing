@@ -48,6 +48,9 @@ class Arm(Subsystem):
 
         raise NotImplementedError()
 
+    def stop_rotator(self):
+        self.rotator_motor.set(0.0)
+
 
 
 
