@@ -50,14 +50,13 @@ class PIDTankDriveJoystick(Command):
 
 
     def initialize(self):
-        pass
+        self.applyPID(lambda pid: pid.enable())
 
     def applyPID(self, func):
         func(self.pid["L"])
         func(self.pid["R"])
 
     def execute(self):
-        self.applyPID(lambda pid: pid.enable())
         wpilib.SmartDashboard.putData("L PID", self.pid["L"])
         wpilib.SmartDashboard.putData("R PID", self.pid["R"])
         # wpilib.LiveWindow.addSensor("Ticks", "Left Encoder",

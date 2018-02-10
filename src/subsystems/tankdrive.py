@@ -2,6 +2,7 @@ import wpilib
 
 from wpilib.command.subsystem import Subsystem
 from wpilib import PIDController
+from wpilib.analogpotentiometer import AnalogPotentiometer
 
 from hardware.motor import Motor
 from hardware.solenoid import SolenoidHandler
@@ -38,6 +39,8 @@ class TankDrive(Subsystem):
         }
 
         self.gearshift = SolenoidHandler(*solenoids.gearshift)
+        self.pot = AnalogPotentiometer(2, 100, -20)
+
 
     def set_left(self, power):
         self.motors["LF"].set(power)
