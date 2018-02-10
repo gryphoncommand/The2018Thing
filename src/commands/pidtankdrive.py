@@ -68,6 +68,9 @@ class PIDTankDriveJoystick(Command):
             #                             subsystems.tankdrive.encoders["L"])
             # wpilib.LiveWindow.addSensor("Ticks", "Right Encoder",
             #                            subsystems.tankdrive.encoders["R"])
+            wpilib.SmartDashboard.putNumber("Left Encoder", subsystems.tankdrive.encoders["L"].getRate())
+            wpilib.SmartDashboard.putNumber("Right Encoder", subsystems.tankdrive.encoders["R"].getRate())
+
 
         joy = oi.get_joystick()
         self.lpow = joy.getRawAxis(axes.L_y)

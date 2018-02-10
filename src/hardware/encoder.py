@@ -13,7 +13,7 @@ from wpilib.encoder import Encoder
 class Encoders(Encoder):
 
     def __init__(self, dio_in, dio_out, inverted=False):
-        super().__init__(dio_in, dio_out)
+        super().__init__(dio_in, dio_out, inverted, self.EncodingType.k4X)
         self.setDistancePerPulse(1.0/2950)
 
     # returns the number of ticks.

@@ -1,11 +1,10 @@
-from wpilib.analogpotentiometer import AnalogPotentiometer
 from wpilib.interfaces.pidsource import PIDSource
 
 
 class PIDPotSource(PIDSource):
-    def __init__(self):
-        # Default values from ToastRhino, double and triple check. 
-        self.pot = AnalogPotentiometer(2, 100, -20)
+    def __init__(self, _pot):
+        # Takes potentiometer as parameter to prevent possible HAL errors
+        self.pot = _pot
 
         # Default PIDSourceType will be distance until proven otherwise. 
         self.setPIDSourceType(PIDSource.PIDSourceType.kDisplacement)

@@ -6,9 +6,12 @@ from wpilib.encoder import Encoder
 class PIDMotorSource(PIDSource):
     def __init__(self, _encoder):
 
-        self.sourceType = Encoder.PIDSourceType.kRate
         self.encoder = _encoder
         self.scale = 1.0
+
+        # Currently, we are using kRate, although we may use kDisplacement in the future.
+        # kRate gets us as close to the acutal speed as we can. 
+        self.sourceType = Encoder.PIDSourceType.kRate
         self.encoder.setPIDSourceType(Encoder.PIDSourceType.kRate)
 
     def setScale(self, _scale):
@@ -45,6 +48,11 @@ class PIDMotorOutput(PIDOutput):
         self.scale = _scale
     
     def pidWrite(self, speed):
-        self.motors[0].pidWrite(speed)
-        self.motors[1].pidWrite(speed)
+        if len(self.motors) > 1:
+            self.motors[0].pidWrite(speed)
+            self.motors[1].pidWrite(speed)
+        elif len(self.motors) == 1:
+            self.motors.pidWrite(speed)
+        else:
+            raise TypeError("Your motor parameter does not meet the length requirements (1 or 2) of the robot.")
 
