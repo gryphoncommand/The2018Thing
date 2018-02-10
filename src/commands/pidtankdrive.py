@@ -7,6 +7,8 @@ import subsystems
 import oi
 from pid.pidmotor import PIDMotorSource, PIDMotorOutput
 
+from puremath.scaling import transform
+
 from robotmap import axes, pid
 import wpilib
 
@@ -18,57 +20,72 @@ class PIDTankDriveJoystick(Command):
 
     """
 
+
     def __init__(self):
         super().__init__('PIDTankDriveJoystick')
 
         self.requires(subsystems.tankdrive)
 
-        self.L_sour = PIDMotorSource(subsystems.tankdrive.encoders["L"])
-        self.R_sour = PIDMotorSource(subsystems.tankdrive.encoders["R"])
-        self.L_sour.useSpeed()
-        self.R_sour.useSpeed()
-        self.L_sour.setScale(-1)
-        self.R_sour.setScale(-1)
+        self.L_src = PIDMotorSource()
+        self.R_src = PIDMotorSource(subsystems.tankdrive.encoders["R"])
 
-        self.Lout = PIDMotorOutput([subsystems.tankdrive.motors["LF"],
-                                    subsystems.tankdrive.motors["LB"]])
-        self.Rout = PIDMotorOutput([subsystems.tankdrive.motors["RF"],
-                                    subsystems.tankdrive.motors["RB"]])
-        self.Lout.setScale(-1)
-        self.Rout.setScale(-1)
+        self.pid = {}
 
-        self.LPID = PIDController(pid.L_P, pid.L_I, pid.L_D, pid.L_F,
-                                  self.L_sour, self.Lout)
-        self.LPID.setInputRange(-(3.5), 3.5)
-        self.LPID.setOutputRange(-1, 1)
+        self.pid["L"] = PIDController(1, 0, 0, self.encoders["L"].get, subsystems.tankdrive.set_left)
+        self.pid["R"] = PIDController(1, 0, 0, self.encoders["R"].get, subsystems.tankdrive.set_right)
 
-        self.RPID = PIDController(pid.R_P, pid.R_I, pid.R_D, pid.R_F,
-                                  self.R_sour, self.Rout)
-        self.RPID.setInputRange(-(3.5), 3.5)
-        self.RPID.setOutputRange(-1, 1)
+        
+        self.applyPID(lambda p: p.setPIDSourceType(PIDController.PIDSourceType.kRate))
+        self.applyPID(lambda p: p.setOutputRange(-1, 1))
+
+
+    def update_pid(self):
+        gearing = subsystems.tankdrrobotmap.drive_encoders.L_Live.get_gearing()
+        if gearing == robotmap.Gearing.LOW:
+            self.pid["L"].setInputRange(*robotmap.drive_encoders.L_L)
+            self.pid["R"].setInputRange(*robotmap.drive_encoders.R_L)
+        elif gearing == robotmap.Gearing.HIGH:
+            self.pid["L"].setInputRange(*robotmap.drive_encoders.L_H)
+            self.pid["R"].setInputRange(*robotmap.drive_encoders.R_H)
+
 
     def initialize(self):
         pass
 
+    def applyPID(self, func):
+        func(self.pid["L"])
+        func(self.pid["R"])
+
     def execute(self):
-        if True:
-            self.normalOperation()
+        self.applyPID(lambda pid: pid.enable())
+        wpilib.SmartDashboard.putData("L PID", self.pid["L"])
+        wpilib.SmartDashboard.putData("R PID", self.pid["R"])
+        # wpilib.LiveWindow.addSensor("Ticks", "Left Encoder",
+        #                             subsystems.tankdrive.encoders["L"])
+        # wpilib.LiveWindow.addSensor("Ticks", "Right Encoder",
+        #                            subsystems.tankdrive.encoders["R"])
+        wpilib.SmartDashboard.putNumber("Left Encoder", subsystems.tankdrive.encoders["L"].getRate())
+        wpilib.SmartDashboard.putNumber("Right Encoder", subsystems.tankdrive.encoders["R"].getRate())
 
-    def normalOperation(self):
-        if True:
-            wpilib.SmartDashboard.putData("L PID", self.LPID)
-            wpilib.SmartDashboard.putData("R PID", self.RPID)
 
-        self.lpow = oi.joystick.getRawAxis(axes.L_y)
-        self.rpow = oi.joystick.getRawAxis(axes.R_y)
-        # subsystems.tankdrive.set(lpow, rpow)
-        if subsystems.tankdrive.gearshift.get():
-            self.LPID.setSetpoint(-self.lpow * 3.5)
-            self.RPID.setSetpoint(-self.rpow * 3.5)
-        else:
-            self.LPID.setSetpoint(-self.lpow * 1.4)
-            self.RPID.setSetpoint(-self.rpow * 1.4)
-        subsystems.smartdashboard.putString("tankdrive", str((self.lpow, self.rpow)))
+        joy = oi.joystick
+        lpow = joy.getRawAxis(axes.L_y)
+        rpow = joy.getRawAxis(axes.R_y)
+
+        wpilib.SmartDashboard.putString("tankdrive", str((lpow, rpow)))
+
+        gearing = subsystems.tankdrrobotmap.drive_encoders.L_Live.get_gearing()
+        if gearing == robotmap.Gearing.LOW:
+            lpow = transform(lpow, (-1, 1), robotmap.drive_encoders.L_L)
+            rpow = transform(rpow, (-1, 1), robotmap.drive_encoders.R_L)
+            self.pid["L"].setSetpoint(lpow)
+            self.pid["R"].setSetpoint(rpow)
+        elif gearing == robotmap.Gearing.HIGH:
+            lpow = transform(lpow, (-1, 1), robotmap.drive_encoders.L_H)
+            rpow = transform(rpow, (-1, 1), robotmap.drive_encoders.R_H)
+            self.pid["L"].setSetpoint(lpow)
+            self.pid["R"].setSetpoint(rpow)
 
     def end(self):
-        subsystems.tankdrive.set(0, 0)
+        self.applyPID(lambda pid: pid.disable())
+
