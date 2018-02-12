@@ -29,16 +29,7 @@ class PIDMotorSource(PIDSource):
         if self.sourceType == Encoder.PIDSourceType.kDisplacement:
             return self.encoder.getDistance()
         elif self.sourceType == Encoder.PIDSourceType.kRate:
-            if self.encoder.getRate() > 0 and subsystems.tankdrive.gearshift.get() == True:
-                return self.encoder.getRate() / self.scalar1[1]
-            elif self.encoder.getRate() < 0 and subsystems.tankdrive.gearshift.get() == True:
-                return self.encoder.getRate() / self.scalar1[0]
-            elif self.encoder.getRate() > 0 and subsystems.tankdrive.gearshift.get() == False:
-                return self.encoder.getRate() / self.scalar2[1]
-            elif self.encoder.getRate() < 0 and subsystems.tankdrive.gearshift.get() == False:
-                return self.encoder.getRate() / self.scalar2[0]
-            else: 
-                return self.encoder.getRate()        
+            return self.encoder.getRate()        
         else:
             raise TypeError("Invalid Encoder PIDSourceType")
             return 0
@@ -56,6 +47,10 @@ class PIDMotorOutput(PIDOutput):
         self.scale = _scale
     
     def pidWrite(self, speed):
-        for motor in self.motors:
-            speed = speed * self.scale
-            motor.pidWrite(speed)
+        if len(self.motors) > 1:
+            self.motors[0].pidWrite(speed)
+            self.motors[1].pidWrite(speed)
+        elif len(self.motors) == 1:
+            self.motors.pidWrite(speed)
+        else:
+            raise TypeError("Your motor parameter does not meet the length requirements (1 or 2) of the robot.")

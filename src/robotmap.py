@@ -113,5 +113,5 @@ navx_type = NavXType.SPI
 
 # PID Constant values for the encoders. CHECK OVER!!!!!
 pid = InfoPasser()
-pid.L = (0.18, 0, 0, 0)
-pid.R = (0.18, 0, 0, 0)
+pid.L = (0.10, 0, 0, 0)
+pid.R = (0.10, 0, 0, 0)
