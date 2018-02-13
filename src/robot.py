@@ -51,11 +51,11 @@ class The2018Thing(CommandBasedRobot):
         self.autonomousProgram = PulseMotor()
         #self.teleopProgram = TankDriveJoystick()
 
-        chooser = wpilib.SendableChooser()
+        self.chooser = wpilib.SendableChooser()
 
-        chooser.addObject('PulseMotor', PulseMotor())
+        self.chooser.addObject('PulseMotor', PulseMotor())
 
-        wpilib.SmartDashboard.putData('Autonomous Program', chooser)
+        wpilib.SmartDashboard.putData('Autonomous Program', self.chooser)
 
         self.teleopProgram = wpilib.command.CommandGroup()
 
@@ -69,7 +69,7 @@ class The2018Thing(CommandBasedRobot):
         oi.init()
 
     def autonomousInit(self):
-        self.autonomousProgram = chooser.getSelected()
+        self.autonomousProgram = self.chooser.getSelected()
         self.autonomousProgram.start()
 
     def teleopInit(self):
