@@ -53,7 +53,8 @@ class The2018Thing(CommandBasedRobot):
 
         self.chooser = wpilib.SendableChooser()
 
-        self.chooser.addObject('PulseMotor', PulseMotor())
+        self.chooser.addDefault('PulseMotor', PulseMotor())
+        #self.chooser.addObject('PulseMotor', PulseMotor())
 
         wpilib.SmartDashboard.putData('Autonomous Program', self.chooser)
 
@@ -70,7 +71,8 @@ class The2018Thing(CommandBasedRobot):
 
     def autonomousInit(self):
         self.autonomousProgram = self.chooser.getSelected()
-        self.autonomousProgram.start()
+        if self.autonomousProgram is not None:
+            self.autonomousProgram.start()
 
     def teleopInit(self):
         self.teleopProgram.start()
