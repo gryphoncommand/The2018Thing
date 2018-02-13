@@ -43,8 +43,12 @@ class TankDrive(Subsystem):
             "L": Encoder(*drive_encoders.L),
             "R": Encoder(*drive_encoders.R)
         }
+
         self.encoders["L"].setPIDSourceType(PIDController.PIDSourceType.kRate)
         self.encoders["R"].setPIDSourceType(PIDController.PIDSourceType.kRate)
+        
+        self.encoders["L"].setDistancePerPulse(1.524/2899.0)
+        self.encoders["R"].setDistancePerPulse(1.524/5817.0)
 
         self.gearshift = SolenoidHandler(*solenoids.gearshift)
         self.pot = AnalogPotentiometer(2, 100, -20)
