@@ -53,7 +53,9 @@ drive_motors.RB = 3, True
 
 extra_motors = InfoPasser()
 
-extra_motors.arm_rotator = 4, False
+extra_motors.arm_rotator_left = 4, False
+extra_motors.arm_rotator_right = 5, False
+
 
 
 drive_encoders = InfoPasser()
