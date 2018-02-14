@@ -17,9 +17,11 @@ import wpilib
           Get Min and Max of arm w/ Pot reading
 '''
 
+
 class LiftToAngle(Command):
     def __init__(self, _dist):
         self.dist = _dist
+        #to do need to also control second rotator motor
         self.out = PIDMotorOutput(subsystems.arm.rotator_motor)
 
         # TODO: Substitute in the min and max value in the transform() function

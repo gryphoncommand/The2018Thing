@@ -23,7 +23,9 @@ class Arm(Subsystem):
         self.extender_solenoid = SolenoidHandler(*solenoids.armextender)
         self.grabber_solenoid = SolenoidHandler(*solenoids.grabber)
 
-        self.rotator_motor = Motor(*extra_motors.arm_rotator)
+        self.rotator_motor_left = Motor(*extra_motors.arm_rotator_left)
+        self.rotator_motor_right = Motor(*extra_motors.arm_rotator_right)
+
 
     def set_extender(self, status):
         self.extender_solenoid.set(status)
@@ -32,7 +34,9 @@ class Arm(Subsystem):
         self.grabber_solenoid.set(status)
 
     def set_rotator(self, amount):
-        self.rotator_motor.set(amount)
+        self.rotator_motor_left.set(amount)
+        self.rotator_motor_right.set(amount)
+
 
     def grabber_position(self):
         """
@@ -49,7 +53,9 @@ class Arm(Subsystem):
         raise NotImplementedError()
 
     def stop_rotator(self):
-        self.rotator_motor.set(0.0)
+        self.rotator_motor_left.set(0.0)
+        self.rotator_motor_right.set(0.0)
+
 
 
 

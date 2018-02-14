@@ -1,4 +1,7 @@
 {
+  "pyfrc_test.py::test_autonomous[LLL]": true,
+  "pyfrc_test.py::test_autonomous[LRL]": true,
+  "pyfrc_test.py::test_autonomous[RLR]": true,
   "pyfrc_test.py::test_fuzz": true,
   "pyfrc_test.py::test_operator_control": true,
   "pyfrc_test.py::test_practice": true
