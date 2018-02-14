@@ -73,10 +73,6 @@ drive_encoders.R_H = (-4.580, 4.870)
 drive_encoders.R_L = (-2.197, 2.277)
 
 # PID controller
-pid_controllers = InfoPasser()
-
-pid_controllers.drive = 0.12, 0.01, 0.0
-
 
 
 axes = InfoPasser()
@@ -112,5 +108,5 @@ navx_type = NavXType.SPI
 
 # PID Constant values for the encoders. CHECK OVER!!!!!
 pid = InfoPasser()
-pid.L = (0.18, 0, 0, 0)
-pid.R = (0.18, 0, 0, 0)
+pid.L = (0.24, .02, 0, 0)
+pid.R = (0.24, .02, 0, 0)

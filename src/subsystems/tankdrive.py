@@ -11,7 +11,7 @@ from hardware.encoder import Encoder
 
 from commands.tankdrivejoystick import TankDriveJoystick
 
-from robotmap import drive_motors, drive_encoders, solenoids, pid_controllers
+from robotmap import drive_motors, drive_encoders, solenoids
 from robotmap import Gearing
 
 from puremath.scaling import transform

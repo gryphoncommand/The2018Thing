@@ -8,6 +8,7 @@ class PIDMotorSource(PIDSource):
 
         self.sourceType = Encoder.PIDSourceType.kRate
         self.encoder = _encoder
+        self.encoder.setSamplesToAverage(16)
         self.scale = 1.0
         self.encoder.setPIDSourceType(Encoder.PIDSourceType.kRate)
 
