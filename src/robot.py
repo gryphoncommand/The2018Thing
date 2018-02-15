@@ -10,11 +10,14 @@ import subsystems
 from commands.dumpinfo import DumpInfo
 
 from commands.pulsemotor import PulseMotor
+from commands.drivedist import DriveToDistance
+from commands.turndrive import TurnDrive
 
 from commands.tankdrivejoystick import TankDriveJoystick
 from commands.pidtankdrive import PIDTankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
+
 #from commands.correcttip import CorrectTip
 
 
@@ -54,6 +57,8 @@ class The2018Thing(CommandBasedRobot):
         self.chooser = wpilib.SendableChooser()
 
         self.chooser.addDefault('PulseMotor', PulseMotor())
+        self.chooser.addObject("TankDistTest 5 Feet ", DriveToDistance(1.524, 1.524))
+        self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
         #self.chooser.addObject('PulseMotor', PulseMotor())
 
         wpilib.SmartDashboard.putData('Autonomous Program', self.chooser)

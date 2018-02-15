@@ -5,14 +5,24 @@ from wpilib.pidcontroller import PIDController
 import subsystems
 from robotmap import pid, Gearing
 
+'''
+PARAMS:
+The distance is in meters.
+Remember 
+1 meter = 3.28084 feet.
+1 meter = 39.3701 inches.
+'''
+
+
 class DriveToDistance(Command):
     def __init__(self, _ldist, _rdist):
         self.ldist = _ldist
         self.rdist = _rdist
         subsystems.tankdrive.encoders["L"].useDistance()
         subsystems.tankdrive.encoders["R"].useDistance()
-        self.LPID = PIDController(pid.dist_L[0], pid.dist_L[1], pid.dist_L[2], pid.dist_L[3], subsystems.tankdrive.encoders["L"], subsystems.tankdrive.set_left)
-        self.RPID = PIDController(pid.dist_R[0], pid.dist_R[1], pid.dist_R[2], pid.dist_R[3], subsystems.tankdrive.encoders["R"], subsystems.tankdrive.set_right)
+        self.pid = {}
+        self.pid["L"] = PIDController(pid.dist_L[0], pid.dist_L[1], pid.dist_L[2], pid.dist_L[3], subsystems.tankdrive.encoders["L"], subsystems.tankdrive.set_left)
+        self.pid["R"] = PIDController(pid.dist_R[0], pid.dist_R[1], pid.dist_R[2], pid.dist_R[3], subsystems.tankdrive.encoders["R"], subsystems.tankdrive.set_right)
 
         self.applyPID(lambda p: p.setPIDSourceType(PIDController.PIDSourceType.kRate))
         self.applyPID(lambda p: p.setOutputRange(-1, 1))
