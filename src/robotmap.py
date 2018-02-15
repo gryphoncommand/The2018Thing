@@ -68,10 +68,11 @@ drive_encoders.R_dpp = 1.0/1610.0
 # Right Encoder - 2414 Ticks in ~5 Feet
 # L.H = left high gear
 # L.L = left low gear
-drive_encoders.L_H = (-4.184, 4.768)
-drive_encoders.L_L = (-2.213, 2.145)
-drive_encoders.R_H = (-4.580, 4.870)
-drive_encoders.R_L = (-2.197, 2.277)
+
+drive_encoders.L_H = (-4.85, 4.85)
+drive_encoders.R_H = (-4.85, 4.85)
+drive_encoders.L_L = (-2.24, 2.24)
+drive_encoders.R_L = (-2.24, 2.24)
 
 
 # was extra_motors

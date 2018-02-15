@@ -55,8 +55,10 @@ class PIDTankDriveJoystick(Command):
             lrange = abs(robotmap.drive_encoders.L_H[1] - robotmap.drive_encoders.L_H[0])
             rrange = abs(robotmap.drive_encoders.R_H[1] - robotmap.drive_encoders.R_H[0])
 
-        self.pid["L"].setAbsoluteTolerance(lrange / 10.0)
-        self.pid["R"].setAbsoluteTolerance(rrange / 10.0)
+
+        # needs to be within 2.5 % of value
+        self.pid["L"].setAbsoluteTolerance(lrange * .025)
+        self.pid["R"].setAbsoluteTolerance(rrange * .025)
 
     def initialize(self):
         self.applyPID(lambda pid: pid.enable())
