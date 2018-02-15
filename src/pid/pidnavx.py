@@ -7,7 +7,6 @@ class PIDNavXSource(PIDSource):
         self.navx = _navx
 
         # Default PIDSourceType will be displacement.  
-        self.setPIDSourceType(PIDSource.PIDSourceType.kDisplacement)
 
     def pidGet(self):
         # Simple checking of SourceType
