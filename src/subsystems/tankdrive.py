@@ -65,6 +65,9 @@ class TankDrive(Subsystem):
         self.motors["RF"].set(power)
         self.motors["RB"].set(power)
 
+    def stop(self):
+        self.set(0, 0)
+
     def set(self, Lpower=0, Rpower=0):
         if Lpower is not None:
             self.set_left(Lpower)
