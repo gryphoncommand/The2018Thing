@@ -2,7 +2,6 @@ import wpilib
 
 from wpilib.command.subsystem import Subsystem
 from wpilib import PIDController
-from wpilib.analogpotentiometer import AnalogPotentiometer
 from wpilib.pidcontroller import PIDController
 
 from hardware.motor import Motor
@@ -47,14 +46,13 @@ class TankDrive(Subsystem):
         self.encoders["L"].setPIDSourceType(PIDController.PIDSourceType.kRate)
         self.encoders["R"].setPIDSourceType(PIDController.PIDSourceType.kRate)
         
-        self.encoders["L"].setDistancePerPulse(1.524/2454.0)
-        self.encoders["R"].setDistancePerPulse(1.524/2414.0)
+        self.encoders["L"].setDistancePerPulse(drive_encoders.L_dpp)
+        self.encoders["R"].setDistancePerPulse(drive_encoders.R_dpp)
         # Before, the encoders had different distancePerPulses. 
         # Now they are the same kind of encoder.
         # self.encoders["R"].setDistancePerPulse(1.524/5817.0)
 
         self.gearshift = SolenoidHandler(*solenoids.gearshift)
-        self.pot = AnalogPotentiometer(2, 100, -20)
 
 
     def set_left(self, power):

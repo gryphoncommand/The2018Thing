@@ -51,19 +51,16 @@ drive_motors.RF = 2, True
 drive_motors.RB = 3, True
 
 
-extra_motors = InfoPasser()
-
-extra_motors.arm_rotator_left = 4, False
-extra_motors.arm_rotator_right = 5, False
-
-
-
 drive_encoders = InfoPasser()
 
 # Each encoder has two ports on the RoboRIO DIO
 # Then, "inverted"
 drive_encoders.L = 0, 1, True
 drive_encoders.R = 2, 3, False
+
+# distance per pulse
+drive_encoders.L_dpp = 1.0/1610.0
+drive_encoders.R_dpp = 1.0/1610.0
 
 # range is a min, max of what speed (in ticks/time) are the encoders reading
 # lowgear is for low gear readings and highgear is for high gear readings
@@ -75,6 +72,21 @@ drive_encoders.L_H = (-4.184, 4.768)
 drive_encoders.L_L = (-2.213, 2.145)
 drive_encoders.R_H = (-4.580, 4.870)
 drive_encoders.R_L = (-2.197, 2.277)
+
+
+# was extra_motors
+arm_motors = InfoPasser()
+arm_motors.L = 4, False
+arm_motors.R = 5, False
+
+arm_encoders = InfoPasser()
+
+# Each encoder has two ports on the RoboRIO DIO
+# Then, "inverted"
+arm_encoders.L = 4, 5, True
+arm_encoders.R = 6, 7, False
+
+
 
 # PID controller
 
@@ -117,3 +129,4 @@ pid.R = (0.24, .02, 0, 0)
 pid.dist_L = (2, 0, 0, 0)
 pid.dist_R = (2, 0, 0, 0)
 pid.angle = (0.03, 0, 0, 0)
+

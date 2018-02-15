@@ -5,7 +5,10 @@ from hardware.solenoid import SolenoidHandler
 from hardware.motor import Motor
 from hardware.encoder import Encoder
 
-from robotmap import extra_motors, solenoids
+from wpilib import PIDController
+from wpilib.pidcontroller import PIDController
+
+from robotmap import arm_motors, arm_encoders, solenoids
 
 from puremath import Vector2D
 
@@ -22,9 +25,17 @@ class Arm(Subsystem):
         
         self.extender_solenoid = SolenoidHandler(*solenoids.armextender)
         self.grabber_solenoid = SolenoidHandler(*solenoids.grabber)
+        
+        self.rotator_motors = {}
+        self.rotator_motors["L"] = Motor(*arm_motors.L)
+        self.rotator_motors["R"] = Motor(*arm_motors.R)
 
-        self.rotator_motor_left = Motor(*extra_motors.arm_rotator_left)
-        self.rotator_motor_right = Motor(*extra_motors.arm_rotator_right)
+        self.rotator_encoders = {}
+        self.rotator_encoders["L"] = Encoder(*arm_encoders.L)
+        self.rotator_encoders["R"] = Encoder(*arm_encoders.R)
+        
+        self.rotator_encoders["L"].setPIDSourceType(PIDController.PIDSourceType.kRate)
+        self.rotator_encoders["R"].setPIDSourceType(PIDController.PIDSourceType.kRate)
 
 
     def set_extender(self, status):
@@ -34,8 +45,8 @@ class Arm(Subsystem):
         self.grabber_solenoid.set(status)
 
     def set_rotator(self, amount):
-        self.rotator_motor_left.set(amount)
-        self.rotator_motor_right.set(amount)
+        for rot_mot in self.rotator_motors:
+            self.rotator_motors[rot_mot].set(amount)
 
 
     def grabber_position(self):
@@ -53,8 +64,7 @@ class Arm(Subsystem):
         raise NotImplementedError()
 
     def stop_rotator(self):
-        self.rotator_motor_left.set(0.0)
-        self.rotator_motor_right.set(0.0)
+        self.set_rotator(0.0)
 
 
 

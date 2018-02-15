@@ -31,4 +31,4 @@ class ArmRotate(Command):
         subsystems.arm.set_rotator(rot_power)
 
     def end(self):
-        subsystems.arm.set_rotator(0)
+        subsystems.arm.stop_rotator()
