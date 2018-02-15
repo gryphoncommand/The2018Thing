@@ -67,6 +67,8 @@ drive_encoders.R = 2, 3, False
 
 # range is a min, max of what speed (in ticks/time) are the encoders reading
 # lowgear is for low gear readings and highgear is for high gear readings
+# Left Encoder - 2454 Ticks in ~5 Feet
+# Right Encoder - 2414 Ticks in ~5 Feet
 # L.H = left high gear
 # L.L = left low gear
 drive_encoders.L_H = (-4.184, 4.768)
@@ -112,3 +114,5 @@ navx_type = NavXType.SPI
 pid = InfoPasser()
 pid.L = (0.24, .02, 0, 0)
 pid.R = (0.24, .02, 0, 0)
+pid.dist_L = (2, 0, 0, 0)
+pid.dist_R = (2, 0, 0, 0)
