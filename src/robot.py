@@ -66,6 +66,7 @@ class The2018Thing(CommandBasedRobot):
         self.teleopProgram = wpilib.command.CommandGroup()
 
         self.teleopProgram.addParallel(PIDTankDriveJoystick())
+        #self.teleopProgram.addParallel(TankDriveJoystick())
         self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
         self.teleopProgram.addParallel(DumpInfo())
@@ -76,6 +77,10 @@ class The2018Thing(CommandBasedRobot):
 
     def autonomousInit(self):
         self.autonomousProgram = self.chooser.getSelected()
+        #self.autonomousProgram = wpilib.command.CommandGroup()
+        #self.autonomousProgram.addParallel(self.chooser.getSelected())
+        #self.autonomousProgram.addParallel(DumpInfo())
+
         if self.autonomousProgram is not None:
             self.autonomousProgram.start()
 

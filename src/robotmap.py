@@ -69,9 +69,9 @@ drive_encoders.R_dpp = 1.0/1610.0
 # L.H = left high gear
 # L.L = left low gear
 
-drive_encoders.L_H = (-4.85, 4.85)
+drive_encoders.L_H = (-4.85 * .98, 4.85 * .98)
 drive_encoders.R_H = (-4.85, 4.85)
-drive_encoders.L_L = (-2.24, 2.24)
+drive_encoders.L_L = (-2.24 * .98, 2.24 * .98)
 drive_encoders.R_L = (-2.24, 2.24)
 
 
@@ -87,6 +87,10 @@ arm_encoders = InfoPasser()
 arm_encoders.L = 4, 5, True
 arm_encoders.R = 6, 7, False
 
+
+joystick_info = InfoPasser()
+
+joystick_info.error = 0.05
 
 
 # PID controller
@@ -125,9 +129,10 @@ navx_type = NavXType.SPI
 
 # PID Constant values for the encoders. CHECK OVER!!!!!
 pid = InfoPasser()
-pid.L = (0.24, .02, 0, 0)
-pid.R = (0.24, .02, 0, 0)
+pid.L = (0.15, 0, 0, 0)
+pid.R = (0.15, 0, 0, 0)
 pid.dist_L = (2, 0, 0, 0)
 pid.dist_R = (2, 0, 0, 0)
-pid.angle = (0.03, 0, 0, 0)
+
+pid.angle = (0.0104, 0, 0, 0)
 

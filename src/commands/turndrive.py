@@ -9,33 +9,44 @@ from pid.pidnavx import PIDNavXSource
 
 class TurnDrive(Command):
     def __init__(self, _angle):
+        super().__init__('TurnDrive')
+
         self.angle = _angle
-        self.navx = PIDNavXSource(subsystems.sensors.navx)
-        self.PID = PIDController(pid.dist_L[0], pid.dist_L[1], pid.dist_L[2], pid.dist_L[3], self.navx, subsystems.tankdrive.set)
 
-        self.PID.setInputRange(-180, 180)
-        self.PID.setOutputRange(-1, 1)
+        def set_opposite(pw):
+            wpilib.SmartDashboard.putNumber("TurnDrive pidOutput", pw)
+            subsystems.tankdrive.set_right(pw)
+            subsystems.tankdrive.set_left(-pw)
+
+        #self.navx = PIDNavXSource(subsystems.sensors.navx)
+        self.PID = PIDController(pid.angle[0], pid.angle[1], pid.angle[2], pid.angle[3], subsystems.sensors.navx.getYaw, set_opposite)
+
+        self.PID.setInputRange(-180.0, 180.0)
+        self.PID.setOutputRange(-1.0, 1.0)
         self.PID.setContinuous(True)
-        self.PID.setAbsoluteTolerance(4)
+        self.PID.setAbsoluteTolerance(0.35)
 
-    def initalize(self):
-        self.val = self.navx.pidGet() + self.angle
-        if self.val > 180:
-            self.val -=360
-        elif self.val < -180:
+    def initialize(self):
+        self.val = subsystems.sensors.navx.getYaw() + self.angle
+        while self.val > 180:
+            self.val -= 360.0
+        while self.val < -180:
             self.val += 360
         self.PID.enable()
-        self.PID.setSetpoint(val)
 
     def execute(self):
         wpilib.SmartDashboard.putData("Angle PID", self.PID)
-
-    def isFinished(self):
-        return self.PID.onTarget()
-
-    def interrupted(self):
-        self.end()
+        wpilib.SmartDashboard.putNumber("Angle PID Setpoint", self.val)
+        subsystems.dump_info()
+        self.PID.setSetpoint(self.val)
+        
 
     def end(self):
         self.PID.disable()
         subsystems.tankdrive.stop()
+
+
+    def isFinished(self):
+        return self.PID.onTarget()
+        #return False
+

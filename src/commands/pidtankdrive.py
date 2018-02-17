@@ -7,10 +7,12 @@ import subsystems
 import oi
 from pid.pidmotor import PIDMotorSource, PIDMotorOutput
 
+import math
+
 from puremath.scaling import transform
 
 import robotmap
-from robotmap import axes, pid, Gearing
+from robotmap import axes, pid, Gearing, joystick_info
 import wpilib
 
 
@@ -31,14 +33,14 @@ class PIDTankDriveJoystick(Command):
 
         self.pid["L"] = PIDController(pid.L[0], pid.L[1], pid.L[2], pid.L[3], subsystems.tankdrive.encoders["L"], subsystems.tankdrive.set_left)
         self.pid["R"] = PIDController(pid.R[0], pid.R[1], pid.R[2], pid.R[3], subsystems.tankdrive.encoders["R"], subsystems.tankdrive.set_right)
-        
+
+
+    def update_pid(self):
         # self.applyPID(lambda p: p.setPIDSourceType(PIDController.PIDSourceType.kRate))
         self.applyPID(lambda p: p.setPIDSourceType(PIDController.PIDSourceType.kRate))
         self.applyPID(lambda p: p.setOutputRange(-1, 1))
         self.applyPID(lambda p: p.setContinuous(False))
 
-
-    def update_pid(self):
         gearing = subsystems.tankdrive.get_gearing()
         lrange = 0.0
         rrange = 0.0
@@ -63,6 +65,10 @@ class PIDTankDriveJoystick(Command):
     def initialize(self):
         self.applyPID(lambda pid: pid.enable())
 
+    def end(self):
+        self.applyPID(lambda pid: pid.disable())
+
+
     def applyPID(self, func):
         func(self.pid["L"])
         func(self.pid["R"])
@@ -70,48 +76,65 @@ class PIDTankDriveJoystick(Command):
     def execute(self):
         self.update_pid()
 
-        wpilib.SmartDashboard.putData("L PID", self.pid["L"])
-        wpilib.SmartDashboard.putData("R PID", self.pid["R"])
+        wpilib.SmartDashboard.putData("L Speed PID", self.pid["L"])
+        wpilib.SmartDashboard.putData("R Speed PID", self.pid["R"])
         # wpilib.LiveWindow.addSensor("Ticks", "Left Encoder",
         #                             subsystems.tankdrive.encoders["L"])
         # wpilib.LiveWindow.addSensor("Ticks", "Right Encoder",
         #                            subsystems.tankdrive.encoders["R"])
-        wpilib.SmartDashboard.putNumber("Left Encoder", subsystems.tankdrive.encoders["L"].getRate())
-        wpilib.SmartDashboard.putNumber("Right Encoder", subsystems.tankdrive.encoders["R"].getRate())
-
 
         joy = oi.joystick
         lpow = joy.getRawAxis(axes.L_y)
         rpow = joy.getRawAxis(axes.R_y)
 
-        wpilib.SmartDashboard.putString("tankdrive", str((lpow, rpow)))
+        avg_pow = (lpow + rpow) / 2.0
+        diff = abs(lpow - rpow)
+        
+        diffrange = 0.08
+
+        if diff < diffrange:
+            # hard average
+            #lpow, rpow = avg_pow, avg_pow
+            d_p = diff / diffrange
+            #d_p = d_p ** 3
+            d_p = math.pow(d_p, 1.0 / 3.0)
+
+            ldiff = lpow - avg_pow
+            rdiff = rpow - avg_pow
+
+            lpow = avg_pow + d_p * ldiff
+            rpow = avg_pow + d_p * rdiff
+
+
+        wpilib.SmartDashboard.putString("joystick", str((lpow, rpow)))
+
 
         gearing = subsystems.tankdrive.get_gearing()
         if gearing == Gearing.LOW:
-            if abs(lpow) <= .03: 
+            if abs(lpow) <= joystick_info.error: 
                 lpow = 0.0
             else:
                 lpow = transform(lpow, (-1, 1), robotmap.drive_encoders.L_L)
-            if abs(rpow) <= .03:
+            if abs(rpow) <= joystick_info.error:
                 rpow = 0.0
             else:
                 rpow = transform(rpow, (-1, 1), robotmap.drive_encoders.R_L)
 
         elif gearing == Gearing.HIGH:
-            if abs(lpow) <= .03: 
+            if abs(lpow) <= joystick_info.error: 
                 lpow = 0.0
             else:
                 lpow = transform(lpow, (-1, 1), robotmap.drive_encoders.L_H)
 
-            if abs(rpow) <= .03:
+            if abs(rpow) <= joystick_info.error:
                 rpow = 0.0
             else:
                 rpow = transform(rpow, (-1, 1), robotmap.drive_encoders.R_H)
 
+        wpilib.SmartDashboard.putString("setpoints", str((lpow, rpow)))
 
         self.pid["L"].setSetpoint(lpow)
         self.pid["R"].setSetpoint(rpow)
-
-    def end(self):
-        self.applyPID(lambda pid: pid.disable())
+        wpilib.SmartDashboard.putNumber("L Speed Setpoint", self.pid["L"].getSetpoint())
+        wpilib.SmartDashboard.putNumber("R Speed Setpoint", self.pid["R"].getSetpoint())
 
