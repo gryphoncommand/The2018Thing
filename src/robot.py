@@ -57,7 +57,7 @@ class The2018Thing(CommandBasedRobot):
         self.chooser = wpilib.SendableChooser()
 
         self.chooser.addDefault('PulseMotor', PulseMotor())
-        self.chooser.addObject("TankDistTest 5 Feet ", DriveToDistance(1.524, 1.524))
+        self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
         #self.chooser.addObject('PulseMotor', PulseMotor())
 

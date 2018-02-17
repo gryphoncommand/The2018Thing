@@ -45,22 +45,22 @@ drive_motors = InfoPasser()
 
 # L = left, R = right, F = front, B = back
 # each object has (port, reverse)
-drive_motors.LF = 0, False
-drive_motors.LB = 1, False
-drive_motors.RF = 2, True
-drive_motors.RB = 3, True
+drive_motors.LF = 0, True
+drive_motors.LB = 1, True
+drive_motors.RF = 2, False
+drive_motors.RB = 3, False
 
 
 drive_encoders = InfoPasser()
 
 # Each encoder has two ports on the RoboRIO DIO
 # Then, "inverted"
-drive_encoders.L = 0, 1, True
-drive_encoders.R = 2, 3, False
+drive_encoders.L = 0, 1, False
+drive_encoders.R = 2, 3, True
 
 # distance per pulse
-drive_encoders.L_dpp = 1.0/1610.0
-drive_encoders.R_dpp = 1.0/1610.0
+drive_encoders.L_dpp = 1.0/(.875 * 1.524 * 1610.0)
+drive_encoders.R_dpp = 1.0/(.875 * 1.524 * 1610.0)
 
 # range is a min, max of what speed (in ticks/time) are the encoders reading
 # lowgear is for low gear readings and highgear is for high gear readings
@@ -131,8 +131,8 @@ navx_type = NavXType.SPI
 pid = InfoPasser()
 pid.L = (0.15, 0, 0, 0)
 pid.R = (0.15, 0, 0, 0)
-pid.dist_L = (2, 0, 0, 0)
-pid.dist_R = (2, 0, 0, 0)
+pid.dist_L = (2.0, 0, 0, 0)
+pid.dist_R = (2.0, 0, 0, 0)
 
 pid.angle = (0.0104, 0, 0, 0)
 

@@ -15,8 +15,8 @@ class TurnDrive(Command):
 
         def set_opposite(pw):
             wpilib.SmartDashboard.putNumber("TurnDrive pidOutput", pw)
-            subsystems.tankdrive.set_right(pw)
-            subsystems.tankdrive.set_left(-pw)
+            subsystems.tankdrive.set_left(pw)
+            subsystems.tankdrive.set_right(-pw)
 
         #self.navx = PIDNavXSource(subsystems.sensors.navx)
         self.PID = PIDController(pid.angle[0], pid.angle[1], pid.angle[2], pid.angle[3], subsystems.sensors.navx.getYaw, set_opposite)

@@ -84,8 +84,8 @@ class PIDTankDriveJoystick(Command):
         #                            subsystems.tankdrive.encoders["R"])
 
         joy = oi.joystick
-        lpow = joy.getRawAxis(axes.L_y)
-        rpow = joy.getRawAxis(axes.R_y)
+        lpow = joy.getRawAxis(axes.L_y) * -1
+        rpow = joy.getRawAxis(axes.R_y) * -1
 
         avg_pow = (lpow + rpow) / 2.0
         diff = abs(lpow - rpow)
@@ -108,28 +108,28 @@ class PIDTankDriveJoystick(Command):
 
         wpilib.SmartDashboard.putString("joystick", str((lpow, rpow)))
 
-
+        jr = (-1, 1)
         gearing = subsystems.tankdrive.get_gearing()
         if gearing == Gearing.LOW:
             if abs(lpow) <= joystick_info.error: 
                 lpow = 0.0
             else:
-                lpow = transform(lpow, (-1, 1), robotmap.drive_encoders.L_L)
+                lpow = transform(lpow, jr, robotmap.drive_encoders.L_L)
             if abs(rpow) <= joystick_info.error:
                 rpow = 0.0
             else:
-                rpow = transform(rpow, (-1, 1), robotmap.drive_encoders.R_L)
+                rpow = transform(rpow, jr, robotmap.drive_encoders.R_L)
 
         elif gearing == Gearing.HIGH:
             if abs(lpow) <= joystick_info.error: 
                 lpow = 0.0
             else:
-                lpow = transform(lpow, (-1, 1), robotmap.drive_encoders.L_H)
+                lpow = transform(lpow, jr, robotmap.drive_encoders.L_H)
 
             if abs(rpow) <= joystick_info.error:
                 rpow = 0.0
             else:
-                rpow = transform(rpow, (-1, 1), robotmap.drive_encoders.R_H)
+                rpow = transform(rpow, jr, robotmap.drive_encoders.R_H)
 
         wpilib.SmartDashboard.putString("setpoints", str((lpow, rpow)))
 

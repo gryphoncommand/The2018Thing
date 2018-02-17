@@ -16,6 +16,8 @@ Remember
 
 class DriveToDistance(Command):
     def __init__(self, _ldist, _rdist):
+        super().__init__('DriveToDistance')
+
         self.ldist = _ldist
         self.rdist = _rdist
 
@@ -26,38 +28,41 @@ class DriveToDistance(Command):
     def update_pid(self):
         gearing = subsystems.tankdrive.get_gearing()
 
+        self.applyPID(lambda p: p.setInputRange(-10**8, 10**8))
         self.applyPID(lambda p: p.setOutputRange(-1, 1))
         self.applyPID(lambda p: p.setContinuous(False))
-        self.applyPID(lambda p: p.useDistance())
+        #self.applyPID(lambda p: p.useDistance())
+        self.applyPID(lambda p: p.setPIDSourceType(PIDController.PIDSourceType.kDisplacement))
         
         subsystems.tankdrive.set_gearing(Gearing.LOW)
 
-        self.pid["L"].setAbsoluteTolerance(.1)
-        self.pid["R"].setAbsoluteTolerance(.1)
+        self.pid["L"].setAbsoluteTolerance(.03)
+        self.pid["R"].setAbsoluteTolerance(.03)
 
-        self.applyPID(lambda pid: pid.enable())
         
 
     def applyPID(self, func):
         func(self.pid["L"])
         func(self.pid["R"])
 
-    def initalize(self):
+    def initialize(self):
         self.update_pid()
-        
-        self.LPID.setSetpoint(subsystems.tankdrive.encoders["L"].getDistance() + self.ldist)
-        self.RPID.setSetpoint(subsystems.tankdrive.encoders["R"].getDistance() + self.rdist)
+        self.applyPID(lambda pid: pid.enable())
 
-
-    def end(self):
-        self.applyPID(lambda pid: pid.disable())
+        self.lset, self.rset = subsystems.tankdrive.encoders["L"].getDistance() + self.ldist, subsystems.tankdrive.encoders["R"].getDistance() + self.rdist
 
 
     def execute(self):
         self.update_pid()
 
+        self.pid["L"].setSetpoint(self.lset)
+        self.pid["R"].setSetpoint(self.rset)
+
         wpilib.SmartDashboard.putData("L Distance PID", self.pid["L"])
         wpilib.SmartDashboard.putData("R Distance PID", self.pid["R"])
+
+    def end(self):
+        self.applyPID(lambda pid: pid.disable())
 
     def isFinished(self):
         return self.pid["L"].onTarget() and self.pid["R"].onTarget()
