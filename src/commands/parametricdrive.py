@@ -1,3 +1,6 @@
+
+import time
+
 import wpilib
 
 from wpilib.command import Command
@@ -5,21 +8,16 @@ from wpilib.pidcontroller import PIDController
 import subsystems
 from robotmap import pid, Gearing
 
-'''
-PARAMS:
-The distance is in meters.
-Remember 
-1 meter = 3.28084 feet.
-1 meter = 39.3701 inches.
-'''
 
+class ParametricDrive(Command):
+    def __init__(self, _ldist, _rdist, timeout):
+        super().__init__('ParametricDrive')
 
-class DriveToDistance(Command):
-    def __init__(self, _ldist, _rdist):
-        super().__init__('DriveToDistance')
-
+        # these should be lambda t: t as a setpoint for distance
         self.ldist = _ldist
         self.rdist = _rdist
+
+        self.timeout = timeout
 
         self.pid = {}
         self.pid["L"] = PIDController(pid.dist_L[0], pid.dist_L[1], pid.dist_L[2], pid.dist_L[3], subsystems.tankdrive.encoders["L"], subsystems.tankdrive.set_left)
@@ -48,14 +46,22 @@ class DriveToDistance(Command):
         self.update_pid()
         self.applyPID(lambda pid: pid.enable())
 
-        self.lset, self.rset = subsystems.tankdrive.encoders["L"].getDistance() + self.ldist, subsystems.tankdrive.encoders["R"].getDistance() + self.rdist
+        self.start_time = time.time()
+
+        self.start_ldist = subsystems.tankdrive.encoders["L"].getDistance()
+        self.start_rdist = subsystems.tankdrive.encoders["R"].getDistance()
 
 
     def execute(self):
         self.update_pid()
 
-        self.pid["L"].setSetpoint(self.lset)
-        self.pid["R"].setSetpoint(self.rset)
+        dt = time.time() - self.start_time
+
+        lset = self.start_ldist + self.ldist(dt)
+        rset = self.start_rdist + self.rdist(dt)
+
+        self.pid["L"].setSetpoint(lset)
+        self.pid["R"].setSetpoint(rset)
 
         wpilib.SmartDashboard.putData("L Distance PID", self.pid["L"])
         wpilib.SmartDashboard.putData("R Distance PID", self.pid["R"])
@@ -64,7 +70,7 @@ class DriveToDistance(Command):
         self.applyPID(lambda pid: pid.disable())
 
     def isFinished(self):
-        return self.pid["L"].onTarget() and self.pid["R"].onTarget()
+        return time.time() - self.start_time >= self.timeout
 
     def interrupted(self):
         self.end()

@@ -6,8 +6,13 @@ from commandbased import CommandBasedRobot
 import oi
 import subsystems
 
+import robotmap
+
+import math
+
 
 from commands.dumpinfo import DumpInfo
+from commands.parametricdrive import ParametricDrive
 
 from commands.pulsemotor import PulseMotor
 from commands.drivedist import DriveToDistance
@@ -59,6 +64,24 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addDefault('PulseMotor', PulseMotor())
         self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
+
+        _circle_radius = 3.0353 / 2.0
+        _inner_radius = robotmap.measures.ROBOT_WHEELTOWHEEL_WIDTH / 2.0
+
+        def ldist(t):
+#            return t * 2
+            ratio = _circle_radius - _inner_radius
+            return (t / 4.0) * ratio
+            #return 2 * math.pi * (_circle_radius - _inner_radius) * t / (12 * 360)
+        def rdist(t):
+            ratio = _circle_radius + _inner_radius
+            return (t / 4.0) * ratio
+            #return  * t / (12 * 360)
+
+        self.chooser.addObject("ParametricCircle", ParametricDrive(ldist, rdist, 26))
+
+
+
         #self.chooser.addObject('PulseMotor', PulseMotor())
 
         wpilib.SmartDashboard.putData('Autonomous Program', self.chooser)

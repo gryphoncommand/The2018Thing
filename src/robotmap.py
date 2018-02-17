@@ -136,3 +136,8 @@ pid.dist_R = (2.0, 0, 0, 0)
 
 pid.angle = (0.0104, 0, 0, 0)
 
+
+measures = InfoPasser()
+# in meters
+measures.ROBOT_WHEELTOWHEEL_WIDTH = 0.64
+
