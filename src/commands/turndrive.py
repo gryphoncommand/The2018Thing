@@ -21,36 +21,34 @@ class TurnDrive(Command):
         #self.navx = PIDNavXSource(subsystems.sensors.navx)
         self.PID = PIDController(pid.angle[0], pid.angle[1], pid.angle[2], pid.angle[3], subsystems.sensors.navx.getYaw, set_opposite)
 
-        self.is_init = False
-
         self.PID.setInputRange(-180.0, 180.0)
         self.PID.setOutputRange(-1.0, 1.0)
         self.PID.setContinuous(True)
         self.PID.setAbsoluteTolerance(0.35)
 
     def initialize(self):
-        self.val = subsystems.sensors.navx.getYaw() + self.angle
-        while self.val > 180:
-            self.val -= 360.0
-        while self.val < -180:
-            self.val += 360
+        val = subsystems.sensors.navx.getYaw() + self.angle
+        while val > 180:
+            val -= 360.0
+        while val < -180:
+            val += 360
+
+        self.PID.setSetpoint(val)
+
         self.PID.enable()
 
-    def execute(self):
-        if not self.is_init:
-            self.initialize()
-            self.is_init = True
 
-        wpilib.SmartDashboard.putData("Angle PID", self.PID)
-        wpilib.SmartDashboard.putNumber("Angle PID Setpoint", self.val)
-        subsystems.dump_info()
-        self.PID.setSetpoint(self.val)
+    def execute(self):
+        pass
+        #wpilib.SmartDashboard.putData("Angle PID", self.PID)
+        #wpilib.SmartDashboard.putNumber("Angle PID Setpoint", self.val)
+        #subsystems.dump_info()
         
 
     def end(self):
         self.PID.disable()
         subsystems.tankdrive.stop()
-        self.is_init = False
+        #self.is_init = False
 
 
     def isFinished(self):

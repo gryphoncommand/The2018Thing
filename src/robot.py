@@ -64,10 +64,10 @@ class The2018Thing(CommandBasedRobot):
 
         self.chooser = wpilib.SendableChooser()
 
-        self.chooser.addDefault('PulseMotor', PulseMotor())
+        #self.chooser.addDefault('PulseMotor', PulseMotor())
+        self.chooser.addDefault("SEQUENCE", Sequence())
         self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
-        self.chooser.addObject("SEQUENCE", Sequence())
 
         _circle_radius = 3.0353 / 2.0
         _inner_radius = robotmap.measures.ROBOT_WHEELTOWHEEL_WIDTH / 2.0
