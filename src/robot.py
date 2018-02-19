@@ -25,6 +25,7 @@ from commands.tankdrivejoystick import TankDriveJoystick
 from commands.pidtankdrive import PIDTankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
+from commands.donothing import DoNothing
 
 #from commands.correcttip import CorrectTip
 
@@ -60,14 +61,14 @@ class The2018Thing(CommandBasedRobot):
         subsystems.init()
 
         self.autonomousProgram = PulseMotor()
-        #self.teleopProgram = TankDriveJoystick()
 
         self.chooser = wpilib.SendableChooser()
 
-        #self.chooser.addDefault('PulseMotor', PulseMotor())
         self.chooser.addDefault("SEQUENCE", Sequence())
         self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
+        self.chooser.addObject("Do Nothing Auto", DoNothing(15))
+        self.chooser.addObject("Minimal Auto", DriveToDistance(3.048, 3.048))
 
         _circle_radius = 3.0353 / 2.0
         _inner_radius = robotmap.measures.ROBOT_WHEELTOWHEEL_WIDTH / 2.0
@@ -83,6 +84,9 @@ class The2018Thing(CommandBasedRobot):
             #return  * t / (12 * 360)
 
         self.chooser.addObject("ParametricCircle", ParametricDrive(ldist, rdist, 26))
+
+        # The Auto Line is 10 ft (~3.048 meters) from the start point. May have to be tweaked a bit. 
+        self.chooser.addObject("Drive Forward", DriveToDistance(3.048, 3.048))
 
 
 
