@@ -40,6 +40,8 @@ class Gearing(Enum):
 
 
 
-from robotmap_alpha import *
+#from robotmap_alpha import *
 
-#from robotmap_beta import *
+from robotmap_beta import *
+
+

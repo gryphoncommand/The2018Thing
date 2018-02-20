@@ -23,6 +23,7 @@ class Arm(Subsystem):
 
         super().__init__("Arm")
         
+        self.final_extender_solenoid = SolenoidHandler(*solenoids.final_armextender)
         self.extender_solenoid = SolenoidHandler(*solenoids.armextender)
         self.grabber_solenoid = SolenoidHandler(*solenoids.grabber)
         
@@ -40,6 +41,9 @@ class Arm(Subsystem):
 
     def set_extender(self, status):
         self.extender_solenoid.set(status)
+
+    def set_final_extender(self, status):
+        self.final_extender_solenoid.set(status)
 
     def set_grabber(self, status):
         self.grabber_solenoid.set(status)

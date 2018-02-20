@@ -65,11 +65,27 @@ class ParametricDrive(Command):
         t = time.time() - self.start_time
         pos = Vector2D(self.xpos(self.t), self.ypos(self.t))
 
-        dpos = pos - self.pos
+        dpos = pos - self.last_pos
 
         wheel_offset = Vector2D.from_polar(radius=measures.ROBOT_WHEELTOWHEEL_WIDTH / 2.0, angle=dpos.angle + math.pi / 2.0)
 
-        self.pos = pos
+        left_wheel = pos + wheel_offset
+        right_wheel = pos - wheel_offset
+
+        dleft = abs(left_wheel - self.last_lwheel_pos)
+        dright = abs(right_wheel - self.last_rwheel_pos)
+
+        self.l_dist += dleft
+        self.r_dist += dright
+
+        self.pid["L"].setSetpoint(self.l_start + self.l_dist)
+        self.pid["R"].setSetpoint(self.r_start + self.r_dist)
+
+        self.last_pos = pos
+        self.last_lwheel_pos = left_wheel
+        self.last_rwheel_pos = right_wheel
+
+
 
         """
 

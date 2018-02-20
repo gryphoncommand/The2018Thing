@@ -36,5 +36,10 @@ class ArmExtender(Command):
             elif vec.y < 0.01:
                 subsystems.arm.set_extender(False)
 
+            if vec.x > 0.01:
+                subsystems.arm.set_final_extender(True)
+            elif vec.x < 0.01:
+                subsystems.arm.set_final_extender(False)
+
     def end(self):
         subsystems.arm.set_extender(False)
