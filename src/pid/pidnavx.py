@@ -10,7 +10,12 @@ class PIDNavXSource(PIDSource):
 
     def pidGet(self):
         # Simple checking of SourceType
-        if self.getPIDSourceType() == PIDSource.PIDSourceType.kDisplacement:
-            return self.navx.getYaw()
-        else:
-            raise TypeError("Invalid NavX PIDSourceType")
+        v = self.navx.getYaw()
+        return v
+
+    def setPIDSourceType(self, v):
+        if v != PIDSource.PIDSourceType.kDisplacement:
+            raise Exception("Must use displacement for navx")
+
+    def getPIDSourceType(self):
+        return PIDSource.PIDSourceType.kDisplacement

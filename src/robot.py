@@ -70,20 +70,7 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addObject("Do Nothing Auto", DoNothing(15))
         self.chooser.addObject("Minimal Auto", DriveToDistance(3.048, 3.048))
 
-        _circle_radius = 3.0353 / 2.0
-        _inner_radius = robotmap.measures.ROBOT_WHEELTOWHEEL_WIDTH / 2.0
-
-        def ldist(t):
-#            return t * 2
-            ratio = _circle_radius - _inner_radius
-            return (t / 4.0) * ratio
-            #return 2 * math.pi * (_circle_radius - _inner_radius) * t / (12 * 360)
-        def rdist(t):
-            ratio = _circle_radius + _inner_radius
-            return (t / 4.0) * ratio
-            #return  * t / (12 * 360)
-
-        self.chooser.addObject("ParametricCircle", ParametricDrive(ldist, rdist, 26))
+        #self.chooser.addObject("ParametricLine", ParametricDrive(lambda t: .1 * t, lambda t: .4 * t, 5))
 
         # The Auto Line is 10 ft (~3.048 meters) from the start point. May have to be tweaked a bit. 
         self.chooser.addObject("Drive Forward", DriveToDistance(3.048, 3.048))

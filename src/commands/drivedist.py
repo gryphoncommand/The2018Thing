@@ -18,6 +18,8 @@ class DriveToDistance(Command):
     def __init__(self, _ldist, _rdist):
         super().__init__('DriveToDistance')
 
+        self.requires(subsystems.tankdrive)
+
         self.ldist = _ldist
         self.rdist = _rdist
 
@@ -26,7 +28,7 @@ class DriveToDistance(Command):
         self.pid["R"] = PIDController(pid.dist_R[0], pid.dist_R[1], pid.dist_R[2], pid.dist_R[3], subsystems.tankdrive.encoders["R"], subsystems.tankdrive.set_right)
 
         self.applyPID(lambda p: p.setInputRange(-10**8, 10**8))
-        self.applyPID(lambda p: p.setOutputRange(-1, 1))
+        self.applyPID(lambda p: p.setOutputRange(-.7, .7))
         self.applyPID(lambda p: p.setContinuous(False))
         #self.applyPID(lambda p: p.useDistance())
         self.applyPID(lambda p: p.setPIDSourceType(PIDController.PIDSourceType.kDisplacement))

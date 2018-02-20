@@ -35,6 +35,9 @@ class Vector2D:
                 raise Exception("When creating a Vector2D, use Vector2D(x, y)")
             self.p = x, y
 
+    def copy(self):
+        return Vector2D(*self.p)
+
     def __str__(self):
         return str(self.p)
 
