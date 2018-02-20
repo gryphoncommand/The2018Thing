@@ -26,6 +26,8 @@ from commands.pidtankdrive import PIDTankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
 from commands.donothing import DoNothing
+from commands.aligntobox import AlignToBox
+
 
 #from commands.correcttip import CorrectTip
 
@@ -69,6 +71,9 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
         self.chooser.addObject("Do Nothing Auto", DoNothing(15))
         self.chooser.addObject("Minimal Auto", DriveToDistance(3.048, 3.048))
+        self.chooser.addObject("Align To Box", AlignToBox())
+
+        
 
         _circle_radius = 3.0353 / 2.0
         _inner_radius = robotmap.measures.ROBOT_WHEELTOWHEEL_WIDTH / 2.0
