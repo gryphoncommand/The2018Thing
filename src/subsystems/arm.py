@@ -5,6 +5,8 @@ from hardware.solenoid import SolenoidHandler
 from hardware.motor import Motor
 from hardware.encoder import Encoder
 
+from commands.armrotate import ArmRotate_reset
+
 from wpilib import PIDController
 from wpilib.pidcontroller import PIDController
 
@@ -38,6 +40,14 @@ class Arm(Subsystem):
         self.rotator_encoders["L"].setPIDSourceType(PIDController.PIDSourceType.kRate)
         self.rotator_encoders["R"].setPIDSourceType(PIDController.PIDSourceType.kRate)
 
+        self.rotator_lock_status = wpilib.SendableChooser()
+        self.rotator_lock_status.addDefault("Locked", True)
+        self.rotator_lock_status.addObject("Unlocked", False)
+
+        wpilib.SmartDashboard.putData('Arm Rotator', self.rotator_lock_status)
+
+        wpilib.SmartDashboard.putData('Reset Arm Rotator', ArmRotate_reset())
+        
 
     def set_extender(self, status):
         self.extender_solenoid.set(status)
@@ -48,9 +58,20 @@ class Arm(Subsystem):
     def set_grabber(self, status):
         self.grabber_solenoid.set(status)
 
+
     def set_rotator(self, amount):
-        for rot_mot in self.rotator_motors:
-            self.rotator_motors[rot_mot].set(amount)
+        ticks = self.rotator_encoders["L"].getDistance()
+        if self.rotator_lock_status.getSelected():
+
+            if ticks <= 0 and amount < 0:
+                for rot_mot in self.rotator_motors:
+                    self.rotator_motors[rot_mot].set(0.0)
+            else:
+                for rot_mot in self.rotator_motors:
+                    self.rotator_motors[rot_mot].set(amount)
+        else:
+            for rot_mot in self.rotator_motors:
+                self.rotator_motors[rot_mot].set(amount)
 
 
     def grabber_position(self):

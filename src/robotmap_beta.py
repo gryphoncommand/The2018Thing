@@ -88,7 +88,7 @@ solenoids.grabber = [(4, True), (5, False)]
 
 
 # arm extender
-solenoids.armextender = [(2, False), (3, True)]
+solenoids.armextender = [(2, True), (3, False)]
 
 solenoids.final_armextender = [(6, False), (7, True)]
 

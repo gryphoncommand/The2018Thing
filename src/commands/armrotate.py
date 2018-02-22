@@ -8,6 +8,24 @@ import oi
 from robotmap import axes
 
 
+class ArmRotate_reset(Command):
+
+    def __init__(self):
+        super().__init__('ArmRotate_reset')
+
+        # self.requires(subsystems.arm)
+
+
+
+    def initialize(self):
+        subsystems.arm.rotator_encoders["L"].reset()
+
+    def execute(self):
+        pass
+
+    def isFinished(self):
+        return True
+
 class ArmRotate(Command):
     """
 
@@ -25,9 +43,15 @@ class ArmRotate(Command):
 
     def execute(self):
         rot_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
+        ticks = subsystems.arm.rotator_encoders["L"].getDistance()
 
+        subsystems.smartdashboard.putNumber("rot_encoder", ticks)
         subsystems.smartdashboard.putNumber("rot_power", rot_power)
 
+        #if ticks <= 0 and rot_power < 0:
+        #    subsystems.arm.set_rotator(0)
+        #else:
+        #    subsystems.arm.set_rotator(rot_power)
         subsystems.arm.set_rotator(rot_power)
 
     def end(self):
