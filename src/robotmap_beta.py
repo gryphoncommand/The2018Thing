@@ -111,3 +111,12 @@ measures = InfoPasser()
 # in meters
 measures.ROBOT_WHEELTOWHEEL_WIDTH = 0.64
 
+# the radius (in meters), cutoff that the MoveToBox command stops moving at
+measures.ROBOT_CUBE_DISTANCE_CUTOFF = 0.67
+
+
+
+
+
+
+

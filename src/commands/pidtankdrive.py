@@ -89,8 +89,10 @@ class PIDTankDriveJoystick(Command):
 
         avg_pow = (lpow + rpow) / 2.0
         diff = abs(lpow - rpow)
+
+        """
         
-        diffrange = 0.08
+        diffrange = 0.12
 
         if diff < diffrange:
             # hard average
@@ -105,6 +107,7 @@ class PIDTankDriveJoystick(Command):
             lpow = avg_pow + d_p * ldiff
             rpow = avg_pow + d_p * rdiff
 
+        """
 
         wpilib.SmartDashboard.putString("joystick", str((lpow, rpow)))
 

@@ -37,11 +37,16 @@ class Gearing(Enum):
     LOW = 0
     HIGH = 1
 
+buttons = InfoPasser()
+
+buttons.X = 2
+buttons.SQUARE = 1
+buttons.L_BUMPER = 5
+buttons.R_BUMPER = 6
 
 
+from robotmap_alpha import *
 
-#from robotmap_alpha import *
-
-from robotmap_beta import *
+#from robotmap_beta import *
 
 

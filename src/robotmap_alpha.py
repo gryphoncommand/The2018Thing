@@ -79,16 +79,19 @@ axes.R_t = 4
 
 
 
+
 solenoids = InfoPasser()
 
 # solenoid ports
 # main and complimentary ports and inverted
 # port 0, port 1, isInverted
-solenoids.gearshift = [(0, False), (1, True)]
-solenoids.grabber = [(4, True), (5, False)]
+solenoids.gearshift = [(4, True), (5, False)]
+solenoids.grabber = [(0, True), (1, False)]
 
 # arm extender
 solenoids.armextender = [(2, False), (3, True)]
+solenoids.final_armextender = [(6, True), (7, False)]
+
 
 #solenoids.gearshift1 
 
@@ -105,7 +108,17 @@ pid.dist_R = (1.7, 0, 0, 0)
 pid.angle = (0.014, 0, 0, 0)
 
 
+
 measures = InfoPasser()
 # in meters
 measures.ROBOT_WHEELTOWHEEL_WIDTH = 0.64
+
+# the radius (in meters), cutoff that the MoveToBox command stops moving at
+measures.ROBOT_CUBE_DISTANCE_CUTOFF = 0.67
+
+
+
+
+
+
 
