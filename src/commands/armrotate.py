@@ -18,7 +18,7 @@ class ArmRotate_reset(Command):
 
 
     def initialize(self):
-        subsystems.arm.rotator_encoders["L"].reset()
+        subsystems.arm.reset_enc()
 
     def execute(self):
         pass
@@ -43,7 +43,7 @@ class ArmRotate(Command):
 
     def execute(self):
         rot_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
-        ticks = subsystems.arm.rotator_encoders["L"].getDistance()
+        ticks = subsystems.arm.rotator_encoders["R"].getDistance()
 
         subsystems.smartdashboard.putNumber("rot_encoder", ticks)
         subsystems.smartdashboard.putNumber("rot_power", rot_power)

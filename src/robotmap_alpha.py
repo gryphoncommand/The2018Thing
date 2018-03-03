@@ -18,6 +18,10 @@ drive_motors.LB = 1, True
 drive_motors.RF = 2, False
 drive_motors.RB = 3, False
 
+arm_stopper = InfoPasser()
+arm_stopper.dio = 6
+arm_stopper.default = True
+
 
 drive_encoders = InfoPasser()
 
@@ -52,8 +56,8 @@ arm_encoders = InfoPasser()
 
 # Each encoder has two ports on the RoboRIO DIO
 # Then, "inverted"
-arm_encoders.L = 4, 5, True
-arm_encoders.R = 6, 7, False
+arm_encoders.L = 6, 7, True
+arm_encoders.R = 4, 5, False
 
 
 joystick_info = InfoPasser()

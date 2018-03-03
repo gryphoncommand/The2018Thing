@@ -10,9 +10,10 @@ from commands.armrotate import ArmRotate_reset
 from wpilib import PIDController
 from wpilib.pidcontroller import PIDController
 
-from robotmap import arm_motors, arm_encoders, solenoids
+from robotmap import arm_motors, arm_encoders, solenoids, arm_stopper
 
 from puremath import Vector2D
+from wpilib.digitalinput import DigitalInput
 
 class Arm(Subsystem):
     """
@@ -24,7 +25,8 @@ class Arm(Subsystem):
     def __init__(self):
 
         super().__init__("Arm")
-        
+
+        self.limiter = DigitalInput(arm_stopper.dio)
         self.final_extender_solenoid = SolenoidHandler(*solenoids.final_armextender)
         self.extender_solenoid = SolenoidHandler(*solenoids.armextender)
         self.grabber_solenoid = SolenoidHandler(*solenoids.grabber)
@@ -34,20 +36,11 @@ class Arm(Subsystem):
         self.rotator_motors["R"] = Motor(*arm_motors.R)
 
         self.rotator_encoders = {}
-        self.rotator_encoders["L"] = Encoder(*arm_encoders.L)
+        #self.rotator_encoders["L"] = Encoder(*arm_encoders.L)
         self.rotator_encoders["R"] = Encoder(*arm_encoders.R)
         
-        self.rotator_encoders["L"].setPIDSourceType(PIDController.PIDSourceType.kRate)
+        #self.rotator_encoders["L"].setPIDSourceType(PIDController.PIDSourceType.kRate)
         self.rotator_encoders["R"].setPIDSourceType(PIDController.PIDSourceType.kRate)
-
-        self.rotator_lock_status = wpilib.SendableChooser()
-        self.rotator_lock_status.addDefault("Locked", True)
-        self.rotator_lock_status.addObject("Unlocked", False)
-
-        wpilib.SmartDashboard.putData('Arm Rotator', self.rotator_lock_status)
-
-        wpilib.SmartDashboard.putData('Reset Arm Rotator', ArmRotate_reset())
-        
 
     def set_extender(self, status):
         self.extender_solenoid.set(status)
@@ -58,21 +51,18 @@ class Arm(Subsystem):
     def set_grabber(self, status):
         self.grabber_solenoid.set(status)
 
+    def get_limiter(self):
+        return self.limiter.get()
 
     def set_rotator(self, amount):
-        ticks = self.rotator_encoders["L"].getDistance()
-        if self.rotator_lock_status.getSelected():
+        if self.get_limiter() != arm_stopper.default:
+            self.reset_enc()
+        for rot_mot in self.rotator_motors:
+            self.rotator_motors[rot_mot].set(amount)
 
-            if ticks <= 0 and amount < 0:
-                for rot_mot in self.rotator_motors:
-                    self.rotator_motors[rot_mot].set(0.0)
-            else:
-                for rot_mot in self.rotator_motors:
-                    self.rotator_motors[rot_mot].set(amount)
-        else:
-            for rot_mot in self.rotator_motors:
-                self.rotator_motors[rot_mot].set(amount)
-
+    def reset_enc(self):
+        for k in self.rotator_encoders.keys():
+            self.rotator_encoders[k].reset()
 
     def grabber_position(self):
         """
