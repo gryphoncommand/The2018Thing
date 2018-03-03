@@ -15,6 +15,9 @@ Created on 1-20-2018 by Tyler Duckworth
 class Sensors(Subsystem):
     
     def __init__(self):
+        super().__init__("Sensors")
         self.navx = NavX(navx_type)
         # self.navx = None
+        wpilib.LiveWindow.addSensor("Sensors", "PDP", wpilib.PowerDistributionPanel(0))    
+
 

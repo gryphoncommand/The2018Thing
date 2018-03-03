@@ -68,9 +68,8 @@ def dump_info():
         smartdashboard.putNumber("L Encoder Distance", tankdrive.encoders["L"].getDistance())
         smartdashboard.putNumber("R Encoder Distance", tankdrive.encoders["R"].getDistance())
 
-
+    wpilib.LiveWindow.run()
     smartdashboard.putNumber("Battery Voltage", DriverStation.getInstance().getBatteryVoltage())
     smartdashboard.putString("NavX Displacement (X, Y, Z)", str(sensors.navx.getDisplacement()))
     smartdashboard.putNumber("NavX Yaw", sensors.navx.getYaw())
-    
 
