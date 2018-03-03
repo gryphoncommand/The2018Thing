@@ -52,7 +52,7 @@ class ArmRotate(Command):
         #    subsystems.arm.set_rotator(0)
         #else:
         #    subsystems.arm.set_rotator(rot_power)
-        subsystems.arm.set_rotator(rot_power)
+        subsystems.arm.set_rotator(rot_power, raw=False)
 
     def end(self):
         subsystems.arm.stop_rotator()

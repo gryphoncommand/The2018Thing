@@ -59,6 +59,9 @@ arm_encoders = InfoPasser()
 arm_encoders.L = 6, 7, True
 arm_encoders.R = 4, 5, False
 
+# the scale so that it is from (0, 1)
+arm_encoders.L_dpp = 1.0/975.0
+arm_encoders.R_dpp = 1.0/975.0
 
 joystick_info = InfoPasser()
 
