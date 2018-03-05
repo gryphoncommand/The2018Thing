@@ -124,6 +124,8 @@ class Arm(Subsystem):
             res.radius += ARM_STAGE2_LENGTH
 
         """
+        res = Vector2D.from_polar(ARM_STAGE1_LENGTH, inclinometer.angle())
+
 
         raise NotImplementedError()
 

@@ -26,7 +26,6 @@ from wpilib.pidcontroller import PIDController
 import subsystems
 from robotmap import pid, Gearing, measures
 from networktables import NetworkTables
-from pid.pidnt import PIDnt
 
 
 '''
@@ -51,15 +50,15 @@ class MoveToBox(Command):
             dft = 1.0
 
         # PIDSource Init
-        src = PIDnt("center_x", dft)
+        src = BoxNTPIDSource("center_x", dft)
 
         self.avg_lr_pow = .5
         self.lr_amp_diff = .3
 
         def output(pid_write):
             # pid_write is in (-1, 1)
-            lpow = self.avg_lr_power + pid_write * self.lr_amp_diff
-            rpow = self.avg_lr_power - pid_write * self.lr_amp_diff
+            lpow = self.avg_lr_pow + pid_write * self.lr_amp_diff
+            rpow = self.avg_lr_pow - pid_write * self.lr_amp_diff
 
             subsystems.tankdrive.set(lpow, rpow)
 
@@ -92,7 +91,7 @@ class MoveToBox(Command):
     def isFinished(self):
         #return self.PID.onTarget()
         # in pixels
-        rad = subsystems.smartdashboard.getNumber("radius")
+        rad = subsystems.smartdashboard.getNumber("radius", 0)
 
         return rad >= 0 and rad < measures.ROBOT_CUBE_DISTANCE_CUTOFF
 

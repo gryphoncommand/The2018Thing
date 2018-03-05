@@ -44,6 +44,8 @@ class ArmRotate(Command):
     def execute(self):
         rot_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
         ticks = subsystems.arm.rotator_encoders["R"].getDistance()
+        print("get distance", ticks)
+       # print(subsystems.arm.rotator_encoders["R"])
 
         subsystems.smartdashboard.putNumber("rot_encoder", ticks)
         subsystems.smartdashboard.putNumber("rot_power", rot_power)

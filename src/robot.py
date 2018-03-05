@@ -26,6 +26,10 @@ from commands.pidtankdrive import PIDTankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
 from commands.donothing import DoNothing
+from commands.sameside import SameSide
+from commands.invsameside import InvSameSide
+from commands.movetobox import MoveToBox
+
 
 #from commands.correcttip import CorrectTip
 
@@ -71,6 +75,9 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
         self.chooser.addObject("Do Nothing Auto", DoNothing(15))
         self.chooser.addObject("Minimal Auto", DriveToDistance(3.048, 3.048))
+        self.chooser.addObject("Move to Box", MoveToBox())
+        self.chooser.addObject("Far Scale Test", SameSide(True))
+        self.chooser.addObject("Near Scale Test", InvSameSide(True))
 
         #self.chooser.addObject("ParametricLine", ParametricDrive(lambda t: .1 * t, lambda t: .4 * t, 5))
 
