@@ -123,6 +123,8 @@ measures.ROBOT_WHEELTOWHEEL_WIDTH = 0.64
 # the radius (in meters), cutoff that the MoveToBox command stops moving at
 measures.ROBOT_CUBE_DISTANCE_CUTOFF = 0.67
 
+# the angle range the arm can operate in
+measures.ROBOT_ARM_ANGLE_RANGE = (-30, 90)
 
 
 
