@@ -15,9 +15,8 @@ Remember
 
 
 class DriveToDistance(Command):
-    def __init__(self, _ldist, _rdist, _units=False):
+    def __init__(self, _ldist, _rdist):
         super().__init__('DriveToDistance')
-        self.units = _units
         self.requires(subsystems.tankdrive)
 
         self.ldist = _ldist
@@ -43,8 +42,6 @@ class DriveToDistance(Command):
     def initialize(self):
 
         subsystems.tankdrive.set_gearing(Gearing.LOW)
-        if self.units:
-            self.ldist, self.rdist = self.ldist*0.3048, self.rdist*0.3048
 
         self.lset, self.rset = subsystems.tankdrive.encoders["L"].getDistance() + self.ldist, subsystems.tankdrive.encoders["R"].getDistance() + self.rdist
 

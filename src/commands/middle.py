@@ -1,6 +1,6 @@
 import wpilib
 from wpilib.command import CommandGroup
-from commands.drivedist import DriveToDistance
+from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 # TODO: Add import statement for the DeliverCube Command.
 

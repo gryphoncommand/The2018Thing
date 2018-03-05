@@ -16,7 +16,7 @@ from commands.dumpinfo import DumpInfo
 from commands.parametricdrive import ParametricDrive
 
 from commands.pulsemotor import PulseMotor
-from commands.drivedist import DriveToDistance
+from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 
 from commands.sequence import Sequence
