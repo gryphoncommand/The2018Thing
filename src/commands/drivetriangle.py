@@ -4,7 +4,7 @@ from wpilib.command import CommandGroup
 import subsystems
 import math
 import robotmap
-from commands.drivedist import DriveToDistance
+from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 
 """

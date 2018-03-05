@@ -4,7 +4,7 @@ from wpilib.command import CommandGroup
 
 import subsystems
 
-from commands.drivedist import DriveToDistance
+from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 
 class Sequence(CommandGroup):

@@ -7,10 +7,13 @@ from hardware.encoder import Encoder
 
 from commands.armrotate import ArmRotate_reset
 
+from puremath.scaling import transform
+
+
 from wpilib import PIDController
 from wpilib.pidcontroller import PIDController
 
-from robotmap import arm_motors, arm_encoders, solenoids, arm_stopper
+from robotmap import arm_motors, arm_encoders, solenoids, arm_stopper, measures
 
 from puremath import Vector2D
 from wpilib.digitalinput import DigitalInput
@@ -56,6 +59,9 @@ class Arm(Subsystem):
 
     def get_limiter(self):
         return self.limiter.get()
+
+    def get_arm_angle(self):
+        return transform(self.get_arm_proportion(), (0, 1), measures.ROBOT_ARM_ANGLE_RANGE)
 
     def get_arm_proportion(self):
         r_ticks = []
