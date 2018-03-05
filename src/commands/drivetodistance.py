@@ -15,7 +15,7 @@ Remember
 
 
 class DriveToDistance(Command):
-    def __init__(self, _ldist, _rdist):
+    def __init__(self, _ldist, _rdist, dummy = None):
         super().__init__('DriveToDistance')
         self.requires(subsystems.tankdrive)
 

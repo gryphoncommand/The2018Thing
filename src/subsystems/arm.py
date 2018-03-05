@@ -109,8 +109,21 @@ class Arm(Subsystem):
                 slope = 1.0 - .6 * (4 * (abs(p - .5) - .25))
                 return x * slope
 
+            
+
+        
+            
+        angle = self.get_arm_angle()
+        print(angle)
+        measures.ROBOT_ARM_ANGLE_RANGE = (-45, 90)
+        if angle > (measures.ROBOT_ARM_ANGLE_RANGE[0] + 30) and angle < (measures.ROBOT_ARM_ANGLE_RANGE[1] -30):
+            print('retract true')
+        else:
+            print('retract false')
+        
         if not raw:
             amount = envelope(amount)
+        
 
         for rot_mot in self.rotator_motors:
             self.rotator_motors[rot_mot].set(amount)
