@@ -30,16 +30,19 @@ class ArmExtender(Command):
         pov = oi.joystick.getPOV()
         
         if pov != -1:
-            if pov in (0, 45, 90):
-                subsystems.arm.set_extender(True)
-            if pov in (180, 180+45, 270):
-                subsystems.arm.set_extender(False)
+
+            if pov in (0, 180):
+                subsystems.arm.set_final_extender(False)
 
             if pov in (45, 90, ):
                 subsystems.arm.set_final_extender(False)
             if pov in (270, 180+45):
                 subsystems.arm.set_final_extender(True)
 
+            if pov in (0, 45, 90):
+                subsystems.arm.set_extender(True)
+            if pov in (180, 180+45, 270):
+                subsystems.arm.set_extender(False)
 
     def end(self):
         subsystems.arm.set_extender(False)
