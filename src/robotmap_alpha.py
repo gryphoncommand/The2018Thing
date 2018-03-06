@@ -97,7 +97,7 @@ solenoids.grabber = [(0, True), (1, False)]
 
 # arm extender
 solenoids.armextender = [(2, False), (3, True)]
-solenoids.final_armextender = [(6, True), (7, False)]
+solenoids.final_armextender = [(6, False), (7, True)]
 
 
 #solenoids.gearshift1 

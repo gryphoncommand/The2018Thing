@@ -30,18 +30,16 @@ class ArmExtender(Command):
         pov = oi.joystick.getPOV()
         
         if pov != -1:
-            vec = Vector2D.from_polar(radius=1, angle=90 - pov, degrees=True)
-            if vec.y > 0.01:
+            if pov in (0, 45, 90):
                 subsystems.arm.set_extender(True)
-            elif vec.y < 0.01:
+            if pov in (180, 180+45, 270):
                 subsystems.arm.set_extender(False)
 
-            if vec.x > 0.01:
-                subsystems.arm.set_extender(True)
-                subsystems.arm.set_final_extender(True)
-            elif vec.x < 0.01:
-                subsystems.arm.set_extender(False)
+            if pov in (45, 90, ):
                 subsystems.arm.set_final_extender(False)
+            if pov in (270, 180+45):
+                subsystems.arm.set_final_extender(True)
+
 
     def end(self):
         subsystems.arm.set_extender(False)
