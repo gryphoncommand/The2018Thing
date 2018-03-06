@@ -126,8 +126,8 @@ measures.ROBOT_CUBE_DISTANCE_CUTOFF = 0.67
 # the angle range the arm can operate in
 measures.ROBOT_ARM_ANGLE_RANGE = (-45, 90)
 
-measures.ROBOT_ARM_RETRACT_ANGLE_RANGE = (-15, 15)
+measures.ROBOT_ARM_RETRACT_ANGLE_RANGE = (-43, 68)
 
-
+measures.ROBOT_ARM_RETRACT_TIME = 2.0
 
 

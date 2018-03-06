@@ -6,7 +6,7 @@ from hardware.motor import Motor
 from hardware.encoder import Encoder
 
 from commands.armrotate import ArmRotate_reset
-
+import time
 from puremath.scaling import transform
 
 
@@ -48,8 +48,19 @@ class Arm(Subsystem):
         self.rotator_encoders["R"].setDistancePerPulse(arm_encoders.R_dpp)
 
 
+        self.last_rot_time = None
+
+
     def set_extender(self, status):
+        #angle = self.get_arm_angle()
+        #if angle < measures.ROBOT_ARM_RETRACT_ANGLE_RANGE[0] or angle > measures.ROBOT_ARM_RETRACT_ANGLE_RANGE[1]:
         self.extender_solenoid.set(status)
+            #print('yes')
+        #else:
+        #    self.extender_solenoid.set(False)
+
+    def get_extender(self):
+        return self.extender_solenoid.get()
 
     def set_final_extender(self, status):
         self.final_extender_solenoid.set(status)
@@ -111,16 +122,26 @@ class Arm(Subsystem):
 
             
 
-        
             
         angle = self.get_arm_angle()
-        print(angle)
-        measures.ROBOT_ARM_ANGLE_RANGE = (-45, 90)
-        if angle > (measures.ROBOT_ARM_ANGLE_RANGE[0] + 30) and angle < (measures.ROBOT_ARM_ANGLE_RANGE[1] -30):
-            print('retract true')
-        else:
-            print('retract false')
-        
+        #print (angle)
+        if (angle > measures.ROBOT_ARM_RETRACT_ANGLE_RANGE[0] and angle < measures.ROBOT_ARM_RETRACT_ANGLE_RANGE[1] and self.get_extender()) or (self.last_rot_time is not None):
+            #self.set_final_extender(False)
+            #if self.last_rot_time is None:
+            if self.last_rot_time is not None:
+                self.last_rot_time = time.time()
+
+
+            if self.last_rot_time is not None and (time.time() - self.last_rot_time >= measures.ROBOT_ARM_RETRACT_TIME):
+                self.last_rot_time = None
+            amount = 0
+            #self.set_rotator(0)
+            self.set_extender(False)
+            #time.sleep(measures.ROBOT_ARM_RETRACT_TIME)
+            #elif time.time() - self.last_rot_time > measures.ROBOT_ARM_RETRACT_TIME:
+            #    self.last_rot_time = None
+            #return
+
         if not raw:
             amount = envelope(amount)
         
