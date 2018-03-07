@@ -74,13 +74,6 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
         self.chooser.addObject("Do Nothing Auto", DoNothing(15))
-<<<<<<< HEAD
-        self.chooser.addObject("Minimal Auto", DriveToDistance(3.048, 3.048))
-        self.chooser.addObject("Move to Box", MoveToBox())
-        self.chooser.addObject("Far Scale Test", SameSide(True))
-        self.chooser.addObject("Near Scale Test", InvSameSide(True))
-=======
->>>>>>> Auto
 
         #self.chooser.addObject("ParametricLine", ParametricDrive(lambda t: .1 * t, lambda t: .4 * t, 5))
 
