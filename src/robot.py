@@ -19,9 +19,6 @@ from commands.parametricdrive import ParametricDrive
 from commands.pulsemotor import PulseMotor
 from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
-from commands.auto.left_pos import Left_POS
-from commands.auto.right_pos import Right_POS
-from commands.auto.middle import Middle
 from commands.auto.donothing import DoNothing
 
 from commands.sequence import Sequence
@@ -30,6 +27,7 @@ from commands.tankdrivejoystick import TankDriveJoystick
 from commands.pidtankdrive import PIDTankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
+import commands
 
 #from commands.correcttip import CorrectTip
 
@@ -79,19 +77,17 @@ class The2018Thing(CommandBasedRobot):
 
         # The Auto Line is 10 ft (~3.048 meters) from the start point. May have to be tweaked a bit. 
         self.chooser.addObject("Drive Forward", DriveToDistance(3.048, 3.048))
-        self.poschooser = wpilib.SendableChooser()
-        self.poschooser.addObject("Left", "l")
-        self.poschooser.addObject("Middle", "m")
-        self.poschooser.addObject("Right", "r")
-        self.poschooser.addObject("Do Nothing", "dn")
-        self.poschooser.addObject("Minimal Auto", "min")
+        self.chooser.addObject("COMP: Left", "l")
+        self.chooser.addObject("COMP: Middle", "m")
+        self.chooser.addObject("COMP: Right", "r")
+        self.chooser.addObject("COMP: Do Nothing", DoNothing(15))
+        self.chooser.addObject("COMP: Minimal Auto", DriveToDistance(3.048, 3.048))
         
 
 
         #self.chooser.addObject('PulseMotor', PulseMotor())
 
         wpilib.SmartDashboard.putData('Autonomous Program', self.chooser)
-        wpilib.SmartDashboard.putData('Auto', self.poschooser)
 
         self.teleopProgram = wpilib.command.CommandGroup()
 
@@ -106,22 +102,21 @@ class The2018Thing(CommandBasedRobot):
         oi.init()
 
     def autonomousInit(self):
-        choice = self.poschooser.getSelected()
+        choice = self.chooser.getSelected()
         data = DriverStation.getInstance().getGameSpecificMessage()
         if data is not None:
             datas = list(data)
             if choice == "l":
-                self.autonomousProgram = Left_POS(data)
+                self.autonomousProgram = commands.auto.get_left_command(data)
             elif choice == "m":
                 self.autonomousProgram = Middle(datas[0] == "L")
             elif choice == "r":
-                self.autonomousProgram = Right_POS(data)
-            elif choice == "min":
-                self.autonomousProgram = DriveToDistance(3.048, 3.048)
-            else: 
-                self.autonomousProgram = DoNothing(15)
+                print ("GETTING 'r' command, data: " + str(data))
+                self.autonomousProgram = commands.auto.get_right_command(data)
+            else:
+                self.autonomousProgram = choice
         else:
-            self.autonomousProgram = self.chooser.getSelected()
+            self.autonomousProgram = DoNothing(15)
         #self.autonomousProgram = wpilib.command.CommandGroup()
         #self.autonomousProgram.addParallel(self.chooser.getSelected())
         #self.autonomousProgram.addParallel(DumpInfo())

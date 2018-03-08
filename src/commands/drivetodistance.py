@@ -58,6 +58,7 @@ class DriveToDistance(Command):
 
     def end(self):
         self.applyPID(lambda pid: pid.disable())
+        subsystems.tankdrive.set(0, 0)
 
     def isFinished(self):
         return self.pid["L"].onTarget() and self.pid["R"].onTarget()
