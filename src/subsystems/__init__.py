@@ -72,4 +72,19 @@ def dump_info():
     smartdashboard.putNumber("Battery Voltage", DriverStation.getInstance().getBatteryVoltage())
     smartdashboard.putString("NavX Displacement (X, Y, Z)", str(sensors.navx.getDisplacement()))
     smartdashboard.putNumber("NavX Yaw", sensors.navx.getYaw())
+    smartdashboard.putNumber("Raw Analog Value", sensors.pressure_sensor.getValue())
+    smartdashboard.putNumber("Valve Pressure", get_pressure(sensors.pressure_sensor))
+
+"""
+Following the Equation given to us in the Analog Pressure Sensor Datasheet:
+
+    p = 250(Out/Supply) - 25
+    
+    p - pressure
+    Out - Output Voltage
+    Supply - Supply Voltage (Usually 5 Volts) [In robotmap]
+"""
+def get_pressure(sensor):
+    reading = sensor.getVoltage()
+    return 250*(reading/robotmap.solenoids.supply_voltage) - 25
 

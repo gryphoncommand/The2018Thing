@@ -2,7 +2,7 @@ import wpilib
 
 from wpilib.command.subsystem import Subsystem 
 from hardware.navx import NavX
-from robotmap import navx_type
+from robotmap import navx_type, solenoids
 
 
 '''
@@ -17,7 +17,10 @@ class Sensors(Subsystem):
     def __init__(self):
         super().__init__("Sensors")
         self.navx = NavX(navx_type)
+        self.pressure_sensor = wpilib.AnalogInput(solenoids.pressure_sensor)
         # self.navx = None
-        wpilib.LiveWindow.addSensor("Sensors", "PDP", wpilib.PowerDistributionPanel(0))    
+        wpilib.LiveWindow.addSensor("Sensors", "PDP", wpilib.PowerDistributionPanel(0)) 
+
+
 
 

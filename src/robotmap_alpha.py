@@ -99,6 +99,12 @@ solenoids.grabber = [(0, True), (1, False)]
 solenoids.armextender = [(2, False), (3, True)]
 solenoids.final_armextender = [(6, False), (7, True)]
 
+# RoboRIO Analog In Port for the analog pressure sensor
+solenoids.pressure_sensor = 1
+
+# The supply voltage for the analog pressure sensor
+solenoids.supply_voltage = 5
+
 
 #solenoids.gearshift1 
 
