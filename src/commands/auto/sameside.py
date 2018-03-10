@@ -49,10 +49,10 @@ class SameSide(CommandGroup):
 
         # Turn Slightly towards goal. NOTE: Look into raising arm before you get to the scale.
         if direction == Direction.LEFT:
-            self.addSequential(TurnDrive(auto_measures.angle_scale), 2.0)
+            self.addSequential(TurnDrive(auto_measures._scale), 2.0)
             dist = math.hypot(auto_measures.to_scale - start_turning_point, auto_measures.robot_starting_offset)
             self.addSequential(DriveToDistance(dist, dist))
-            self.addSequential(TurnDrive(-auto_measures.angle_scale), 2.0)
+            self.addSequential(TurnDrive(-auto_measures._scale), 2.0)
             # TODO: deliver cube
             self.addSequential(DoNothing(3))
             self.addSequential(TurnDrive(180), 2.0)
@@ -60,10 +60,10 @@ class SameSide(CommandGroup):
 
             
         elif direction == Direction.RIGHT:
-            self.addSequential(TurnDrive(-auto_measures.angle_scale), 2.0)
+            self.addSequential(TurnDrive(-auto_measures._scale), 2.0)
             dist = math.hypot(auto_measures.to_scale - start_turning_point, auto_measures.robot_starting_offset)
             self.addSequential(DriveToDistance(dist, dist))
-            self.addSequential(TurnDrive(auto_measures.angle_scale), 2.0)
+            self.addSequential(TurnDrive(auto_measures._scale), 2.0)
             # TODO: deliver cube
             self.addSequential(DoNothing(3))
 
@@ -75,7 +75,7 @@ class SameSide(CommandGroup):
         # Raise Arm and extend (Deliver Cube Method)
         # self.addSequential( [Imported Cube Delivery method] )
 
-        # Turn to cube TODO: Find this angle
+        # Turn to cube TODO: Find this 
         #if direction == Direction.LEFT:
         
         
