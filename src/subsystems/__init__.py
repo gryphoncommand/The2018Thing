@@ -72,7 +72,7 @@ def dump_info():
     smartdashboard.putNumber("Battery Voltage", DriverStation.getInstance().getBatteryVoltage())
     smartdashboard.putString("NavX Displacement (X, Y, Z)", str(sensors.navx.getDisplacement()))
     smartdashboard.putNumber("NavX Yaw", sensors.navx.getYaw())
-    smartdashboard.putNumber("Raw Analog Value", sensors.pressure_sensor.getValue())
+    smartdashboard.putNumber("Raw Analog Value", sensors.pressure_sensor.getVoltage())
     smartdashboard.putNumber("Valve Pressure", get_pressure(sensors.pressure_sensor))
 
 """
