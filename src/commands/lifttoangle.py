@@ -23,21 +23,40 @@ class LiftToAngle(Command):
         self.angle = _angle
         #to do need to also control second rotator motor
 
+        # angle, in degrees, to rotate it:
+        """
+
+        'A' is about 45 degrees
+
+        'B' is 0 degrees
+
+        'C' is about -45 degrees
+
+        |      A
+        |    x
+        |  x
+        |x
+        |----------B
+        | x
+        |   x
+        |     x
+        |       C
+
+        """
+
         # TODO: Substitute in the min and max value in the transform() function
-        self.PID = PIDController(0.03, 0.0, 0.0, subsystems.arm.get_arm_proportion, subsystems.arm.set_rotator)
+        self.PID = PIDController(0.03, 0.0, 0.0, subsystems.arm.get_arm_angle, subsystems.arm.set_rotator)
 
         # TODO: Refine InputRange and AbsoluteTolerance
-        self.PID.setInputRange(0, 1)
-        self.PID.setAbsoluteTolerance(0.03)
+        self.PID.setInputRange(*measures.ROBOT_ARM_ANGLE_RANGE)
+        self.PID.setAbsoluteTolerance(1.0)
 
         self.PID.setContinuous(False)
         self.PID.setOutputRange(-1, 1)
 
 
     def initalize(self):
-        self.setpoint = transform(self.angle, measures.ROBOT_ARM_ANGLE_RANGE, (0, 1))
-
-        self.PID.setSetpoint(self.setpoint)
+        self.PID.setSetpoint(self.angle)
         self.PID.enable()
 
     def isFinished(self):

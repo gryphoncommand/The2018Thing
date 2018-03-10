@@ -17,6 +17,7 @@ class Encoder(Encoder):
                            Encoder.EncodingType.k4X)
     def useDistance(self):
         self.setPIDSourceType(Encoder.PIDSourceType.kDisplacement)
+
     def useRate(self):
         self.setPIDSourceType(Encoder.PIDSourceType.kRate)
 
