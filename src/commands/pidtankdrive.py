@@ -68,6 +68,7 @@ class PIDTankDriveJoystick(Command):
     def initialize(self):
         self.applyPID(lambda pid: pid.enable())
         self.readings = []
+        self.use_pid = True
 
     def end(self):
         self.applyPID(lambda pid: pid.disable())
@@ -181,5 +182,5 @@ class PIDTankDriveJoystick(Command):
             subsystems.tankdrive.set(lpow, rpow)
             print("Bruh, you done mess up the encoders.")
 
-        wpilib.SmartDashboard.putBoolean("Tank Drive is using PID?", use_pid)
+        wpilib.SmartDashboard.putBoolean("Tank Drive is using PID?", self.use_pid)
 

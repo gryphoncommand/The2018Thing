@@ -5,7 +5,7 @@ import subsystems
 import oi
 
 from robotmap import axes, pid, measures
-from puremath import transform
+from puremath.scaling import transform
 import wpilib
 
 '''
@@ -20,6 +20,7 @@ import wpilib
 
 class LiftToAngle(Command):
     def __init__(self, _angle):
+        super().__init__("LiftToAngle")
         self.angle = _angle
         #to do need to also control second rotator motor
 
@@ -45,7 +46,11 @@ class LiftToAngle(Command):
         """
 
         # TODO: Substitute in the min and max value in the transform() function
-        self.PID = PIDController(0.03, 0.0, 0.0, subsystems.arm.get_arm_angle, subsystems.arm.set_rotator)
+        def handle_pidout(x):
+            print (x)
+            print ("angle : " + str(subsystems.arm.get_arm_angle()))
+            subsystems.arm.set_rotator(x)
+        self.PID = PIDController(0.4, 0.0, 0.0, subsystems.arm.get_arm_angle, handle_pidout)
 
         # TODO: Refine InputRange and AbsoluteTolerance
         self.PID.setInputRange(*measures.ROBOT_ARM_ANGLE_RANGE)
@@ -63,6 +68,10 @@ class LiftToAngle(Command):
         return self.PID.onTarget()
 
     def execute(self):
+        self.PID.setSetpoint(self.angle)
+        self.PID.enable()
+        #self.PID.enable()
+        #print ("  !!!  EXEC")
         # Does this work? It feeds in a distance, 
         # and trys to get as close to that distance by manipulating the input and output.
         #self.PID.setSetpoint(self.setpoint)

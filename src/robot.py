@@ -70,7 +70,7 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addDefault("SEQUENCE", Sequence())
         self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
-        self.chooser.addObject("Turn Arm Horizontal", LiftToAngle(0))
+        self.chooser.addObject("Turn Arm Horizontal", LiftToAngle(90))
         self.chooser.addObject("Do Nothing Auto", DoNothing(15))
 
         #self.chooser.addObject("ParametricLine", ParametricDrive(lambda t: .1 * t, lambda t: .4 * t, 5))
