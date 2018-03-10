@@ -30,6 +30,8 @@ class PIDTankDriveJoystick(Command):
         self.requires(subsystems.tankdrive)
         self.pid_n = 20
 
+        self.use_pid = True
+
         self.pid = {}
 
         self.pid["L"] = PIDController(pid.L[0], pid.L[1], pid.L[2], pid.L[3], subsystems.tankdrive.encoders["L"], subsystems.tankdrive.set_left)
@@ -166,7 +168,7 @@ class PIDTankDriveJoystick(Command):
         
         use_pid = is_changed or (self.readings[-1]["l_pow"] == 0 and self.readings[-1]["r_pow"] == 0)
 
-        if use_pid:
+        if use_pid and self.use_pid:
             self.applyPID(lambda pid: pid.enable())
             
             self.pid["L"].setSetpoint(slpow)
@@ -174,6 +176,7 @@ class PIDTankDriveJoystick(Command):
             wpilib.SmartDashboard.putNumber("L Speed Setpoint", self.pid["L"].getSetpoint())
             wpilib.SmartDashboard.putNumber("R Speed Setpoint", self.pid["R"].getSetpoint())
         else:
+            self.use_pid = False
             self.applyPID(lambda pid: pid.disable())
             subsystems.tankdrive.set(lpow, rpow)
             print("Bruh, you done mess up the encoders.")
