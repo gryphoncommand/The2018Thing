@@ -11,14 +11,13 @@ import robotmap
 
 import math
 
-from commands.dumpinfo import DumpInfo
 from commands.parametricdrive import ParametricDrive
 
 from commands.pulsemotor import PulseMotor
 from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
-from commands.lifttoangle import LiftToAngle
+from commands.lifttoproportion import LiftToProportion
 
 from commands.sequence import Sequence
 
@@ -70,7 +69,7 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addDefault("SEQUENCE", Sequence())
         self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
-        self.chooser.addObject("Turn Arm Horizontal", LiftToAngle(90))
+        self.chooser.addObject("Turn Arm Horizontal", LiftToProportion(robotmap.measures.ROBOT_ARM_HORIZONTAL))
         self.chooser.addObject("Do Nothing Auto", DoNothing(15))
 
         #self.chooser.addObject("ParametricLine", ParametricDrive(lambda t: .1 * t, lambda t: .4 * t, 5))
@@ -84,11 +83,9 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addObject("COMP: Minimal Auto", DriveToDistance(3.048, 3.048))
         
 
-
         #self.chooser.addObject('PulseMotor', PulseMotor())
 
         wpilib.SmartDashboard.putData('Autonomous Program', self.chooser)
-
 
         self.teleopProgram = wpilib.command.CommandGroup()
 
@@ -97,7 +94,6 @@ class The2018Thing(CommandBasedRobot):
 
         self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
-        self.teleopProgram.addParallel(DumpInfo())
 
         #self.teleopProgram.addParallel(NavXCommand())
         #self.teleopProgram.addParallel(CorrectTip())
@@ -122,13 +118,29 @@ class The2018Thing(CommandBasedRobot):
             self.autonomousProgram = DoNothing(15)
         #self.autonomousProgram = wpilib.command.CommandGroup()
         #self.autonomousProgram.addParallel(self.chooser.getSelected())
-        #self.autonomousProgram.addParallel(DumpInfo())
 
         if self.autonomousProgram is not None:
             self.autonomousProgram.start()
     
     def teleopInit(self):
         self.teleopProgram.start()
+
+    def teleopPeriodic(self):
+        subsystems.dump_info()
+        super().teleopPeriodic()
+    
+    def autonomousPeriodic(self):
+        subsystems.dump_info()
+        super().autonomousPeriodic()
+
+    def disabledPeriodic(self):
+        subsystems.dump_info()
+        super().disabledPeriodic()
+    
+    def testPeriodic(self):
+        subsystems.dump_info()
+        super().testPeriodic()
+
 
 if __name__ == '__main__':
     wpilib.run(The2018Thing)

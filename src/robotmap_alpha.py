@@ -60,8 +60,8 @@ arm_encoders.L = 6, 7, True
 arm_encoders.R = 4, 5, False
 
 # the scale so that it is from (0, 1)
-arm_encoders.L_dpp = 1.0/932.0
-arm_encoders.R_dpp = 1.0/932.0
+arm_encoders.L_dpp = 1.0/950.0
+arm_encoders.R_dpp = 1.0/950.0
 
 joystick_info = InfoPasser()
 
@@ -130,12 +130,17 @@ measures.ROBOT_WHEELTOWHEEL_WIDTH = 0.64
 measures.ROBOT_CUBE_DISTANCE_CUTOFF = 0.67
 
 # the angle range the arm can operate in
-measures.ROBOT_ARM_ANGLE_RANGE = (-45.0, 90.0)
+#measures.ROBOT_ARM_ANGLE_RANGE = (-45.0, 90.0)
 
-measures.ROBOT_ARM_PROPORTION_ARNGE = (0.0, 1.0)
+measures.ROBOT_ARM_RANGE = (0.0, 1.0)
 
-measures.ROBOT_ARM_RETRACT_ANGLE_RANGE = (-43, 68)
+# TODO: measures these as proportions
+measures.ROBOT_ARM_RETRACT_RANGE = (.0834, .8484)
 
-measures.ROBOT_ARM_RETRACT_TIME = 2.0
+measures.ROBOT_ARM_HORIZONTAL = 0.41
+
+
+
+measures.ROBOT_ARM_RETRACT_TIME = 3.0
 
 

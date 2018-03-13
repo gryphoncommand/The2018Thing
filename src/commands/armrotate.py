@@ -42,18 +42,14 @@ class ArmRotate(Command):
         pass
 
     def execute(self):
-        rot_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
+        arm_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
        # print(subsystems.arm.rotator_encoders["R"])
-
-        subsystems.smartdashboard.putNumber("rot_encoder", subsystems.arm.get_arm_proportion())
-        subsystems.smartdashboard.putNumber("rot_angle", subsystems.arm.get_arm_angle())
-        subsystems.smartdashboard.putNumber("rot_power", rot_power)
 
         #if ticks <= 0 and rot_power < 0:
         #    subsystems.arm.set_rotator(0)
         #else:
         #    subsystems.arm.set_rotator(rot_power)
-        subsystems.arm.set_rotator(rot_power, raw=False)
+        subsystems.arm.set_rotator(arm_power, raw=False)
 
     def end(self):
         subsystems.arm.stop_rotator()

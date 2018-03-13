@@ -62,18 +62,28 @@ def init():
 
 def dump_info():
     if hasattr(tankdrive, "encoders"):
-        smartdashboard.putNumber("L Encoder Speed", tankdrive.encoders["L"].getRate())
-        smartdashboard.putNumber("R Encoder Speed", tankdrive.encoders["R"].getRate())
+        smartdashboard.putNumber("left_enc_speed", tankdrive.encoders["L"].getRate())
+        smartdashboard.putNumber("left_enc_distance", tankdrive.encoders["L"].getDistance())
 
-        smartdashboard.putNumber("L Encoder Distance", tankdrive.encoders["L"].getDistance())
-        smartdashboard.putNumber("R Encoder Distance", tankdrive.encoders["R"].getDistance())
+        smartdashboard.putNumber("right_enc_speed", tankdrive.encoders["R"].getRate())
+        smartdashboard.putNumber("right_enc_distance", tankdrive.encoders["R"].getDistance())
+
+    smartdashboard.putNumber("arm_proportion", arm.get_arm_proportion())
+    smartdashboard.putNumber("battery_voltage", DriverStation.getInstance().getBatteryVoltage())
+
+    disp = sensors.navx.getDisplacement()
+
+    smartdashboard.putNumber("navx_distance_x", disp[0])
+    smartdashboard.putNumber("navx_distance_y", disp[1])
+    smartdashboard.putNumber("navx_distance_z", disp[2])
+
+    smartdashboard.putNumber("navx_yaw", sensors.navx.getYaw())
+
+    smartdashboard.putNumber("pressure_psi", sensors.get_pressure())
+
 
     wpilib.LiveWindow.run()
-    smartdashboard.putNumber("Battery Voltage", DriverStation.getInstance().getBatteryVoltage())
-    smartdashboard.putString("NavX Displacement (X, Y, Z)", str(sensors.navx.getDisplacement()))
-    smartdashboard.putNumber("NavX Yaw", sensors.navx.getYaw())
-    smartdashboard.putNumber("Raw Analog Value", sensors.pressure_sensor.getVoltage())
-    smartdashboard.putNumber("Valve Pressure", get_pressure(sensors.pressure_sensor))
+
 
 """
 Following the Equation given to us in the Analog Pressure Sensor Datasheet:
@@ -84,7 +94,3 @@ Following the Equation given to us in the Analog Pressure Sensor Datasheet:
     Out - Output Voltage
     Supply - Supply Voltage (Usually 5 Volts) [In robotmap]
 """
-def get_pressure(sensor):
-    reading = sensor.getVoltage()
-    return 250*(reading/robotmap.solenoids.supply_voltage) - 25
-

@@ -82,8 +82,8 @@ class PIDTankDriveJoystick(Command):
 
         self.update_pid()
 
-        wpilib.SmartDashboard.putData("L Speed PID", self.pid["L"])
-        wpilib.SmartDashboard.putData("R Speed PID", self.pid["R"])
+        wpilib.SmartDashboard.putData("tankdrive_left_speed_pid", self.pid["L"])
+        wpilib.SmartDashboard.putData("tankdrive_right_speed_pid", self.pid["R"])
         # wpilib.LiveWindow.addSensor("Ticks", "Left Encoder",
         #                             subsystems.tankdrive.encoders["L"])
         # wpilib.LiveWindow.addSensor("Ticks", "Right Encoder",
@@ -150,8 +150,6 @@ class PIDTankDriveJoystick(Command):
                     is_changed = True
 
 
-        wpilib.SmartDashboard.putString("joystick", str((lpow, rpow)))
-
         jr = (-1, 1)
         gearing = subsystems.tankdrive.get_gearing()
 
@@ -165,8 +163,6 @@ class PIDTankDriveJoystick(Command):
             slpow = transform(lpow, jr, robotmap.drive_encoders.L_H)
             srpow = transform(rpow, jr, robotmap.drive_encoders.R_H)
 
-        wpilib.SmartDashboard.putString("setpoints", str((slpow, srpow)))
-        
         use_pid = is_changed or (self.readings[-1]["l_pow"] == 0 and self.readings[-1]["r_pow"] == 0)
 
         if use_pid and self.use_pid:
@@ -174,13 +170,13 @@ class PIDTankDriveJoystick(Command):
             
             self.pid["L"].setSetpoint(slpow)
             self.pid["R"].setSetpoint(srpow)
-            wpilib.SmartDashboard.putNumber("L Speed Setpoint", self.pid["L"].getSetpoint())
-            wpilib.SmartDashboard.putNumber("R Speed Setpoint", self.pid["R"].getSetpoint())
+            wpilib.SmartDashboard.putNumber("tankdrive_left_speed_setpoint", self.pid["L"].getSetpoint())
+            wpilib.SmartDashboard.putNumber("tankdrive_right_speed_setpoint", self.pid["R"].getSetpoint())
         else:
             self.use_pid = False
             self.applyPID(lambda pid: pid.disable())
             subsystems.tankdrive.set(lpow, rpow)
             print("Bruh, you done mess up the encoders.")
 
-        wpilib.SmartDashboard.putBoolean("Tank Drive is using PID?", self.use_pid)
+        wpilib.SmartDashboard.putBoolean("tankdrive_pid", self.use_pid)
 

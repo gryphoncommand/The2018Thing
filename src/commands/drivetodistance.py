@@ -53,8 +53,8 @@ class DriveToDistance(Command):
 
     def execute(self):
 
-        wpilib.SmartDashboard.putData("L Distance PID", self.pid["L"])
-        wpilib.SmartDashboard.putData("R Distance PID", self.pid["R"])
+        wpilib.SmartDashboard.putData("tankdrive_left_distance_pid", self.pid["L"])
+        wpilib.SmartDashboard.putData("tankdrive_right_distance_pid", self.pid["R"])
 
     def end(self):
         self.applyPID(lambda pid: pid.disable())

@@ -52,12 +52,7 @@ class Arm(Subsystem):
 
 
     def set_extender(self, status):
-        #angle = self.get_arm_angle()
-        #if angle < measures.ROBOT_ARM_RETRACT_ANGLE_RANGE[0] or angle > measures.ROBOT_ARM_RETRACT_ANGLE_RANGE[1]:
         self.extender_solenoid.set(status)
-            #print('yes')
-        #else:
-        #    self.extender_solenoid.set(False)
 
     def get_extender(self):
         return self.extender_solenoid.get()
@@ -65,14 +60,14 @@ class Arm(Subsystem):
     def set_final_extender(self, status):
         self.final_extender_solenoid.set(status)
 
+    def get_grabber(self):
+        return self.grabber_solenoid.get()
+
     def set_grabber(self, status):
         self.grabber_solenoid.set(status)
 
     def get_limiter(self):
         return self.limiter.get()
-
-    def get_arm_angle(self):
-        return transform(self.get_arm_proportion(), (0, 1), measures.ROBOT_ARM_ANGLE_RANGE)
 
     def get_arm_proportion(self):
         r_ticks = []
@@ -101,31 +96,23 @@ class Arm(Subsystem):
                 p = 0
 
 
-            lower_lim = .27
-            upper_lim = .75
+            lower_lim = 0.0
+            upper_lim = .9
 
             if p < lower_lim:
                 slope = .5 * p / lower_lim + .5
                 return slope * x
             #elif p > upper_lim:
-            elif p > upper_lim:
+            elif p > upper_lim and x > 0:
                 slope = .36 * (upper_lim - p) / (1.0 - upper_lim) + .64
                 return slope * x
             else:
                 return x
 
-            if p >= .25 and p <= .75:
-                return x
-            else:
-                slope = 1.0 - .6 * (4 * (abs(p - .5) - .25))
-                return x * slope
-
             
+        prop = self.get_arm_proportion()
 
-            
-        angle = self.get_arm_angle()
-        #print (angle)
-        if (angle > measures.ROBOT_ARM_RETRACT_ANGLE_RANGE[0] and angle < measures.ROBOT_ARM_RETRACT_ANGLE_RANGE[1] and self.get_extender()) or (self.last_rot_time is not None):
+        if (prop > measures.ROBOT_ARM_RETRACT_RANGE[0] and prop < measures.ROBOT_ARM_RETRACT_RANGE[1] and self.get_extender()) or (self.last_rot_time is not None):
             #self.set_final_extender(False)
             #if self.last_rot_time is None:
             if self.last_rot_time is not None:
@@ -152,22 +139,6 @@ class Arm(Subsystem):
     def reset_enc(self):
         for k in self.rotator_encoders.keys():
             self.rotator_encoders[k].reset()
-
-    def grabber_position(self):
-        """
-
-        returns a Vector2D of grabber position
-
-        res = Vector2D.from_polar(ARM_STAGE1_LENGTH, inclinometer.angle())
-
-        if extended:
-            res.radius += ARM_STAGE2_LENGTH
-
-        """
-        res = Vector2D.from_polar(ARM_STAGE1_LENGTH, inclinometer.angle())
-
-
-        raise NotImplementedError()
 
     def stop_rotator(self):
         self.set_rotator(0.0)

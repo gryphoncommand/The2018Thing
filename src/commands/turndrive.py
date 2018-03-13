@@ -16,7 +16,7 @@ class TurnDrive(Command):
         self.angle = _angle
 
         def set_opposite(pw):
-            wpilib.SmartDashboard.putNumber("TurnDrive pidOutput", pw)
+            #wpilib.SmartDashboard.putNumber("TurnDrive pidOutput", pw)
             subsystems.tankdrive.set_left(pw)
             subsystems.tankdrive.set_right(-pw)
 

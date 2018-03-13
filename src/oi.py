@@ -22,12 +22,12 @@ def init():
     
     geardown = JoystickButton(joystick, buttons.L_BUMPER)
     gearup = JoystickButton(joystick, buttons.R_BUMPER)
-    grabberclose = JoystickButton(joystick, buttons.X)
-    grabberopen = JoystickButton(joystick, buttons.SQUARE)
+    grabber_toggle_0 = JoystickButton(joystick, buttons.X)
+    #grabberopen = JoystickButton(joystick, buttons.SQUARE)
     
 
     geardown.whenPressed(GearShift(Gearing.LOW))
     gearup.whenPressed(GearShift(Gearing.HIGH))
-    grabberclose.whenPressed(Grabber(True))
-    grabberopen.whenPressed(Grabber(False))
+    grabber_toggle_0.whenPressed(Grabber("toggle"))
+    #grabberopen.whenPressed(Grabber(False))
 
