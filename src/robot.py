@@ -19,6 +19,8 @@ from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
 from commands.lifttoproportion import LiftToProportion
 
+from commands.grabber import Grabber
+
 from commands.sequence import Sequence
 
 from commands.tankdrivejoystick import TankDriveJoystick
@@ -71,6 +73,8 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
         self.chooser.addObject("Turn Arm Horizontal", LiftToProportion(robotmap.measures.ROBOT_ARM_HORIZONTAL))
         self.chooser.addObject("Do Nothing Auto", DoNothing(15))
+        self.chooser.addObject("Grabber(True)", Grabber(True))
+        self.chooser.addObject("Grabber(False)", Grabber(False))
 
         #self.chooser.addObject("ParametricLine", ParametricDrive(lambda t: .1 * t, lambda t: .4 * t, 5))
 

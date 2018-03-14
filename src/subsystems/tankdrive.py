@@ -61,6 +61,12 @@ class TankDrive(Subsystem):
         self.motors["RF"].set(power)
         self.motors["RB"].set(power)
 
+    def get_left_distance(self):
+        return self.encoders["L"].getDistance()
+
+    def get_right_distance(self):
+        return self.encoders["R"].getDistance()
+
     def stop(self):
         self.set(0, 0)
 

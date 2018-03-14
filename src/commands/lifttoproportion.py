@@ -25,11 +25,11 @@ class LiftToProportion(Command):
         # setpoint is (from 0 to 1) a setpoint to set it to
         # TODO: Substitute in the min and max value in the transform() function
 
-        self.PID = PIDController(10.0, 0.0, 0.0, subsystems.arm.get_arm_proportion, subsystems.arm.set_rotator)
+        self.PID = PIDController(12.0, 0.0, 0.0, subsystems.arm.get_arm_proportion, subsystems.arm.set_rotator)
 
         # TODO: Refine InputRange and AbsoluteTolerance
         self.PID.setInputRange(*measures.ROBOT_ARM_RANGE)
-        self.PID.setAbsoluteTolerance(.01)
+        self.PID.setAbsoluteTolerance(.005)
 
         self.PID.setContinuous(False)
         self.PID.setOutputRange(-1, 1)

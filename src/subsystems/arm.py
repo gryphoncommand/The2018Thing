@@ -41,10 +41,9 @@ class Arm(Subsystem):
         self.rotator_encoders = {}
         #self.rotator_encoders["L"] = Encoder(*arm_encoders.L)
         self.rotator_encoders["R"] = Encoder(*arm_encoders.R)
-        
 
         #self.rotator_encoders["L"].setPIDSourceType(PIDController.PIDSourceType.kRate)
-        self.rotator_encoders["R"].setPIDSourceType(PIDController.PIDSourceType.kRate)
+        self.rotator_encoders["R"].setPIDSourceType(PIDController.PIDSourceType.kDisplacement)
         self.rotator_encoders["R"].setDistancePerPulse(arm_encoders.R_dpp)
 
 

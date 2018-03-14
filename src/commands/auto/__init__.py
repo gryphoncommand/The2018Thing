@@ -28,7 +28,7 @@ def get_left_command(data):
     else:
         if data[1] == "L":
             return SameSide(Direction.LEFT) 
-        elif data[1] == "R":
+        elif data[1] == "R" and data[0] == "L":
             return InvSameSide(Direction.LEFT)
         else:
             return pass_green_tape()
@@ -40,7 +40,7 @@ def get_right_command(data):
     else:
         if data[1] == "R":
             return SameSide(Direction.RIGHT) 
-        elif data[1] == "L":
+        elif data[1] == "L" and data[0] == "R":
             return InvSameSide(Direction.RIGHT)
         else:
             return pass_green_tape()

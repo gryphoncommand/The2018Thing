@@ -20,7 +20,7 @@ class Grabber(Command):
         self.isDone = False
 
     def execute(self):
-        if self.solenoid_setting.lower() in ("toggle", "t"):
+        if isinstance(self.solenoid_setting, str) and self.solenoid_setting.lower() in ("toggle", "t"):
             subsystems.arm.set_grabber(not subsystems.arm.get_grabber())
         else:
             subsystems.arm.set_grabber(self.solenoid_setting)

@@ -113,12 +113,12 @@ navx_type = NavXType.SPI
 
 # PID Constant values for the encoders. CHECK OVER!!!!!
 pid = InfoPasser()
-pid.L = (0.15, 0, 0, 0)
-pid.R = (0.15, 0, 0, 0)
-pid.dist_L = (1.7, 0, 0, 0)
-pid.dist_R = (1.7, 0, 0, 0)
+pid.L = (0.18, 0, 0.0, 0)
+pid.R = (0.18, 0, 0.0, 0)
+pid.dist_L = (.66, 0, 0, 0)
+pid.dist_R = (.66, 0, 0, 0)
 
-pid.angle = (0.014, 0, 0, 0)
+pid.angle = (0.018, 0, 0, 0)
 
 
 
@@ -138,6 +138,9 @@ measures.ROBOT_ARM_RANGE = (0.0, 1.0)
 measures.ROBOT_ARM_RETRACT_RANGE = (.0834, .8484)
 
 measures.ROBOT_ARM_HORIZONTAL = 0.41
+
+measures.ROBOT_ARM_SWITCH_DROP = 0.41
+measures.ROBOT_ARM_SCALE_DROP = 0.92
 
 
 

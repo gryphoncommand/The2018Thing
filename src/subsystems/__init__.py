@@ -81,6 +81,11 @@ def dump_info():
 
     smartdashboard.putNumber("pressure_psi", sensors.get_pressure())
 
+    # DEBUG
+
+    smartdashboard.putNumber("[TMP] arm ticks", arm.rotator_encoders["R"].get())
+
+
 
     wpilib.LiveWindow.run()
 
