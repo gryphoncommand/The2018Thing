@@ -34,12 +34,33 @@ Run the following commands in your local Python terminal (Run `python3` or `pyth
 These should return no errors. If they did, review previous instructions.
 
 ### Test Code
-To test this robot project, simply pass in the following command into your command prompt.
+To test this robot project, simply pass in the following command into your command prompt or Windows.
 ```
-$ python3 {path to robot.py folder} sim
+$ python3 path/to/robot.py sim
 ```
 or, if you use Windows, 
 ```
-$ python {path to robot.py folder} sim
+$ python path\to\robot.py sim
 ```
 This should bring up a separate window to display a test bench on. 
+
+### Deploy Code
+
+To deploy this code, you will need to make sure of the following:
+* Your code tests correctly and will not break the robot. 
+* Your computer is connected to the Robot's WiFi Network. (To configure this, see [here](http://wpilib.screenstepslive.com/s/currentCS/m/troubleshooting/l/442032-programming-radios-for-fms-offseason))
+
+If you fill these requirements, run the following code:
+> For Mac OSX/Linux:
+> ```
+> python3 path/to/robot.py deploy
+> ```
+
+> For Windows:
+> ```
+> python path\to\robot.py deploy
+> ```
+In addition to this, you can run some of the following commands:
+* `-n` or `--no-version-check` to ignore the version of RobotPy that is on the robot. 
+* `--skip-tests` to skip the tests on the robot (Not recommended)
+To see the rest of the commands available to you, use the command `python3 path/to/robot.py deploy -h`
