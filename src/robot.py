@@ -66,9 +66,8 @@ class The2018Thing(CommandBasedRobot):
 
         self.chooser = wpilib.SendableChooser()
 
-        self.chooser.addDefault("SEQUENCE", Sequence())
+        #self.chooser.addDefault("SEQUENCE", Sequence())
 
-        self.chooser.addDefault("SEQUENCE", Sequence())
         self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
         self.chooser.addObject("Turn Arm Horizontal", LiftToProportion(robotmap.measures.ROBOT_ARM_HORIZONTAL))
@@ -80,11 +79,14 @@ class The2018Thing(CommandBasedRobot):
 
         # The Auto Line is 10 ft (~3.048 meters) from the start point. May have to be tweaked a bit. 
         self.chooser.addObject("Drive Forward", DriveToDistance(3.048, 3.048))
+
         self.chooser.addObject("COMP: Left", "l")
         self.chooser.addObject("COMP: Middle", "m")
         self.chooser.addObject("COMP: Right", "r")
+
+        self.chooser.addDefault("COMP: Minimal Auto", DriveToDistance(3.048, 3.048))
+
         self.chooser.addObject("COMP: Do Nothing", DoNothing(15))
-        self.chooser.addObject("COMP: Minimal Auto", DriveToDistance(3.048, 3.048))
         
 
         #self.chooser.addObject('PulseMotor', PulseMotor())
@@ -112,7 +114,7 @@ class The2018Thing(CommandBasedRobot):
             if choice == "l":
                 self.autonomousProgram = commands.auto.get_left_command(data)
             elif choice == "m":
-                self.autonomousProgram = Middle(datas[0] == "L")
+                self.autonomousProgram = commands.auto.get_middle_command(data)
             elif choice == "r":
                 print ("GETTING 'r' command, data: " + str(data))
                 self.autonomousProgram = commands.auto.get_right_command(data)

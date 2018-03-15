@@ -3,9 +3,13 @@ from wpilib.command import CommandGroup
 from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
+from commands.autoarmextender import AutoArmExtender
 # TODO: Add import statement for the DriveToCube and DeliverCube Command.
+from commands.lifttoproportion import LiftToProportion
 
-from robotmap import auto_measures, inches, waits
+from commands.tankdrivetimed import TankDriveTimed
+
+from robotmap import measures, auto_measures, inches, waits
 import math
 
 """
@@ -70,10 +74,7 @@ class SameSide(CommandGroup):
             self.addSequential(TurnDrive(-auto_measures.angle_scale), 2.0)
 
             # TODO: deliver first cube
-            self.addSequential(DoNothing(1))
 
-
-            
         elif direction == Direction.RIGHT:
             self.addSequential(DoNothing(waits.turn))
 
@@ -91,13 +92,16 @@ class SameSide(CommandGroup):
             self.addSequential(TurnDrive(auto_measures.angle_scale), 2.0)
 
             # TODO: deliver first cube
-            self.addSequential(DoNothing(1))
 
+        self.addParallel(LiftToProportion(measures.ROBOT_ARM_SCALE_DROP))
 
-            # SECOND CUBE HERE
-            #self.addSequential(TurnDrive(180), 2.0)
-            #self.addSequential(DriveToDistance(auto_measures.to_scale - auto_measures.to_switch, auto_measures.to_scale - auto_measures.to_switch))
-            
+        self.addSequential(DoNothing(1.2))
+
+        self.addSequential(AutoArmExtender(True))
+        
+        self.addSequential(TankDriveTimed(.34, .34, .4))
+
+        self.addSequential(Grabber(True))
             
 
         # Raise Arm and extend (Deliver Cube Method)

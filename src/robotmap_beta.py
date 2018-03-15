@@ -18,6 +18,13 @@ drive_motors.RF = 2, False
 drive_motors.RB = 3, False
 
 
+arm_stopper = InfoPasser()
+arm_stopper.dio = 6
+arm_stopper.default = True
+
+
+
+
 drive_encoders = InfoPasser()
 
 # Each encoder has two ports on the RoboRIO DIO
@@ -53,6 +60,12 @@ arm_encoders = InfoPasser()
 # Then, "inverted"
 arm_encoders.L = 4, 5, True
 arm_encoders.R = 6, 7, False
+
+# the scale so that it is from (0, 1)
+arm_encoders.L_dpp = 1.0/950.0
+arm_encoders.R_dpp = 1.0/950.0
+
+
 
 
 joystick_info = InfoPasser()
@@ -95,6 +108,15 @@ solenoids.final_armextender = [(6, False), (7, True)]
 #solenoids.gearshift1 
 
 
+# RoboRIO Analog In Port for the analog pressure sensor
+solenoids.pressure_sensor = 0
+
+# The supply voltage for the analog pressure sensor
+solenoids.supply_voltage = 5
+
+
+
+
 navx_type = NavXType.SPI
 
 # PID Constant values for the encoders. CHECK OVER!!!!!
@@ -107,12 +129,29 @@ pid.dist_R = (1.7, 0, 0, 0)
 pid.angle = (0.014, 0, 0, 0)
 
 
+
 measures = InfoPasser()
 # in meters
 measures.ROBOT_WHEELTOWHEEL_WIDTH = 0.64
 
 # the radius (in meters), cutoff that the MoveToBox command stops moving at
 measures.ROBOT_CUBE_DISTANCE_CUTOFF = 0.67
+
+# the angle range the arm can operate in
+#measures.ROBOT_ARM_ANGLE_RANGE = (-45.0, 90.0)
+
+measures.ROBOT_ARM_RANGE = (0.0, 1.0)
+
+# TODO: measures these as proportions
+measures.ROBOT_ARM_RETRACT_RANGE = (.0834, .8484)
+
+measures.ROBOT_ARM_HORIZONTAL = 0.41
+
+measures.ROBOT_ARM_SWITCH_DROP = 0.41
+measures.ROBOT_ARM_SCALE_DROP = 0.92
+
+
+measures.ROBOT_ARM_RETRACT_TIME = 2.8
 
 
 

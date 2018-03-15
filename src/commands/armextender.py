@@ -27,8 +27,16 @@ class ArmExtender(Command):
 
     def execute(self):
 
-        pov = oi.joystick.getPOV()
+        main_pov = oi.joystick.getPOV()
+        assist_pov = oi.assist_joystick.getPOV()
         
+        pov = -1
+
+        if main_pov != -1:
+            pov = main_pov
+        else:
+            pov = assist_pov
+
         if pov != -1:
 
             if pov in (0, 180):

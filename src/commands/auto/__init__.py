@@ -2,6 +2,7 @@ import wpilib
 from wpilib.command import Command
 import subsystems
 from commands.auto.sameside import SameSide
+from commands.auto.middle import Middle
 from commands.auto.invsameside import InvSameSide
 from commands.drivetodistance import DriveToDistance
 from robotmap import auto_measures
@@ -30,6 +31,18 @@ def get_left_command(data):
             return SameSide(Direction.LEFT) 
         elif data[1] == "R" and data[0] == "L":
             return InvSameSide(Direction.LEFT)
+        else:
+            return pass_green_tape()
+
+def get_middle_command(data):
+    data = data if data is None else list(data)
+    if data is None or len(data) != 3:
+        return pass_green_tape()
+    else:
+        if data[0] == "L":
+            return Middle(Direction.LEFT) 
+        elif data[0] == "R":
+            return Middle(Direction.RIGHT)
         else:
             return pass_green_tape()
 

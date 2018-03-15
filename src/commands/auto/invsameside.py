@@ -56,36 +56,16 @@ class InvSameSide(CommandGroup):
             self.addSequential(DoNothing(waits.turn))
 
             self.addSequential(TurnDrive(90), 1.0)
-
-            self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP))
-
-            self.addSequential(DriveToDistance(inches(20) + auto_measures.robot_starting_offset, inches(20) + auto_measures.robot_starting_offset), 4.0)
-            # TODO: Deliver cube
-
-
-            self.addSequential(Grabber(True))
             
         elif direction == Direction.RIGHT:
             self.addSequential(DoNothing(waits.turn))
 
-            # turn towards the scale and then drive towards it
-            self.addSequential(TurnDrive(-auto_measures.angle_scale), 2.0)
-            #dist = math.hypot(end_point - start_turning_point, auto_measures.robot_starting_offset)
-            #dist = math.hypot(end_point - start_turning_point, auto_measures.robot_starting_offset)
-            dist = math.hypot(auto_measures.robot_starting_offset, (end_point - start_turning_point) * math.tan(auto_measures.angle_scale * math.pi / 180.0))
-            self.addSequential(DriveToDistance(dist, dist))
+            self.addSequential(TurnDrive(-90), 1.0)
 
-            #self.addSequential(DoNothing(.5))
-            # turn back to face it
-            self.addSequential(DoNothing(waits.turn))
-            
-            self.addSequential(TurnDrive(auto_measures.angle_scale), 2.0)
+        self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP))
 
-            # TODO: deliver first cube
-            self.addSequential(DoNothing(1))
+        self.addSequential(DriveToDistance(inches(20) + auto_measures.robot_starting_offset, inches(20) + auto_measures.robot_starting_offset), 4.0)
 
-
-            # SECOND CUBE HERE
-            #self.addSequential(TurnDrive(180), 2.0)
-            #self.addSequential(DriveToDistance(auto_measures.to_scale - auto_measures.to_switch, auto_measures.to_scale - auto_measures.to_switch))
+        # drop the cube
+        self.addSequential(Grabber(True))
             

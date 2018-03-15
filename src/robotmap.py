@@ -62,6 +62,28 @@ auto_measures.to_scale = inches(299.65)
 auto_measures.to_switch = inches(140)
 #auto_measures.to_cube = 1.542669
 
+auto_measures.to_cubepyramid = feet(8)
+
+auto_measures.from_middle_to_backofswitch = inches(32)
+auto_measures.robot_middle_turn_dist = feet(3.4)
+
+
+"""
+b
+|---- <- a (32 inches)
+|  /
+|A/ (60 degrees)
+|/
+
+
+a / b = tan(A)
+
+b = a / tan(60)
+
+
+
+"""
+
 waits = InfoPasser()
 # the wait time, in seconds, before you should start turning (small)
 waits.turn = 0.2
@@ -86,8 +108,9 @@ auto_measures.angle_cube = 135
 
 
 
-from robotmap_alpha import *
-
+#from robotmap_alpha import *
 #from robotmap_beta import *
+
+from robotmap_qbit import *
 
 
