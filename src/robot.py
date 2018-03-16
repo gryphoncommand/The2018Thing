@@ -38,6 +38,9 @@ import commands
 get_robot = None
 
 
+log_every_n_loops = 8
+
+
 class The2018Thing(CommandBasedRobot):
 
     def get_self(self):
@@ -59,6 +62,8 @@ class The2018Thing(CommandBasedRobot):
         # robot.get_robot()'
         global get_robot
         get_robot = self.get_self
+        
+        self.num_loops = 0
 
         subsystems.init()
 
@@ -87,7 +92,8 @@ class The2018Thing(CommandBasedRobot):
         self.chooser.addDefault("COMP: Minimal Auto", DriveToDistance(3.048, 3.048))
 
         self.chooser.addObject("COMP: Do Nothing", DoNothing(15))
-        
+
+        self.auto_data = None        
 
         #self.chooser.addObject('PulseMotor', PulseMotor())
 
@@ -105,16 +111,21 @@ class The2018Thing(CommandBasedRobot):
         #self.teleopProgram.addParallel(CorrectTip())
 
         oi.init()
+    
+    def generic_loop(self):
+        if self.num_loops % log_every_n_loops == 0:
+            subsystems.dump_info()
 
-    def autonomousInit(self):
+        self.num_loops += 1
+
+    def generate_auto_program(self):
         choice = self.chooser.getSelected()
         data = None
         try:
-            data = DriverStation.getInstance().getGameSpecificMessage()
+            data = str(DriverStation.getInstance().getGameSpecificMessage())
         except Exception as e:
             print ("!!! exception: " + str(e))
         
-
         if data is not None and len(data) == 3:
             if choice == "l":
                 self.autonomousProgram = commands.auto.get_left_command(data)
@@ -125,9 +136,19 @@ class The2018Thing(CommandBasedRobot):
             else:
                 self.autonomousProgram = choice
         else:
-            self.autonomousProgram = DoNothing(15)
+            self.autonomousProgram = DriveToDistance(3.048, 3.048)
+            #self.autonomousProgram = DoNothing(15)
         #self.autonomousProgram = wpilib.command.CommandGroup()
         #self.autonomousProgram.addParallel(self.chooser.getSelected())
+
+        self.auto_data = data
+
+
+    def autonomousInit(self):
+        if self.autonomousProgram is not None:
+            self.autonomousProgram.cancel()
+
+        self.generate_auto_program()
 
         if self.autonomousProgram is not None:
             subsystems.smartdashboard.putString("auto_program_type", type(self.autonomousProgram).__name__)
@@ -138,21 +159,36 @@ class The2018Thing(CommandBasedRobot):
         self.teleopProgram.start()
 
     def teleopPeriodic(self):
-        subsystems.dump_info()
+        self.generic_loop()
         super().teleopPeriodic()
     
     def autonomousPeriodic(self):
-        subsystems.dump_info()
+        self.generic_loop()
+        cur_data = str(DriverStation.getInstance().getGameSpecificMessage())
+        if cur_data != self.auto_data:
+            print ("WARNING: Game data changed, changing autonomous program")
+            if self.autonomousProgram is not None:
+                self.autonomousProgram.cancel()
+            
+            self.generate_auto_program()
+            
+            if self.autonomousProgram is not None:
+                subsystems.smartdashboard.putString("auto_program_type", type(self.autonomousProgram).__name__)
+                subsystems.smartdashboard.putString("auto_program", str(self.autonomousProgram))
+                self.autonomousProgram.start()
+
         super().autonomousPeriodic()
+        
 
     def disabledPeriodic(self):
-        subsystems.dump_info()
+        self.generic_loop()
         super().disabledPeriodic()
     
     def testPeriodic(self):
-        subsystems.dump_info()
+        self.generic_loop()
         super().testPeriodic()
 
 
 if __name__ == '__main__':
     wpilib.run(The2018Thing)
+

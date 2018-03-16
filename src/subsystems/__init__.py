@@ -85,11 +85,14 @@ def dump_info():
     game_data = None
 
     try:
-        game_data = DriverStation.getInstance().getGameSpecificMessage()
+        game_data = str(DriverStation.getInstance().getGameSpecificMessage())
     except Exception as e:
         print (" !!! EXCEPTION:  " + str(e))
 
     smartdashboard.putString("game_data", str(game_data))
+    smartdashboard.putString("game_data_type", type(game_data).__name__)
+
+    #print ("DSMSG: " + wpilib.DriverStation.getInstance().getGameSpecificMessage())
 
     # DEBUG
 
