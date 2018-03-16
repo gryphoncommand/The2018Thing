@@ -21,25 +21,25 @@ class Middle(CommandGroup):
         # Drive Forward to the Scale, pass the Auto Line
         start_turning = auto_measures.robot_middle_turn_dist
         end_point = auto_measures.to_switch
-        self.addSequential(DriveToDistance(start_turning, start_turning))
+        self.addSequential(DriveToDistance(start_turning, start_turning), 2.5)
 
-        turn_angle = 30
+        turn_angle = 45
 
 
         self.addSequential(DoNothing(waits.turn))
 
         if whereisgoal == Direction.LEFT:
-            self.addSequential(TurnDrive(turn_angle), 2.0)
+            self.addSequential(TurnDrive(-turn_angle), 1.6)
         elif whereisgoal == Direction.RIGHT:
-            self.addSequential(TurnDrive(-turn_angle), 2.0)
+            self.addSequential(TurnDrive(turn_angle), 1.6)
 
 
-        self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP))
+        self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP), 1.5)
 
         # should be (end_point - start_turning) * math.sec()
-        hypot_dist = math.hypot((end_point - start_turning), math.tan(turn_angle * math.pi / 180.0) * (end_point - start_turning)) + 0.3
+        hypot_dist = math.hypot((end_point - start_turning), math.tan(turn_angle * math.pi / 180.0) * (end_point - start_turning))
 
-        self.addSequential(DriveToDistance(hypot_dist, hypot_dist))
+        self.addSequential(DriveToDistance(hypot_dist, hypot_dist), 2.4)
         
         self.addSequential(Grabber(True))
 

@@ -81,6 +81,16 @@ def dump_info():
 
     smartdashboard.putNumber("pressure_psi", sensors.get_pressure())
 
+
+    game_data = None
+
+    try:
+        game_data = DriverStation.getInstance().getGameSpecificMessage()
+    except Exception as e:
+        print (" !!! EXCEPTION:  " + str(e))
+
+    smartdashboard.putString("game_data", str(game_data))
+
     # DEBUG
 
     smartdashboard.putNumber("[TMP] arm ticks", arm.rotator_encoders["R"].get())

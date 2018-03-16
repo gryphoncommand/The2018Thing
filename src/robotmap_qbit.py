@@ -57,7 +57,7 @@ arm_encoders = InfoPasser()
 # Each encoder has two ports on the RoboRIO DIO
 # Then, "inverted"
 arm_encoders.L = 6, 7, True
-arm_encoders.R = 4, 5, False
+arm_encoders.R = 4, 5, True
 
 # the scale so that it is from (0, 1)
 arm_encoders.L_dpp = 1.0/950.0
@@ -135,14 +135,14 @@ measures.ROBOT_CUBE_DISTANCE_CUTOFF = 0.67
 measures.ROBOT_ARM_RANGE = (0.0, 1.0)
 
 # TODO: measures these as proportions
-measures.ROBOT_ARM_RETRACT_RANGE = (.0834, .8484)
+measures.ROBOT_ARM_RETRACT_RANGE = (.0834, .81)
 
 measures.ROBOT_ARM_HORIZONTAL = 0.41
 
 measures.ROBOT_ARM_SWITCH_DROP = 0.41
 measures.ROBOT_ARM_SCALE_DROP = 0.92
 
-
 measures.ROBOT_ARM_RETRACT_TIME = 2.8
 
+autoretract = False
 

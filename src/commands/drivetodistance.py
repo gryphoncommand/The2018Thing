@@ -33,7 +33,7 @@ class DriveToDistance(Command):
         
         #self.applyPID(lambda p: p.setPIDSourceType(PIDController.PIDSourceType.kDisplacement))
 
-        self.applyPID(lambda p: p.setAbsoluteTolerance(.06))
+        self.applyPID(lambda p: p.setAbsoluteTolerance(.07))
         
         
         self.is_init = False

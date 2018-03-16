@@ -65,7 +65,7 @@ auto_measures.to_switch = inches(140)
 auto_measures.to_cubepyramid = feet(8)
 
 auto_measures.from_middle_to_backofswitch = inches(32)
-auto_measures.robot_middle_turn_dist = feet(3.4)
+auto_measures.robot_middle_turn_dist = feet(3.0)
 
 
 """

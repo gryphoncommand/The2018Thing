@@ -13,7 +13,7 @@ from puremath.scaling import transform
 from wpilib import PIDController
 from wpilib.pidcontroller import PIDController
 
-from robotmap import arm_motors, arm_encoders, solenoids, arm_stopper, measures
+from robotmap import arm_motors, arm_encoders, solenoids, arm_stopper, measures, autoretract
 
 from puremath import Vector2D
 from wpilib.digitalinput import DigitalInput
@@ -95,11 +95,11 @@ class Arm(Subsystem):
                 p = 0
 
 
-            lower_lim = 0.0
+            lower_lim = .12
             upper_lim = .9
 
             if p < lower_lim:
-                slope = .5 * p / lower_lim + .5
+                slope = .15 * p / lower_lim + .85
                 return slope * x
             #elif p > upper_lim:
             elif p > upper_lim and x > 0:
@@ -111,27 +111,31 @@ class Arm(Subsystem):
             
         prop = self.get_arm_proportion()
 
-        if (prop > measures.ROBOT_ARM_RETRACT_RANGE[0] and prop < measures.ROBOT_ARM_RETRACT_RANGE[1] and self.get_extender()) or (self.last_rot_time is not None):
-            #self.set_final_extender(False)
-            #if self.last_rot_time is None:
-            if self.last_rot_time is not None:
-                self.last_rot_time = time.time()
+        if (prop > measures.ROBOT_ARM_RETRACT_RANGE[0] and prop < measures.ROBOT_ARM_RETRACT_RANGE[1] and self.get_extender()) or self.last_rot_time is not None:
 
+            let_move = False
+            closer_to_bottom = abs(prop - measures.ROBOT_ARM_RETRACT_RANGE[0]) < abs(prop - measures.ROBOT_ARM_RETRACT_RANGE[1])
+            if closer_to_bottom and amount < 0:
+                let_move = True
+            
+            if not closer_to_bottom and amount > 0:
+                let_move = True
 
-            if self.last_rot_time is not None and (time.time() - self.last_rot_time >= measures.ROBOT_ARM_RETRACT_TIME):
-                self.last_rot_time = None
-            amount = 0
-            #self.set_rotator(0)
-            self.set_extender(False)
-            #time.sleep(measures.ROBOT_ARM_RETRACT_TIME)
-            #elif time.time() - self.last_rot_time > measures.ROBOT_ARM_RETRACT_TIME:
-            #    self.last_rot_time = None
-            #return
+            if not let_move:
+
+                amount = 0
+
+                if autoretract:
+                    self.set_extender(False)
+
+                    if self.last_rot_time is not None:
+                        self.last_rot_time = time.time()
+                    elif time.time() - self.last_rot_time >= measures.ROBOT_ARM_RETRACT_TIME:
+                        self.last_rot_time = None
 
         if not raw:
             amount = envelope(amount)
         
-
         for rot_mot in self.rotator_motors:
             self.rotator_motors[rot_mot].set(amount)
 

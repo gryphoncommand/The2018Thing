@@ -15,16 +15,11 @@ from commands.grabber import Grabber
 from robotmap import Gearing, buttons
 
 joystick = None
-assist_joystick = None
 
 
 def init():
-    global joystick; global assist_joystick
+    global joystick
     joystick = Joystick(0)
-    assist_joystick = Joystick(1)
-    
-    grabber_toggle_0 = JoystickButton(joystick, buttons.X)
-    #grabberopen = JoystickButton(joystick, buttons.SQUARE)
     
 
     JoystickButton(joystick, buttons.L_BUMPER).whenPressed(GearShift(Gearing.LOW))
@@ -32,7 +27,6 @@ def init():
 
     JoystickButton(joystick, buttons.X).whenPressed(Grabber("toggle"))
 
-    JoystickButton(assist_joystick, buttons.X).whenPressed(Grabber("toggle"))
 
     #grabber_toggle_0.whenPressed(Grabber("toggle"))
     #grabberopen.whenPressed(Grabber(False))

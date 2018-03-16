@@ -47,7 +47,7 @@ class InvSameSide(CommandGroup):
         self.addSequential(DriveToDistance(
             end_point,
             end_point
-        ))
+        ), 3.5)
 
         # drive then turn absed on direction
 
@@ -55,16 +55,16 @@ class InvSameSide(CommandGroup):
         if direction == Direction.LEFT:
             self.addSequential(DoNothing(waits.turn))
 
-            self.addSequential(TurnDrive(90), 1.0)
+            self.addSequential(TurnDrive(90), 1.2)
             
         elif direction == Direction.RIGHT:
             self.addSequential(DoNothing(waits.turn))
 
-            self.addSequential(TurnDrive(-90), 1.0)
+            self.addSequential(TurnDrive(-90), 1.2)
 
-        self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP))
+        self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP), 1.5)
 
-        self.addSequential(DriveToDistance(inches(20) + auto_measures.robot_starting_offset, inches(20) + auto_measures.robot_starting_offset), 4.0)
+        self.addSequential(DriveToDistance(inches(20) + auto_measures.robot_starting_offset, inches(20) + auto_measures.robot_starting_offset), 3.5)
 
         # drop the cube
         self.addSequential(Grabber(True))

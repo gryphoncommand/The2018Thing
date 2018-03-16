@@ -108,15 +108,19 @@ class The2018Thing(CommandBasedRobot):
 
     def autonomousInit(self):
         choice = self.chooser.getSelected()
-        data = DriverStation.getInstance().getGameSpecificMessage()
-        if data is not None:
-            datas = list(data)
+        data = None
+        try:
+            data = DriverStation.getInstance().getGameSpecificMessage()
+        except Exception as e:
+            print ("!!! exception: " + str(e))
+        
+
+        if data is not None and len(data) == 3:
             if choice == "l":
                 self.autonomousProgram = commands.auto.get_left_command(data)
             elif choice == "m":
                 self.autonomousProgram = commands.auto.get_middle_command(data)
             elif choice == "r":
-                print ("GETTING 'r' command, data: " + str(data))
                 self.autonomousProgram = commands.auto.get_right_command(data)
             else:
                 self.autonomousProgram = choice
@@ -126,6 +130,8 @@ class The2018Thing(CommandBasedRobot):
         #self.autonomousProgram.addParallel(self.chooser.getSelected())
 
         if self.autonomousProgram is not None:
+            subsystems.smartdashboard.putString("auto_program_type", type(self.autonomousProgram).__name__)
+            subsystems.smartdashboard.putString("auto_program", str(self.autonomousProgram))
             self.autonomousProgram.start()
     
     def teleopInit(self):
