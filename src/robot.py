@@ -61,6 +61,10 @@ class The2018Thing(CommandBasedRobot):
         # instansiate a getter method so you can do 'import robot;
         # robot.get_robot()'
         global get_robot
+        try: 
+            wpilib.CameraServer.launch()
+        except:
+            print("Could not find module cscore")
         get_robot = self.get_self
         
         self.num_loops = 0
