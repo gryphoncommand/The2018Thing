@@ -25,6 +25,7 @@ def init():
     JoystickButton(joystick, buttons.L_BUMPER).whenPressed(GearShift(Gearing.LOW))
     JoystickButton(joystick, buttons.R_BUMPER).whenPressed(GearShift(Gearing.HIGH))
 
+    #JoystickButton(joystick, buttons.SQUARE).whenPressed(Grabber(True))
     JoystickButton(joystick, buttons.X).whenPressed(Grabber("toggle"))
 
 

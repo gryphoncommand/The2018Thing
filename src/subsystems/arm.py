@@ -63,6 +63,8 @@ class Arm(Subsystem):
         return self.grabber_solenoid.get()
 
     def set_grabber(self, status):
+        print ("SOLENOID PORTS: " + str(solenoids.grabber))
+        print ("SETTING TO: " + str(status))
         self.grabber_solenoid.set(status)
 
     def get_limiter(self):
@@ -110,7 +112,7 @@ class Arm(Subsystem):
 
             
         prop = self.get_arm_proportion()
-
+        '''
         if (prop > measures.ROBOT_ARM_RETRACT_RANGE[0] and prop < measures.ROBOT_ARM_RETRACT_RANGE[1] and self.get_extender()) or self.last_rot_time is not None:
 
             let_move = False
@@ -132,7 +134,7 @@ class Arm(Subsystem):
                         self.last_rot_time = time.time()
                     elif time.time() - self.last_rot_time >= measures.ROBOT_ARM_RETRACT_TIME:
                         self.last_rot_time = None
-
+'''
         if not raw:
             amount = envelope(amount)
         

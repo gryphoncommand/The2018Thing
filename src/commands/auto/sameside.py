@@ -74,8 +74,7 @@ class SameSide(CommandGroup):
             self.addSequential(DoNothing(waits.turn))
             
             self.addSequential(TurnDrive(-auto_measures.angle_scale), 2.0)
-
-
+      
         elif direction == Direction.RIGHT:
             self.addSequential(DoNothing(waits.turn))
 
