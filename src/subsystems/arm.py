@@ -36,7 +36,10 @@ class Arm(Subsystem):
         
         self.rotator_motors = {}
         self.rotator_motors["L"] = Motor(*arm_motors.L)
-        self.rotator_motors["R"] = Motor(*arm_motors.R)
+        #self.rotator_motors["R"] = Motor(*arm_motors.R)
+
+        self.wench_motor = Motor(*arm_motors.wench)
+
 
         self.rotator_encoders = {}
         #self.rotator_encoders["L"] = Encoder(*arm_encoders.L)
@@ -49,6 +52,8 @@ class Arm(Subsystem):
 
         self.last_rot_time = None
 
+    def set_wench(self, power):
+        self.wench_motor.set(power)
 
     def set_extender(self, status):
         self.extender_solenoid.set(status)
@@ -63,6 +68,8 @@ class Arm(Subsystem):
         return self.grabber_solenoid.get()
 
     def set_grabber(self, status):
+        print ("SOLENOID PORTS: " + str(solenoids.grabber))
+        print ("SETTING TO: " + str(status))
         self.grabber_solenoid.set(status)
 
     def get_limiter(self):
@@ -110,7 +117,7 @@ class Arm(Subsystem):
 
             
         prop = self.get_arm_proportion()
-
+        '''
         if (prop > measures.ROBOT_ARM_RETRACT_RANGE[0] and prop < measures.ROBOT_ARM_RETRACT_RANGE[1] and self.get_extender()) or self.last_rot_time is not None:
 
             let_move = False
@@ -132,7 +139,7 @@ class Arm(Subsystem):
                         self.last_rot_time = time.time()
                     elif time.time() - self.last_rot_time >= measures.ROBOT_ARM_RETRACT_TIME:
                         self.last_rot_time = None
-
+'''
         if not raw:
             amount = envelope(amount)
         

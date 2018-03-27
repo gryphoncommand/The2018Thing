@@ -18,6 +18,7 @@ from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
 from commands.lifttoproportion import LiftToProportion
+from commands.auto.switchback import SwitchBack_inplace
 
 from commands.grabber import Grabber
 
@@ -62,9 +63,10 @@ class The2018Thing(CommandBasedRobot):
         # robot.get_robot()'
         global get_robot
         try: 
-            wpilib.CameraServer.launch()
+            wpilib.CameraServer.launch('cameraservant.py:main')
         except:
             print("Could not find module cscore")
+
         get_robot = self.get_self
         
         self.num_loops = 0
@@ -88,6 +90,7 @@ class The2018Thing(CommandBasedRobot):
 
         # The Auto Line is 10 ft (~3.048 meters) from the start point. May have to be tweaked a bit. 
         self.chooser.addObject("Drive Forward", DriveToDistance(3.048, 3.048))
+        self.chooser.addObject("Switch Back (inplace)", SwitchBack_inplace())
 
         self.chooser.addObject("COMP: Left", "l")
         self.chooser.addObject("COMP: Middle", "m")

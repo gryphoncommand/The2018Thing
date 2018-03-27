@@ -5,7 +5,7 @@ from wpilib.command import Command
 import subsystems
 import oi
 
-from robotmap import axes, joystick_info
+from robotmap import axes, joystick_info, buttons
 
 
 class ArmRotate_reset(Command):
@@ -48,6 +48,15 @@ class ArmRotate(Command):
             arm_power = 0
 
         subsystems.arm.set_rotator(arm_power, raw=False)
+
+        wench_power = 0.0
+
+        if oi.joystick.getRawButton(buttons.TRIANGLE):
+            wench_power = -1.0
+        elif oi.joystick.getRawButton(buttons.X):
+            wench_power = 1.0
+        
+        subsystems.arm.set_wench(wench_power)
 
 
     def end(self):

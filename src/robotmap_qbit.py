@@ -50,7 +50,7 @@ drive_encoders.R_L = (-2.24, 2.24)
 # was extra_motors
 arm_motors = InfoPasser()
 arm_motors.L = 4, False
-arm_motors.R = 5, False
+arm_motors.wench = 5, False
 
 arm_encoders = InfoPasser()
 

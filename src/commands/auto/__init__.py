@@ -2,6 +2,7 @@ import wpilib
 from wpilib.command import Command
 import subsystems
 from commands.auto.sameside import SameSide
+from commands.auto.switchback import SwitchBack
 from commands.auto.middle import Middle
 from commands.auto.invsameside import InvSameSide
 from commands.drivetodistance import DriveToDistance
@@ -27,12 +28,20 @@ def get_left_command(data):
     if data is None or len(data) != 3:
         return pass_green_tape()
     else:
+        if data[0] == "L":
+            return SwitchBack(Direction.LEFT)
+        else:
+            return pass_green_tape()
+    '''
+    else:
         if data[1] == "L":
             return SameSide(Direction.LEFT) 
         elif data[1] == "R" and data[0] == "L":
             return InvSameSide(Direction.LEFT)
+            
         else:
             return pass_green_tape()
+    '''          
 
 def get_middle_command(data):
     data = data if data is None else list(data)
@@ -40,9 +49,9 @@ def get_middle_command(data):
         return pass_green_tape()
     else:
         if data[0] == "L":
-            return Middle(Direction.LEFT) 
+            return SwitchBack(Direction.MIDDLE, Direction.LEFT) 
         elif data[0] == "R":
-            return Middle(Direction.RIGHT)
+            return SwitchBack(Direction.MIDDLE, Direction.RIGHT) 
         else:
             return pass_green_tape()
 
@@ -51,10 +60,8 @@ def get_right_command(data):
     if data is None or len(data) != 3:
         return pass_green_tape()
     else:
-        if data[1] == "R":
-            return SameSide(Direction.RIGHT) 
-        elif data[1] == "L" and data[0] == "R":
-            return InvSameSide(Direction.RIGHT)
+        if data[0] == "R":
+            return SwitchBack(Direction.RIGHT)
         else:
             return pass_green_tape()
 

@@ -41,6 +41,9 @@ buttons = InfoPasser()
 
 buttons.X = 2
 buttons.SQUARE = 1
+buttons.CIRCLE = 3
+buttons.TRIANGLE = 4
+
 buttons.L_BUMPER = 5
 buttons.R_BUMPER = 6
 
