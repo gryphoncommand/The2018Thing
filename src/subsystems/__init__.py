@@ -14,6 +14,7 @@ import wpilib
 
 from .tankdrive import TankDrive
 from .sensors import Sensors
+from .oldarm import OldArm
 from .arm import Arm
 
 

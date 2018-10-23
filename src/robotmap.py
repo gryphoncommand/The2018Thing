@@ -38,9 +38,6 @@ class Gearing(Enum):
     LOW = 0
     HIGH = 1
 
-
-
-
 drive_motors = InfoPasser()
 
 # L = left, R = right, F = front, B = back
@@ -116,11 +113,11 @@ solenoids = InfoPasser()
 # solenoid ports
 # main and complimentary ports and inverted
 # port 0, port 1, isInverted
-solenoids.gearshift = [(0, False), (1, True)]
-solenoids.grabber = [(4, True), (5, False)]
+solenoids.gearshift = [(4, False), (5, True)]
+solenoids.grabber = [(2, True), (3, False)]
 
 # arm extender
-solenoids.armextender = [(2, False), (3, True)]
+solenoids.armextender = [(0, False), (1, True)]
 
 #solenoids.gearshift1 
 

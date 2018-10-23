@@ -57,7 +57,6 @@ class PIDTankDriveJoystick(Command):
             lrange = abs(robotmap.drive_encoders.L_H[1] - robotmap.drive_encoders.L_H[0])
             rrange = abs(robotmap.drive_encoders.R_H[1] - robotmap.drive_encoders.R_H[0])
 
-
         # needs to be within 2.5 % of value
         self.pid["L"].setAbsoluteTolerance(lrange * .025)
         self.pid["R"].setAbsoluteTolerance(rrange * .025)
@@ -67,7 +66,6 @@ class PIDTankDriveJoystick(Command):
 
     def end(self):
         self.applyPID(lambda pid: pid.disable())
-
 
     def applyPID(self, func):
         func(self.pid["L"])
@@ -94,9 +92,9 @@ class PIDTankDriveJoystick(Command):
 
         if diff < diffrange:
             # hard average
-            #lpow, rpow = avg_pow, avg_pow
+            # lpow, rpow = avg_pow, avg_pow
             d_p = diff / diffrange
-            #d_p = d_p ** 3
+            # d_p = d_p ** 3
             d_p = math.pow(d_p, 1.0 / 3.0)
 
             ldiff = lpow - avg_pow
@@ -137,4 +135,3 @@ class PIDTankDriveJoystick(Command):
         self.pid["R"].setSetpoint(rpow)
         wpilib.SmartDashboard.putNumber("L Speed Setpoint", self.pid["L"].getSetpoint())
         wpilib.SmartDashboard.putNumber("R Speed Setpoint", self.pid["R"].getSetpoint())
-

@@ -18,7 +18,7 @@ class ArmRotate(Command):
     def __init__(self):
         super().__init__('TankDriveJoystick')
 
-        # self.requires(subsystems.arm)
+        self.requires(subsystems.arm)
 
     def initialize(self):
         pass

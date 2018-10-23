@@ -14,19 +14,17 @@ import math
 
 from commands.dumpinfo import DumpInfo
 from commands.parametricdrive import ParametricDrive
-
 from commands.pulsemotor import PulseMotor
 from commands.drivedist import DriveToDistance
 from commands.turndrive import TurnDrive
-
 from commands.sequence import Sequence
-
 from commands.tankdrivejoystick import TankDriveJoystick
 from commands.pidtankdrive import PIDTankDriveJoystick
 from commands.armextender import ArmExtender
 from commands.armrotate import ArmRotate
 from commands.donothing import DoNothing
 from commands.aligntobox import AlignToBox
+from commands.shooter import Shooter
 
 
 #from commands.correcttip import CorrectTip
@@ -110,6 +108,7 @@ class The2018Thing(CommandBasedRobot):
         #self.teleopProgram.addParallel(CorrectTip())
 
         oi.init()
+        print("Robot Init Finished... Epic!!!")
 
     def autonomousInit(self):
         self.autonomousProgram = self.chooser.getSelected()
