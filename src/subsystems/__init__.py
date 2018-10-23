@@ -69,6 +69,9 @@ def dump_info():
         smartdashboard.putNumber("L Encoder Distance", tankdrive.encoders["L"].getDistance())
         smartdashboard.putNumber("R Encoder Distance", tankdrive.encoders["R"].getDistance())
 
+        smartdashboard.putNumber("L Arm Motor", arm.rotator_motors["L"].get())
+        smartdashboard.putNumber("R Arm Motor", arm.rotator_motors["R"].get())
+
 
     smartdashboard.putNumber("Battery Voltage", DriverStation.getInstance().getBatteryVoltage())
     smartdashboard.putString("NavX Displacement (X, Y, Z)", str(sensors.navx.getDisplacement()))

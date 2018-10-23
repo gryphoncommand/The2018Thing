@@ -29,3 +29,4 @@ class Arm(Subsystem):
 
     def set_shooter(self, status):
         self.grabber_solenoid.set(status)
+        

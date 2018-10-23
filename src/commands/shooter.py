@@ -22,7 +22,7 @@ class Shooter(Command):
 
     def execute(self):
         if subsystems.arm.grabber_solenoid is not None:
-            subsystems.arm.set_grabber(self.solenoid_setting)
+            subsystems.arm.set_shooter(self.solenoid_setting)
         else:
             print("warning: subsystems.tankdrive.shooter is None!")
         self.isDone = True
