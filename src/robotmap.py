@@ -53,7 +53,7 @@ drive_encoders = InfoPasser()
 # Each encoder has two ports on the RoboRIO DIO
 # Then, "inverted"
 drive_encoders.L = 0, 1, False
-drive_encoders.R = 2, 3, True
+drive_encoders.R = 2, 3, False
 
 # distance per pulse
 drive_encoders.L_dpp = 1.0/(.875 * 1.524 * 1610.0)

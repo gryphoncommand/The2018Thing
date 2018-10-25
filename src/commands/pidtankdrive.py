@@ -102,13 +102,16 @@ class PIDTankDriveJoystick(Command):
 
             lpow = avg_pow + d_p * ldiff
             rpow = avg_pow + d_p * rdiff
+        wpilib.SmartDashboard.putString("setpoints", str((lpow, rpow)))
 
-
-        wpilib.SmartDashboard.putString("joystick", str((lpow, rpow)))
+        self.pid["L"].setSetpoint(lpow)
+        self.pid["R"].setSetpoint(rpow)
+        # wpilib.SmartDashboard.putString("joystick", str((lpow, rpow)))
 
         jr = (-1, 1)
         gearing = subsystems.tankdrive.get_gearing()
         if gearing == Gearing.LOW:
+            print("HIII")
             if abs(lpow) <= joystick_info.error: 
                 lpow = 0.0
             else:
@@ -129,9 +132,9 @@ class PIDTankDriveJoystick(Command):
             else:
                 rpow = transform(rpow, jr, robotmap.drive_encoders.R_H)
 
-        wpilib.SmartDashboard.putString("setpoints", str((lpow, rpow)))
+        # wpilib.SmartDashboard.putString("setpoints", str((lpow, rpow)))
 
-        self.pid["L"].setSetpoint(lpow)
-        self.pid["R"].setSetpoint(rpow)
+        # self.pid["L"].setSetpoint(lpow)
+        # self.pid["R"].setSetpoint(rpow)
         wpilib.SmartDashboard.putNumber("L Speed Setpoint", self.pid["L"].getSetpoint())
         wpilib.SmartDashboard.putNumber("R Speed Setpoint", self.pid["R"].getSetpoint())
