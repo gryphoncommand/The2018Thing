@@ -99,8 +99,8 @@ class The2018Thing(CommandBasedRobot):
 
         self.teleopProgram = wpilib.command.CommandGroup()
 
-        # self.teleopProgram.addParallel(PIDTankDriveJoystick())
-        self.teleopProgram.addParallel(TankDriveJoystick())
+        self.teleopProgram.addParallel(PIDTankDriveJoystick())
+        # self.teleopProgram.addParallel(TankDriveJoystick())
         self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
         self.teleopProgram.addParallel(DumpInfo())

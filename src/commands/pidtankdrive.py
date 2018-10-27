@@ -30,6 +30,10 @@ class PIDTankDriveJoystick(Command):
         self.requires(subsystems.tankdrive)
 
         self.pid = {}
+        self.readings = []
+        self.pid_n = 20
+
+        self.use_pid = True
 
         self.pid["L"] = PIDController(pid.L[0], pid.L[1], pid.L[2], pid.L[3], subsystems.tankdrive.encoders["L"], subsystems.tankdrive.set_left)
         self.pid["R"] = PIDController(pid.R[0], pid.R[1], pid.R[2], pid.R[3], subsystems.tankdrive.encoders["R"], subsystems.tankdrive.set_right)
@@ -74,8 +78,8 @@ class PIDTankDriveJoystick(Command):
     def execute(self):
         self.update_pid()
 
-        wpilib.SmartDashboard.putData("L Speed PID", self.pid["L"])
-        wpilib.SmartDashboard.putData("R Speed PID", self.pid["R"])
+        wpilib.SmartDashboard.putData("tankdrive_left_speed_pid", self.pid["L"])
+        wpilib.SmartDashboard.putData("tankdrive_right_speed_pid", self.pid["R"])
         # wpilib.LiveWindow.addSensor("Ticks", "Left Encoder",
         #                             subsystems.tankdrive.encoders["L"])
         # wpilib.LiveWindow.addSensor("Ticks", "Right Encoder",
@@ -87,54 +91,147 @@ class PIDTankDriveJoystick(Command):
 
         avg_pow = (lpow + rpow) / 2.0
         diff = abs(lpow - rpow)
-        
-        diffrange = 0.08
 
+        """
+        
+        diffrange = 0.12
         if diff < diffrange:
             # hard average
-            # lpow, rpow = avg_pow, avg_pow
+            #lpow, rpow = avg_pow, avg_pow
             d_p = diff / diffrange
-            # d_p = d_p ** 3
+            #d_p = d_p ** 3
             d_p = math.pow(d_p, 1.0 / 3.0)
-
             ldiff = lpow - avg_pow
             rdiff = rpow - avg_pow
-
             lpow = avg_pow + d_p * ldiff
             rpow = avg_pow + d_p * rdiff
-        wpilib.SmartDashboard.putString("setpoints", str((lpow, rpow)))
+        """
 
-        self.pid["L"].setSetpoint(lpow)
-        self.pid["R"].setSetpoint(rpow)
-        # wpilib.SmartDashboard.putString("joystick", str((lpow, rpow)))
+        if abs(lpow) <= joystick_info.error: 
+            lpow = 0.0
+
+        if abs(rpow) <= joystick_info.error: 
+            rpow = 0.0
+                        
+
+        reading = {
+            "l_pow":lpow,
+            "l_rate":subsystems.tankdrive.encoders["L"].getRate(),
+            "r_pow":rpow,
+            "r_rate":subsystems.tankdrive.encoders["R"].getRate()
+        }
+        
+        self.readings = [reading] + self.readings
+
+        if len(self.readings) > self.pid_n:
+            del self.readings[self.pid_n:]
+        
+        is_changed = False
+
+
+        if self.readings[-1]["l_pow"] != 0:
+            v = self.readings[-1]["l_rate"]
+            for i in self.readings:
+                if i["l_rate"] != v:
+                    is_changed = True
+
+        if self.readings[-1]["r_pow"] != 0:
+            v = self.readings[-1]["r_rate"]
+            for i in self.readings:
+                if i["r_rate"] != v:
+                    is_changed = True
+
 
         jr = (-1, 1)
         gearing = subsystems.tankdrive.get_gearing()
+
+        slpow, srpow = 0.0, 0.0
+
         if gearing == Gearing.LOW:
-            print("HIII")
-            if abs(lpow) <= joystick_info.error: 
-                lpow = 0.0
-            else:
-                lpow = transform(lpow, jr, robotmap.drive_encoders.L_L)
-            if abs(rpow) <= joystick_info.error:
-                rpow = 0.0
-            else:
-                rpow = transform(rpow, jr, robotmap.drive_encoders.R_L)
+            slpow = transform(lpow, jr, robotmap.drive_encoders.L_L)
+            srpow = transform(rpow, jr, robotmap.drive_encoders.R_L)
 
         elif gearing == Gearing.HIGH:
-            if abs(lpow) <= joystick_info.error: 
-                lpow = 0.0
-            else:
-                lpow = transform(lpow, jr, robotmap.drive_encoders.L_H)
+            slpow = transform(lpow, jr, robotmap.drive_encoders.L_H)
+            srpow = transform(rpow, jr, robotmap.drive_encoders.R_H)
 
-            if abs(rpow) <= joystick_info.error:
-                rpow = 0.0
-            else:
-                rpow = transform(rpow, jr, robotmap.drive_encoders.R_H)
+        use_pid = is_changed or (self.readings[-1]["l_pow"] == 0 and self.readings[-1]["r_pow"] == 0)
 
+        if use_pid and self.use_pid:
+            self.applyPID(lambda pid: pid.enable())
+            
+            self.pid["L"].setSetpoint(slpow)
+            self.pid["R"].setSetpoint(srpow)
+            wpilib.SmartDashboard.putNumber("tankdrive_left_speed_setpoint", self.pid["L"].getSetpoint())
+            wpilib.SmartDashboard.putNumber("tankdrive_right_speed_setpoint", self.pid["R"].getSetpoint())
+        else:
+            self.use_pid = False
+            self.applyPID(lambda pid: pid.disable())
+            subsystems.tankdrive.set(lpow, rpow)
+            print("Bruh, you done mess up the encoders.")
+        # self.update_pid()
+
+        # wpilib.SmartDashboard.putData("L Speed PID", self.pid["L"])
+        # wpilib.SmartDashboard.putData("R Speed PID", self.pid["R"])
+        # # wpilib.LiveWindow.addSensor("Ticks", "Left Encoder",
+        # #                             subsystems.tankdrive.encoders["L"])
+        # # wpilib.LiveWindow.addSensor("Ticks", "Right Encoder",
+        # #                            subsystems.tankdrive.encoders["R"])
+
+        # joy = oi.joystick
+        # lpow = joy.getRawAxis(axes.L_y)
+        # rpow = joy.getRawAxis(axes.R_y)
+
+        # avg_pow = (lpow + rpow) / 2.0
+        # diff = abs(lpow - rpow)
+        
+        # diffrange = 0.08
+
+        # if diff < diffrange:
+        #     # hard average
+        #     # lpow, rpow = avg_pow, avg_pow
+        #     d_p = diff / diffrange
+        #     # d_p = d_p ** 3
+        #     d_p = math.pow(d_p, 1.0 / 3.0)
+
+        #     ldiff = lpow - avg_pow
+        #     rdiff = rpow - avg_pow
+
+        #     lpow = avg_pow + d_p * ldiff
+        #     rpow = avg_pow + d_p * rdiff
         # wpilib.SmartDashboard.putString("setpoints", str((lpow, rpow)))
 
         # self.pid["L"].setSetpoint(lpow)
         # self.pid["R"].setSetpoint(rpow)
-        wpilib.SmartDashboard.putNumber("L Speed Setpoint", self.pid["L"].getSetpoint())
-        wpilib.SmartDashboard.putNumber("R Speed Setpoint", self.pid["R"].getSetpoint())
+        # # wpilib.SmartDashboard.putString("joystick", str((lpow, rpow)))
+
+        # jr = (-1, 1)
+        # gearing = subsystems.tankdrive.get_gearing()
+        # if gearing == Gearing.LOW:
+        #     print("HIII")
+        #     if abs(lpow) <= joystick_info.error: 
+        #         lpow = 0.0
+        #     else:
+        #         lpow = transform(lpow, jr, robotmap.drive_encoders.L_L)
+        #     if abs(rpow) <= joystick_info.error:
+        #         rpow = 0.0
+        #     else:
+        #         rpow = transform(rpow, jr, robotmap.drive_encoders.R_L)
+
+        # elif gearing == Gearing.HIGH:
+        #     if abs(lpow) <= joystick_info.error: 
+        #         lpow = 0.0
+        #     else:
+        #         lpow = transform(lpow, jr, robotmap.drive_encoders.L_H)
+
+        #     if abs(rpow) <= joystick_info.error:
+        #         rpow = 0.0
+        #     else:
+        #         rpow = transform(rpow, jr, robotmap.drive_encoders.R_H)
+
+        # # wpilib.SmartDashboard.putString("setpoints", str((lpow, rpow)))
+
+        # # self.pid["L"].setSetpoint(lpow)
+        # # self.pid["R"].setSetpoint(rpow)
+        # wpilib.SmartDashboard.putNumber("L Speed Setpoint", self.pid["L"].getSetpoint())
+        # wpilib.SmartDashboard.putNumber("R Speed Setpoint", self.pid["R"].getSetpoint())
