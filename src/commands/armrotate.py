@@ -37,26 +37,28 @@ class ArmRotate(Command):
         super().__init__('TankDriveJoystick')
 
         # self.requires(subsystems.arm)
+        self.toggle = False
+
 
     def initialize(self):
         pass
-
+    
+    
     def execute(self):
-        arm_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
-
-        if abs(arm_power) <= joystick_info.error:
-            arm_power = 0
-
-        subsystems.arm.set_rotator(arm_power, raw=False)
-
-        wench_power = 0.0
-
-        if oi.joystick.getRawButton(buttons.TRIANGLE):
-            wench_power = -1.0
-        elif oi.joystick.getRawButton(buttons.X):
-            wench_power = 1.0
+        # if self.param == True: 
+        #     self.toggle = False
+        # else:
+        #     self.toggle = True        
         
-        subsystems.arm.set_wench(wench_power)
+        # if self.toggle:
+        #     arm_power = -1
+        # else:
+        #     arm_power = 0
+        rot_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
+        subsystems.arm.set_rotator(rot_power)
+      
+    
+        # subsystems.arm.set_wench(wench_power)
 
 
     def end(self):

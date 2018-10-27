@@ -5,7 +5,7 @@ from commands.turndrive import TurnDrive
 from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
-from commands.lifttoproportion import LiftToProportion
+# from commands.lifttoproportion import LiftToProportion
 from commands.grabber import Grabber
 import math
 #from robotmap import 
@@ -33,7 +33,7 @@ Route Approximation:
 class SwitchBack_inplace(CommandGroup):
     def __init__(self):
         super().__init__("SwitchBack")
-        self.addSequential(LiftToProportion(1.0))
+        # self.addSequential(LiftToProportion(1.0))
 
 
 
@@ -71,8 +71,8 @@ class SwitchBack(CommandGroup):
             self.addSequential(DriveToDistance(-hypot_dist, -hypot_dist), 2.6)
             
             #self.addSequential(Grabber(True))
-            self.addSequential(LiftToProportion(1.0), 5)
-            self.addSequential(LiftToProportion(-1.0))
+            # self.addSequential(LiftToProportion(1.0), 5)
+            # self.addSequential(LiftToProportion(-1.0))
 
         else:        
         # Drive Forward 10 ft
@@ -104,6 +104,6 @@ class SwitchBack(CommandGroup):
 
         # drop the cube
      #   self.addSequential(Grabber(True))
-        self.addSequential(LiftToProportion(1.0), 5)
-        self.addSequential(LiftToProportion(-1.0))
+        # self.addSequential(LiftToProportion(1.0), 5)
+        # self.addSequential(LiftToProportion(-1.0))
 

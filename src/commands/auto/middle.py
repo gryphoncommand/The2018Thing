@@ -4,7 +4,7 @@ from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
 from commands.autoarmextender import AutoArmExtender
-from commands.lifttoproportion import LiftToProportion
+# from commands.lifttoproportion import LiftToProportion
 from commands.grabber import Grabber
 
 # TODO: Add import statement for the DriveToCube and DeliverCube Command.
@@ -34,7 +34,7 @@ class Middle(CommandGroup):
             self.addSequential(TurnDrive(turn_angle), 1.6)
 
 
-        self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP), 1.5)
+        # self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP), 1.5)
 
         # should be (end_point - start_turning) * math.sec()
         hypot_dist = math.hypot((end_point - start_turning), math.tan(turn_angle * math.pi / 180.0) * (end_point - start_turning))

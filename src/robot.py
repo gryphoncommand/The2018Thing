@@ -17,7 +17,7 @@ from commands.pulsemotor import PulseMotor
 from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
-from commands.lifttoproportion import LiftToProportion
+# from commands.lifttoproportion import LiftToProportion
 from commands.auto.switchback import SwitchBack_inplace
 
 from commands.grabber import Grabber
@@ -81,7 +81,7 @@ class The2018Thing(CommandBasedRobot):
 
         self.chooser.addObject("Go 1 meter forward", DriveToDistance(1, 1))
         self.chooser.addObject("Turn 90 Degrees Clockwise", TurnDrive(90))
-        self.chooser.addObject("Turn Arm Horizontal", LiftToProportion(robotmap.measures.ROBOT_ARM_HORIZONTAL))
+        # self.chooser.addObject("Turn Arm Horizontal", LiftToProportion(robotmap.measures.ROBOT_ARM_HORIZONTAL))
         self.chooser.addObject("Do Nothing Auto", DoNothing(15))
         self.chooser.addObject("Grabber(True)", Grabber(True))
         self.chooser.addObject("Grabber(False)", Grabber(False))
@@ -111,7 +111,7 @@ class The2018Thing(CommandBasedRobot):
         self.teleopProgram.addParallel(PIDTankDriveJoystick())
         #self.teleopProgram.addParallel(TankDriveJoystick())
 
-        self.teleopProgram.addParallel(ArmExtender())
+        # self.teleopProgram.addParallel(ArmExtender())
         self.teleopProgram.addParallel(ArmRotate())
 
         #self.teleopProgram.addParallel(NavXCommand())

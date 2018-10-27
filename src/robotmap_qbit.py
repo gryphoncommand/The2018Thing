@@ -49,15 +49,17 @@ drive_encoders.R_L = (-2.24, 2.24)
 
 # was extra_motors
 arm_motors = InfoPasser()
-arm_motors.L = 4, False
 arm_motors.wench = 5, False
+arm_motors.L = 4, False
+arm_motors.R = 5, False
 
 arm_encoders = InfoPasser()
 
 # Each encoder has two ports on the RoboRIO DIO
 # Then, "inverted"
-arm_encoders.L = 6, 7, True
-arm_encoders.R = 4, 5, True
+arm_encoders.L = 4, 5, True
+arm_encoders.R = 6, 7, False
+
 
 # the scale so that it is from (0, 1)
 arm_encoders.L_dpp = 1.0/950.0

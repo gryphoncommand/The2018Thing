@@ -14,6 +14,7 @@ import wpilib
 
 from .tankdrive import TankDrive
 from .sensors import Sensors
+from .oldarm import OldArm
 from .arm import Arm
 
 
@@ -68,7 +69,7 @@ def dump_info():
         smartdashboard.putNumber("right_enc_speed", tankdrive.encoders["R"].getRate())
         smartdashboard.putNumber("right_enc_distance", tankdrive.encoders["R"].getDistance())
 
-    smartdashboard.putNumber("arm_proportion", arm.get_arm_proportion())
+    # smartdashboard.putNumber("arm_proportion", arm.get_arm_proportion())
     smartdashboard.putNumber("battery_voltage", DriverStation.getInstance().getBatteryVoltage())
 
     disp = sensors.navx.getDisplacement()
@@ -96,7 +97,7 @@ def dump_info():
 
     # DEBUG
 
-    smartdashboard.putNumber("[TMP] arm ticks", arm.rotator_encoders["R"].get())
+    # smartdashboard.putNumber("[TMP] arm ticks", arm.rotator_encoders["R"].get())
 
 
 
