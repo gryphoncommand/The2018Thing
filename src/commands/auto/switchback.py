@@ -5,7 +5,7 @@ from commands.turndrive import TurnDrive
 from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
-# from commands.lifttoproportion import LiftToProportion
+from commands.runintake import RunIntake
 from commands.grabber import Grabber
 import math
 #from robotmap import 
@@ -103,7 +103,7 @@ class SwitchBack(CommandGroup):
             self.addSequential(DriveToDistance(-dist,-dist), 2.5)
 
         # drop the cube
-     #   self.addSequential(Grabber(True))
+        self.addSequential(RunIntake(1.0), 1.0)
         # self.addSequential(LiftToProportion(1.0), 5)
         # self.addSequential(LiftToProportion(-1.0))
 

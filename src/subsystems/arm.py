@@ -10,6 +10,8 @@ class Arm(Subsystem):
     def __init__(self):
         super().__init__('Arm')
 
+        # extender_solenoid is the one that raises/lowers the arm
+        # grabber_solenoid opens/closes the arms.
         self.extender_solenoid = SolenoidHandler(*solenoids.armextender)
         self.grabber_solenoid = SolenoidHandler(*solenoids.grabber)
 

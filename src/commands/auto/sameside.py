@@ -5,7 +5,7 @@ from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
 from commands.autoarmextender import AutoArmExtender
 # TODO: Add import statement for the DriveToCube and DeliverCube Command.
-# from commands.lifttoproportion import LiftToProportion
+from commands.runintake import RunIntake
 
 from commands.tankdrivetimed import TankDriveTimed
 from commands.grabber import Grabber
@@ -103,7 +103,7 @@ class SameSide(CommandGroup):
 
         self.addSequential(DoNothing(1.2))
 
-        self.addSequential(Grabber(True))
+        self.addSequential(RunIntake(1.0), 1.0)
             
 
         # Raise Arm and extend (Deliver Cube Method)

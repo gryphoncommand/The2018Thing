@@ -20,7 +20,7 @@ class AutoArmExtender(Command):
     def __init__(self, status):
         super().__init__('AutoArmExtender[%s]' % status)
         self.status = status
-        #self.requires(subsystems.arm)
+        self.requires(subsystems.arm)
 
     def initialize(self):
         self.is_init = False
