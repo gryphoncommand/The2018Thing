@@ -5,7 +5,7 @@ from commands.turndrive import TurnDrive
 from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
-from commands.runintake import RunIntake
+#from commands.runintake import RunIntake
 from commands.grabber import Grabber
 #from robotmap import 
 # TODO: Add import statement for the DriveToCube and DeliverCube Command.
@@ -67,5 +67,5 @@ class InvSameSide(CommandGroup):
         self.addSequential(DriveToDistance(inches(20) + auto_measures.robot_starting_offset, inches(20) + auto_measures.robot_starting_offset), 3.5)
 
         # drop the cube
-        self.addSequential(RunIntake(1.0), 1.0)
+        #self.addSequential(RunIntake(1.0), 1.0)
             

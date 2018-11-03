@@ -4,7 +4,7 @@ from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
 from commands.autoarmextender import AutoArmExtender
-from commands.runintake import RunIntake
+#from commands.runintake import RunIntake
 from commands.grabber import Grabber
 
 # TODO: Add import statement for the DriveToCube and DeliverCube Command.
@@ -41,7 +41,7 @@ class Middle(CommandGroup):
 
         self.addSequential(DriveToDistance(hypot_dist, hypot_dist), 2.4)
         
-        self.addSequential(RunIntake(1.0), 1.0)
+        #self.addSequential(RunIntake(1.0), 1.0)
 
 
         # Turn to the scale of based on the game data. TODO: Find the angle to turn to. 

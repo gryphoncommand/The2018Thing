@@ -5,8 +5,10 @@ from commands.turndrive import TurnDrive
 from commands.drivetodistance import DriveToDistance
 from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
-from commands.runintake import RunIntake
+#from commands.runintake import RunIntake
 from commands.grabber import Grabber
+from commands.autoarmextender import AutoArmExtender
+
 import math
 #from robotmap import 
 # TODO: Add import statement for the DriveToCube and DeliverCube Command.
@@ -58,17 +60,17 @@ class SwitchBack(CommandGroup):
             self.addSequential(DoNothing(waits.turn))
 
             if whereisgoal == Direction.LEFT:
-                self.addSequential(TurnDrive(180 - turn_angle), 2.5)
+                self.addSequential(TurnDrive(auto_measures.angle_switch), 2.5)
             elif whereisgoal == Direction.RIGHT:
-                self.addSequential(TurnDrive(-(180 - turn_angle)), 2.5)
+                self.addSequential(TurnDrive(-(auto_measures.angle_switch)), 2.5)
 
 
             #self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP), 1.5)
 
             # should be (end_point - start_turning) * math.sec()
-            hypot_dist = math.hypot((end_point - start_turning), math.tan(turn_angle * math.pi / 180.0) * (end_point - start_turning))
+            #hypot_dist = math.hypot((end_point - start_turning), math.tan(turn_angle * math.pi / 180.0) * (end_point - start_turning))
 
-            self.addSequential(DriveToDistance(-hypot_dist, -hypot_dist), 2.6)
+            #self.addSequential(DriveToDistance(-hypot_dist, -hypot_dist), 2.6)
             
             #self.addSequential(Grabber(True))
             # self.addSequential(LiftToProportion(1.0), 5)
@@ -89,21 +91,24 @@ class SwitchBack(CommandGroup):
 
             # Turn Slightly towards goal. NOTE: Look into raising arm before you get to the scale.
             if direction == Direction.LEFT:
-                self.addSequential(DoNothing(waits.turn))
-
-                self.addSequential(TurnDrive(-90), 1.2)
-                
-            elif direction == Direction.RIGHT:
+                print('running switchback left')
                 self.addSequential(DoNothing(waits.turn))
 
                 self.addSequential(TurnDrive(90), 1.2)
+                
+            elif direction == Direction.RIGHT:
+                print('running switchback right')
+                self.addSequential(DoNothing(waits.turn))
+
+                self.addSequential(TurnDrive(-90), 1.2)
 
             #self.addParallel(LiftToProportion(measures.ROBOT_ARM_SWITCH_DROP), 1.5)
-            dist = inches(20) + auto_measures.robot_starting_offset
-            self.addSequential(DriveToDistance(-dist,-dist), 2.5)
+            dist = inches(5) + auto_measures.robot_starting_offset
+            self.addSequential(DriveToDistance(dist,dist), 2.5)
+            self.addSequential(AutoArmExtender(False))
 
         # drop the cube
-        self.addSequential(RunIntake(1.0), 1.0)
+        #self.addSequential(RunIntake(1.0), 1.0)
         # self.addSequential(LiftToProportion(1.0), 5)
         # self.addSequential(LiftToProportion(-1.0))
 

@@ -8,7 +8,10 @@ class RunIntake(Command):
         self.speed = speed
 
     def initalize(self):
+        super().__init__('RunIntake[%s]' % speed)
         self.isDone = False
+        self.requires(subsystems.arm)
+
 
     def execute(self):
         subsystems.arm.set_rotator(speed)

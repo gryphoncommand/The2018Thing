@@ -5,7 +5,7 @@ from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
 from commands.autoarmextender import AutoArmExtender
 # TODO: Add import statement for the DriveToCube and DeliverCube Command.
-#from commands.runintake import RunIntake
+from commands.runintake import RunIntake
 
 from commands.tankdrivetimed import TankDriveTimed
 from commands.grabber import Grabber
@@ -49,55 +49,61 @@ class SameSide(CommandGroup):
 
         end_point = auto_measures.to_scale - inches(30)
         start_turning_point = end_point - inches(46)
-
-        #Raise Arm if not raised
-        self.addSequential(AutoArmExtender(True))
-
+        
         self.addSequential(DriveToDistance(
             start_turning_point, 
             start_turning_point
         ), 4.5)
-        
 
         # drive then turn absed on direction
         print ("DIRECTION: " + str(direction))
 
         # Turn Slightly towards goal. NOTE: Look into raising arm before you get to the scale.
         if direction == Direction.LEFT:
-            print('running same side left')
             self.addSequential(DoNothing(waits.turn))
 
             # turn towards the scale and then drive towards it
-            self.addSequential(TurnDrive(-auto_measures.angle_switch), 2.0)
+            self.addSequential(TurnDrive(auto_measures.angle_scale), 2.0)
             #dist = end_point - start_turning_point, auto_measures.robot_starting_offset)
             #dist = math.hypot(end_point - start_turning_point, auto_measures.robot_starting_offset)
-            self.addSequential(AutoArmExtender(True))
-            self.addSequential(DoNothing(3))
-            #self.addSequential(RunIntake(1.0), 1.0)
+            dist = math.hypot(auto_measures.robot_starting_offset, (end_point - start_turning_point) * math.tan(auto_measures.angle_scale * math.pi / 180.0))
+            self.addSequential(DriveToDistance(dist, dist), 2.0)
+
+            #self.addSequential(DoNothing(.5))
+            # turn back to face it
+            self.addSequential(DoNothing(waits.turn))
+            
+            self.addSequential(TurnDrive(-auto_measures.angle_scale), 2.0)
       
         elif direction == Direction.RIGHT:
-            print('running same side right')
             self.addSequential(DoNothing(waits.turn))
 
             # turn towards the scale and then drive towards it
-            self.addSequential(TurnDrive(auto_measures.angle_switch), 2.0)
+            self.addSequential(TurnDrive(-auto_measures.angle_scale), 2.0)
             #dist = end_point - start_turning_point, auto_measures.robot_starting_offset)
             #dist = math.hypot(end_point - start_turning_point, auto_measures.robot_starting_offset)
-            self.addSequential(AutoArmExtender(True))
-            self.addSequential(DoNothing(3))
-            #self.addSequential(RunIntake(1.0), 1.0)
+            dist = math.hypot(auto_measures.robot_starting_offset, (end_point - start_turning_point) * math.tan(auto_measures.angle_scale * math.pi / 180.0))
+            self.addSequential(DriveToDistance(dist, dist), 2.0)
+
+            #self.addSequential(DoNothing(.5))
+            # turn back to face it
+            self.addSequential(DoNothing(waits.turn))
+            
+            self.addSequential(TurnDrive(auto_measures.angle_scale), 2.0)
+
+            # TODO: deliver first cube
 
         # self.addSequential(LiftToProportion(measures.ROBOT_ARM_SCALE_DROP), 5.0)
 
         #self.addSequential(DoNothing(1.2))
 
-       # self.addSequential(AutoArmExtender(True))
+        self.addSequential(AutoArmExtender(True))
         
-       # self.addParallel(TankDriveTimed(.34, .34, .4))
+        self.addParallel(TankDriveTimed(.34, .34, .4))
 
-       # self.addSequential(DoNothing(1.2))
+        self.addSequential(DoNothing(1.2))
 
-       # self.addSequential(RunIntake(1.0), 1.0)
+        self.addSequential(RunIntake(1.0), 1.0)
             
 
         # Raise Arm and extend (Deliver Cube Method)

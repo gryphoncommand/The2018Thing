@@ -104,11 +104,13 @@ So:
 # this is from the switch outside
 auto_measures.robot_starting_offset = inches(14)
 
-# Turn Measure in degrees
+# Turn Measure in degrees (Depreacated)
+'''
 auto_measures.angle_scale = 42.5
 auto_measures.angle_switch = 90
 auto_measures.angle_cube = 135
-
+'''
+auto_measures.angle_switch = 90
 
 
 #from robotmap_alpha import *
