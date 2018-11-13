@@ -19,7 +19,7 @@ from commands.turndrive import TurnDrive
 from commands.auto.donothing import DoNothing
 # from commands.lifttoproportion import LiftToProportion
 from commands.auto.switchback import SwitchBack_inplace
-
+from commands.runintake import RunIntake
 from commands.grabber import Grabber
 
 from commands.sequence import Sequence
@@ -122,7 +122,6 @@ class The2018Thing(CommandBasedRobot):
     def generic_loop(self):
         if self.num_loops % log_every_n_loops == 0:
             subsystems.dump_info()
-
         self.num_loops += 1
 
     def generate_auto_program(self):

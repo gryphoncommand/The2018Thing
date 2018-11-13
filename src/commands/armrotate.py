@@ -56,7 +56,6 @@ class ArmRotate(Command):
         #     arm_power = 0
         rot_power = (oi.joystick.getRawAxis(axes.R_t) - oi.joystick.getRawAxis(axes.L_t)) / 2.0
         subsystems.arm.set_rotator(rot_power)
-      
     
         # subsystems.arm.set_wench(wench_power)
 
